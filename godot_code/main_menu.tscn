@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://edfgma4sdk2e"]
+
+[ext_resource type="Script" path="res://main_menu.gd" id="1_pelv0"]
+
+[node name="MenuItems" type="VBoxContainer"]
+script = ExtResource("1_pelv0")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Main menu"
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 2
+text = "Start game"
+
+[node name="RulesButton" type="Button" parent="."]
+layout_mode = 2
+text = "Rules"
+
+[node name="CreditsButton" type="Button" parent="."]
+layout_mode = 2
+text = "Credits"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

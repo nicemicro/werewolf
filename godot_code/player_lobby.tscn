@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://siro0ahygx5w"]
+
+[ext_resource type="Theme" uid="uid://dl6cdaxq05lui" path="res://themes/ui-theme.tres" id="1_hn74l"]
+[ext_resource type="Script" path="res://player_lobby.gd" id="2_ij0fr"]
+
+[node name="PlayerLobby" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_hn74l")
+script = ExtResource("2_ij0fr")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Join game"
+horizontal_alignment = 1
+
+[node name="PlayerIcons" type="GridContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 4
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Back"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
