@@ -1,0 +1,5 @@
+# Godot 4+ specific ignores
+godot_code/.godot/
+godot_code/addons
+controlpad/controlpad_server.exe
+controlpad/controlpad_server
