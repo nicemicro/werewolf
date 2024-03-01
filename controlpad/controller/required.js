@@ -95,37 +95,6 @@ function togglePopup() {
     overlay.style.display = isHidden ? 'block' : 'none';
 }
 
-// ------------------------- Orientation Check ----------------------------------
-
-var windowWidth = 0;
-var windowHeight = 0;
-
-
-function dimsCheck() {
-    if (windowWidth != window.innerWidth || windowHeight != window.innerHeight)
-        layoutElements();
-}
-
-function layoutElements() {
-    windowWidth = window.innerWidth;
-    windowHeight = window.innerHeight;
-    var isPortrait = windowHeight > windowWidth;
-    handleOrientation(isPortrait);
-}
-
-function handleOrientation(isPortrait) {
-    if(isPortrait) {
-        document.getElementById("dpad-container-portrait").style.display = "flex";
-        document.getElementById("dpad-container-landscape").style.display = "none";        
-    }
-    else
-    {
-        document.getElementById("dpad-container-portrait").style.display = "none";
-        document.getElementById("dpad-container-landscape").style.display = "flex";
-    }
-}
-
-
 // -----------------------------------------------------------
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -133,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuButton = createMenuButton();
     const overlay = createOverlay();
     const popup = createPopup();
-    setInterval(dimsCheck, 100);
 
     bodyElement.appendChild(menuButton);
     bodyElement.appendChild(overlay);
