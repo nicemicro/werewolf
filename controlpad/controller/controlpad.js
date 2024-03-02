@@ -2,7 +2,6 @@ const url_arg_str = window.location.search;
 const url_params = new URLSearchParams(url_arg_str);
 const subid = url_params.get('subid');
 const box_ip = window.location.href.split('/')[2].split(':')[0];
-console.log(subid);
 const ws = new WebSocket("ws://" + box_ip + ":50079");
 
 ws.onclose = () => {
@@ -30,9 +29,12 @@ ws.onopen = (_event) => {
             }
         }
         else {
-            let msg = event.data;
-            console.log("received message" + '<' + msg + '>');
-            console.log('^^ WASNT EXPECTING TO RECV ANY MSGS ^^');
+            const data = JSON.stringify(event.data);
+            var controlpad_msg_event = new CustomEvent("controlpad-message", {
+                type: data.type,
+                payload: data.payload,
+            });
+            document.dispatchEvent(controlpad_msg_event);
 
         }
     };
@@ -44,4 +46,21 @@ export function send_controlpad_message(msg) {
     ws.send(msg);
 }
 
+export function send_datum(msg) {
+    console.log('sending ' + msg);
+    ws.send(msg);
+}
+
+export const MsgType = {
+    "SUBMIT_NAME": 'SUBMIT_NAME'
+}
+
+/**
+ * Send message via websocket
+ * @param {string} type
+ * @param {Record<string, any>} payload
+ */
+export function send_msg(type, payload) {
+    send_datum(JSON.stringify({ type, payload }))
+}
 
