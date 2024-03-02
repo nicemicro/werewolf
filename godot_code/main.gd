@@ -1,34 +1,50 @@
 extends Control
 
-@onready var menuPlace: Control = $MainWindow/Columns/MenuCol
+@onready var mainMenuWindow: VBoxContainer = $MainWindow
+@onready var controller: Node = $GameNiteControlpads
 
-# Called when the node enters the scene tree for the first time.
+var gameState: String = "mainMenu"
+var players: Dictionary = {}
+
 func _ready():
-	menuPlace.get_child(0).connect("startButtonPressed", openGameJoin)
+	mainMenuWindow.connect("stateChanged", stateChanged)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func stateChanged(newState: String):
+	gameState = newState
 
-func openGameJoin():
-	var lobbyScene = preload("res://player_lobby.tscn")
-	for child in menuPlace.get_children():
-		child.queue_free()
-	var lobbyNode: VBoxContainer = lobbyScene.instantiate()
-	lobbyNode.connect("backToMain", openMainMenu)
-	menuPlace.add_child(lobbyNode)
+func playerJoins(clientId: String, playerName: String):
+	if gameState != "joinGame":
+		print_debug("can't join now")
+		sendMessage(clientId, "JoinFailed", {"status": "notAvailable"})
+		return
+	if clientId in players:
+		print_debug("already joined")
+		sendMessage(clientId, "JoinFailed", {"status": "alreadyJoined"})
+	sendMessage(clientId, "Joined", {"status": "success"})
+	players[clientId] = playerName
+	mainMenuWindow.newPlayerJoins(clientId, playerName)
 
-func openMainMenu():
-	var menuScene = preload("res://main_menu.tscn")
-	for child in menuPlace.get_children():
-		child.queue_free()
-	var menuNode: VBoxContainer = menuScene.instantiate()
-	menuNode.connect("startButtonPressed", openGameJoin)
-	menuPlace.add_child(menuNode)
+func sendMessage(clientId: String, msgType: String, payload: Dictionary):
+	var message: Dictionary = {
+		"type": msgType,
+		"payload": payload
+	}
+	controller.send_message(clientId, JSON.stringify(message))
+	print_debug("send message ", JSON.stringify(message))
 
-func _on_game_nite_controlpads_message_received(client, message):
-	print("received <%s> from <%s>" % [message, client])
+func handleMessage(clientId: String, message: Dictionary):
+	var command: String = message["type"]
+	var payload: Dictionary = message["payload"]
+	match command:
+		"SUBMIT_NAME":
+			playerJoins(clientId, payload["name"])
 
-
-func _on_exit_button_pressed():
-	get_tree().quit()
+func _on_game_nite_controlpads_message_received(clientId, message):
+	print("received <%s> from <%s>" % [message, clientId])
+	var jsonParser = JSON.new()
+	var error = jsonParser.parse(message)
+	if error != OK:
+		print("JSON parsing error")
+		return
+	var data_received: Dictionary = jsonParser.data
+	handleMessage(clientId, data_received)

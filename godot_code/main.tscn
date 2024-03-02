@@ -1,14 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://b305gb3lioysm"]
+[gd_scene load_steps=4 format=3 uid="uid://b305gb3lioysm"]
 
 [ext_resource type="Theme" uid="uid://dl6cdaxq05lui" path="res://themes/ui-theme.tres" id="1_1kltm"]
 [ext_resource type="Script" path="res://main.gd" id="1_heqex"]
-[ext_resource type="PackedScene" uid="uid://edfgma4sdk2e" path="res://main_menu.tscn" id="3_l2r6f"]
-
-[sub_resource type="SystemFont" id="SystemFont_0s535"]
-msdf_size = 120
-
-[sub_resource type="Theme" id="Theme_3b4iw"]
-Label/fonts/font = SubResource("SystemFont_0s535")
+[ext_resource type="PackedScene" uid="uid://kup5icjhl6r1" path="res://start_window.tscn" id="3_fieee"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -22,45 +16,7 @@ script = ExtResource("1_heqex")
 
 [node name="GameNiteControlpads" type="GameNiteControlpads" parent="."]
 
-[node name="MainWindow" type="VBoxContainer" parent="."]
+[node name="MainWindow" parent="." instance=ExtResource("3_fieee")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="MainWindow"]
-layout_mode = 2
-theme = SubResource("Theme_3b4iw")
-text = "Werewolf for the GameNite (space for the the title art)"
-horizontal_alignment = 1
-
-[node name="Columns" type="HBoxContainer" parent="MainWindow"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Left" type="CenterContainer" parent="MainWindow/Columns"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="MenuCol" type="CenterContainer" parent="MainWindow/Columns"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
-
-[node name="MenuItems" parent="MainWindow/Columns/MenuCol" instance=ExtResource("3_l2r6f")]
-layout_mode = 2
-
-[node name="Right" type="MarginContainer" parent="MainWindow/Columns"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ExitButton" type="Button" parent="MainWindow/Columns/Right"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-text = "Exit"
 
 [connection signal="message_received" from="GameNiteControlpads" to="." method="_on_game_nite_controlpads_message_received"]
-[connection signal="pressed" from="MainWindow/Columns/Right/ExitButton" to="." method="_on_exit_button_pressed"]
