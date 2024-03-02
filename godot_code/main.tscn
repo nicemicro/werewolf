@@ -21,14 +21,6 @@ theme = ExtResource("1_1kltm")
 script = ExtResource("1_heqex")
 
 [node name="GameNiteControlpads" type="GameNiteControlpads" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-editor_description = ""
-script = null
 
 [node name="MainWindow" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -70,4 +62,5 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Exit"
 
+[connection signal="message_received" from="GameNiteControlpads" to="." method="_on_game_nite_controlpads_message_received"]
 [connection signal="pressed" from="MainWindow/Columns/Right/ExitButton" to="." method="_on_exit_button_pressed"]
