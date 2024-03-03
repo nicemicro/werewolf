@@ -4,7 +4,8 @@ import { send_msg, MsgType } from "./controlpad.js";
 export const $name = map({
     name: /** @type {string | undefined} */ undefined,
     error: /** @type {string | undefined} */ undefined,
-    submitted: false,
+    submitting: false,
+    ready: false,
     submittedName: /** @type {string | undefined} */ undefined
 });
 
@@ -13,12 +14,12 @@ export const $name = map({
  * @param {string} name
  */
 export const submitNameAction = (name) => {
-    $name.setKey('submitted', true);
+    $name.setKey('submitting', true);
     $name.setKey('submittedName', name)
     send_msg(MsgType.SUBMIT_NAME, { name });
 }
 
-const handleWSEvent = (type, payload) => {
+export const handleWSEvent = (type, payload) => {
     switch (type) {
         case 'NAMING_RESULT':
             handleNamingResult(payload);
@@ -30,11 +31,18 @@ document.addEventListener('controlpad-message', function (e) {
     handleWSEvent(e.type, e.payload);
 });
 
+/**
+ *
+ * @param {{ error?: string }} payload
+ */
 function handleNamingResult(payload) {
+    console.log(payload, payload.error)
     const state = $name.get()
+    $name.setKey('submitting', false)
     if (payload.error) {
         $name.setKey('error', payload.error)
     } else {
         $name.setKey('name', state.submittedName)
+        $name.setKey('ready', true)
     }
 }
