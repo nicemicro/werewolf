@@ -1,5 +1,6 @@
-import {send_msg} from "./controlpad.js";
-import {handleWSEvent} from "./store.js";
+import {channel} from "./controlpad.js";
+import {Action} from "./util/action.js";
+import {dispatch} from "./stores/index.js";
 
 /** @typedef {import('mithril')} M */
 const m = /** @type {M.Static} */ window.m;
@@ -9,13 +10,18 @@ const m = /** @type {M.Static} */ window.m;
  */
 export class DebugMenu {
     sendMessage() {
-        send_msg(this.type, JSON.parse(this.payload));
-        this.type = '';
-        this.payload = '';
+        channel.sendMessage(this.actionFromInput().toString());
     }
 
-    recieveMessage() {
-        handleWSEvent(this.type, JSON.parse(this.payload));
+    receiveMessage() {
+        dispatch(this.actionFromInput());
+    }
+
+    actionFromInput() {
+        return Action.create(this.type, JSON.parse(this.payload))
+    }
+
+    clearInput() {
         this.type = '';
         this.payload = '';
     }
@@ -41,9 +47,14 @@ export class DebugMenu {
             }, 'Send Message'),
             m('button.pa1', {
                 onclick: () => {
-                    this.recieveMessage()
+                    this.receiveMessage()
                 }
             }, 'Simulate Receive message'),
+            m('button.pa1', {
+                onclick: () => {
+                    this.clearInput()
+                }
+            }, 'Clear Input'),
         ])
     }
 }

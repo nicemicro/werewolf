@@ -1,11 +1,28 @@
-import {$name, submitNameAction} from "../store.js";
+import {$name, submitNameAction} from "../stores/name.js";
 import {DebugMenu} from "../components.js";
-
-/** @typedef {import('mithril')} M */
-const m = /** @type {M.Static} */ window.m;
+import ConnectedComponent from "../util/ConnectedComponent.js";
+import {dispatch} from "../stores/index.js";
 
 /**
- * @extends {M.ClassComponent<{ error?: string, loading?: boolean}>}
+ * @template Attrs
+ * @typedef {import('mithril').ClassComponent<Attrs>} ClassComponent
+ */
+/**
+ * @template Attrs
+ * @typedef {import('@types/mithril').Vnode<Attrs>} Vnode
+ */
+/** @type {import('@types/mithril').Static} */
+const m =window.m;
+
+/**
+ * @typedef NameFormProps
+ * @property {string?} error
+ * @property {boolean} loading
+ * @property {(string) => void} onSubmit
+ */
+
+/**
+ * @extends {ClassComponent<NameFormProps>}
  */
 class NameForm {
     /** @type {string | undefined} Used to store the name before server validation */
@@ -20,23 +37,26 @@ class NameForm {
         this.name = e.target.value
     }
 
-    /** @param {SubmitEvent} e */
-    submitName(e) {
+    /**
+     * @param {Vnode<NameFormProps>} vnode
+     * @param {SubmitEvent} e
+     */
+    submitName(vnode, e) {
         e.preventDefault();
         /** @type {HTMLFormElement} */
         const form = e.target;
         if (form.checkValidity()) {
-            this.loading = true;
-            submitNameAction(this.name);
+            vnode.attrs.onSubmit(this.name)
         }
     }
 
+    /** @param {Vnode<NameFormProps>} vnode */
     view(vnode) {
         return m.fragment({}, [
             vnode.attrs.error
                 ? m('span', vnode.attrs.error)
                 : [],
-            m('form.mt3', {onsubmit: (e) => this.submitName(e)}, [
+            m('form.mt3', {onsubmit: (e) => this.submitName(vnode, e)}, [
                 m("input#name[name='name']", {
                     required: true,
                     disabled: vnode.attrs.loading,
@@ -61,27 +81,30 @@ const Ready = {
     }
 }
 
-/**
- * @extends {M.ClassComponent}
- */
-export default class Menu {
+export default class Menu extends ConnectedComponent {
+    store = $name;
 
-
-    oninit() {
-        this.storeUnsub = $name.subscribe(() => m.redraw());
+    /**
+     * @param {StoreValue<typeof $game>}value
+     * @param newValue
+     */
+    onStoreChange(value, newValue) {
     }
-    onremove() {
-        this.storeUnsub();
+
+    /** @param {string} name */
+    onSubmit(name) {
+        dispatch(submitNameAction(name));
     }
 
     view(vnode) {
         const state = $name.get();
+        console.log(state);
         return m("div#menu.w-100.h-100.flex.flex-column.justify-center.content-center.items-center.border-box.ph5", [
             m(DebugMenu),
             m('h1.f1', "Welcome to The Cult of the Wolf"),
             state.ready
                 ? m(Ready)
-                : m(NameForm, { error: state.error, loading: state.submitting})
+                : m(NameForm, { error: state.error, loading: state.submitting, onSubmit: this.onSubmit})
 
         ])
     }
