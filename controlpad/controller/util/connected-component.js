@@ -1,7 +1,5 @@
-/** @typedef {import('mithril')} M */
-const m = /** @type {M.Static} */ window.m;
-
-/** @typedef {import('nanostores').Store} Store */
+/** @type {import('mithril').Static} */
+const m = window.m;
 
 /**
  * Mithril Component for automatically subscribe to a store
@@ -17,15 +15,15 @@ const m = /** @type {M.Static} */ window.m;
  *     }
  * }
  *
- * @template T
- * @extends {M.ClassComponent<T>}
+ * @template S
+ * @extends {import('mithril').ClassComponent}
  */
 export default class ConnectedComponent {
     /**
      * Store to register on init and to unsubscribe on remove
-     * @type {Store}
+     * @type {S}
      */
-    store = null;
+    store
     /**
      * If the component should call redraw on store update
      * @type {boolean}
@@ -45,10 +43,10 @@ export default class ConnectedComponent {
     /**
      * Called on store change
      * @param {unknown} value
-     * @param {unknown} newValue
+     * @param  {unknown} oldValue
      * @return {void}
      */
-    onStoreChange(value, newValue) {
+    onStoreChange(value, oldValue) {
         throw new Error('Not implemented');
     }
 

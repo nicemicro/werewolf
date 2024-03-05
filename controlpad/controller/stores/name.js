@@ -3,11 +3,6 @@ import {channel} from "../controlpad.js";
 import {Action, ActionNames} from "../util/action.js";
 
 /**
- * @template T
- * @typedef {import('nanostores').MapStore<T>} MapStore
- */
-
-/**
  * @typedef NameStore
  * @property {string | undefined} name
  * @property {string | undefined} error
@@ -17,7 +12,7 @@ import {Action, ActionNames} from "../util/action.js";
  */
 
 /**
- * @type {MapStore<NameStore>}
+ * @type {import('nanostores').MapStore<NameStore>}
  */
 export const $name = map({
     name: undefined,
@@ -27,7 +22,7 @@ export const $name = map({
     submittedName: undefined
 });
 
-export const submitNameAction = name => Action.create(ActionNames.SUBMIT_NAME, {name});
+export const submitNameAction = name => Action.create(ActionNames.P_SUBMIT_NAME, {name});
 
 /**
  * @param {Action} action
@@ -36,11 +31,11 @@ export const submitNameAction = name => Action.create(ActionNames.SUBMIT_NAME, {
 export const dispatch = (action) => {
     const {type, payload} = action;
     switch (type) {
-        case ActionNames.JOINED:
-        case ActionNames.JOINED_FAILED:
+        case ActionNames.G_JOINED:
+        case ActionNames.G_JOINED_FAILED:
             handleNamingResult(type, /** @type {Parameters<handleSubmitName>[0]} */ payload);
             break;
-        case ActionNames.SUBMIT_NAME:
+        case ActionNames.P_SUBMIT_NAME:
             handleSubmitName(/** @type {{name: string}} */ payload);
     }
 }
@@ -50,7 +45,7 @@ export const dispatch = (action) => {
  * @param {{ status: string }} payload
  */
 function handleNamingResult(type, payload) {
-    const failed = type === ActionNames.JOINED_FAILED;
+    const failed = type === ActionNames.G_JOINED_FAILED;
     const state = $name.get()
     $name.setKey('submitting', false)
     if (failed) {
@@ -65,5 +60,5 @@ function handleNamingResult(type, payload) {
 function handleSubmitName({ name }) {
     $name.setKey('submitting', true);
     $name.setKey('submittedName', name)
-    channel.sendMessage(Action.create(ActionNames.SUBMIT_NAME, {name}).toString());
+    channel.sendMessage(Action.create(ActionNames.P_SUBMIT_NAME, {name}).toString());
 }

@@ -1,28 +1,22 @@
 import {$name, submitNameAction} from "../stores/name.js";
-import {DebugMenu} from "../components.js";
-import ConnectedComponent from "../util/ConnectedComponent.js";
+import {DebugMenu} from "../components/debug-menu.js";
+import ConnectedComponent from "../util/connected-component.js";
 import {dispatch} from "../stores/index.js";
+import Layout from "../components/layout.js";
 
-/**
- * @template Attrs
- * @typedef {import('mithril').ClassComponent<Attrs>} ClassComponent
- */
-/**
- * @template Attrs
- * @typedef {import('@types/mithril').Vnode<Attrs>} Vnode
- */
+
 /** @type {import('@types/mithril').Static} */
-const m =window.m;
+const m = window.m;
 
 /**
  * @typedef NameFormProps
- * @property {string?} error
+ * @property {string|undefined} error
  * @property {boolean} loading
- * @property {(string) => void} onSubmit
+ * @property {(string) => void} onSubmit - Called when the form is valid and submit is clicked
  */
 
 /**
- * @extends {ClassComponent<NameFormProps>}
+ * @implements {{import('@types/mithril').ClassComponent<NameFormProps>}
  */
 class NameForm {
     /** @type {string | undefined} Used to store the name before server validation */
@@ -38,7 +32,7 @@ class NameForm {
     }
 
     /**
-     * @param {Vnode<NameFormProps>} vnode
+     * @param {import('@types/mithril').Vnode<NameFormProps>} vnode
      * @param {SubmitEvent} e
      */
     submitName(vnode, e) {
@@ -50,7 +44,10 @@ class NameForm {
         }
     }
 
-    /** @param {Vnode<NameFormProps>} vnode */
+    /**
+     * @override
+     * @param {import('@types/mithril').Vnode<NameFormProps>} vnode
+     */
     view(vnode) {
         return m.fragment({}, [
             vnode.attrs.error
@@ -81,7 +78,7 @@ const Ready = {
     }
 }
 
-export default class Menu extends ConnectedComponent {
+export default class NameMenu extends ConnectedComponent {
     store = $name;
 
     /**
@@ -99,7 +96,7 @@ export default class Menu extends ConnectedComponent {
     view(vnode) {
         const state = $name.get();
         console.log(state);
-        return m("div#menu.w-100.h-100.flex.flex-column.justify-center.content-center.items-center.border-box.ph5", [
+        return m(Layout, [
             m(DebugMenu),
             m('h1.f1', "Welcome to The Cult of the Wolf"),
             state.ready

@@ -4,8 +4,8 @@ import {dispatch as gameDispatch} from "./game.js";
 import {dispatch as nameDispatch} from './name.js';
 
 channel.addConnectedHandler(() => {
-    dispatch(Action.create(ActionNames.CONNECTED, {}));
-    channel.sendMessage(Action.create(ActionNames.SYNC, {}).toString());
+    dispatch(Action.create(ActionNames.P_CONNECTED, {}));
+    channel.sendMessage(Action.create(ActionNames.P_SYNC, {}).toString());
 });
 
 

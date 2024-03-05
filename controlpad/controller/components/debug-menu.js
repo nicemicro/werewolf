@@ -1,12 +1,17 @@
-import {channel} from "./controlpad.js";
-import {Action} from "./util/action.js";
-import {dispatch} from "./stores/index.js";
-
-/** @typedef {import('mithril')} M */
-const m = /** @type {M.Static} */ window.m;
+import {channel} from "../controlpad.js";
+import {Action} from "../util/action.js";
+import {dispatch} from "../stores/index.js";
 
 /**
- * @extends {M.ClassComponent}
+ * @template Attrs
+ * @typedef {import('mithril').ClassComponent<Attrs>} ClassComponent
+ */
+
+/** @typedef {import('mithril').Static} */
+const m = /** @type {Static} */ window.m;
+
+/**
+ * @extends {ClassComponent}
  */
 export class DebugMenu {
     sendMessage() {
