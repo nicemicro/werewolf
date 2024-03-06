@@ -2,6 +2,7 @@ extends Control
 
 @onready var mainMenuWindow: VBoxContainer = $MainWindow
 @onready var controller: Node = $GameNiteControlpads
+var gameNode: Node = null
 
 var gameState: String = "mainMenu"
 var players: Dictionary = {}
@@ -10,6 +11,14 @@ func _ready():
 	mainMenuWindow.connect("stateChanged", stateChanged)
 
 func stateChanged(newState: String):
+	match newState:
+		"startGame":
+			assert(gameState != "startGame")
+			assert(gameNode == null)
+			var gameScene = preload("res://game/game.tscn")
+			var newGameNode: Control = gameScene.instantiate()
+			gameNode = newGameNode
+			add_child(gameNode)
 	gameState = newState
 
 func playerJoins(clientId: String, playerName: String):
@@ -22,7 +31,9 @@ func playerJoins(clientId: String, playerName: String):
 		sendMessage(clientId, "JoinFailed", {"status": "alreadyJoined"})
 	sendMessage(clientId, "Joined", {"status": "success"})
 	players[clientId] = playerName
-	mainMenuWindow.newPlayerJoins(clientId, playerName)
+	mainMenuWindow.lobbyNode.newPlayerJoins(clientId, playerName)
+	if len(players) > 5:
+		mainMenuWindow.lobbyNode.gameCanStart(true)
 
 func sendMessage(clientId: String, msgType: String, payload: Dictionary):
 	var message: Dictionary = {
