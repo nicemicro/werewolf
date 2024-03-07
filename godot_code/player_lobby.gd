@@ -1,16 +1,15 @@
 extends VBoxContainer
 
+@onready var playerIconGrid: GridContainer = $PlayerIcons
+
 signal backToMain
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
+func newPlayerJoins(clientId: String, playerName: String):
+	print_debug(clientId, "  ", playerName)
+	var playerIconScene = preload("res://lobby/player_icon.tscn")
+	var playerIcon = playerIconScene.instantiate()
+	playerIcon.setName(playerName)
+	playerIconGrid.add_child(playerIcon)
 
 func _on_button_pressed():
 	emit_signal("backToMain")

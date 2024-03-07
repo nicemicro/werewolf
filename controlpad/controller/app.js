@@ -1,6 +1,11 @@
 // @ts-check
-import Menu from "./routes/menu.js";
+import NameMenu from "./routes/name-menu.js";
+import Joining from "./routes/joining.js";
+import MainMenu from "./routes/main-menu.js";
+
 
 m.route(document.getElementById("werewolfapp"), "/", {
-    "/": Menu,
+    '/': Joining,
+    '/menu': MainMenu,
+    "/name-menu": NameMenu,
 })
