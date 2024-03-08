@@ -59,7 +59,7 @@ class NameForm {
                     disabled: vnode.attrs.loading,
                     minlength: 3,
                     pattern: "[a-zA-Z]+",
-                    class: 'white pa2 db bg-transparent outline-0 f3 bb bw1 b--mid-gray bl-0 bt-0 br-0  ',
+                    class: 'white pa2 db bg-transparent outline-0 f3 bb bw1 b--mid-gray bl-0 bt-0 br-0 ml-auto mr-auto',
                     placeholder: "Please enter your name",
                     oninput: (e) => this.onNameChange(e)
                 }),
@@ -95,14 +95,13 @@ export default class NameMenu extends ConnectedComponent {
 
     view(vnode) {
         const state = $name.get();
-        return m(Layout, [
-            m(DebugMenu),
-            m('h1.f1', "Welcome to The Cult of the Wolf"),
+        return m(Layout, m('div.ph5', [
+            m('h1.f1.tc', "Welcome to The Cult of the Wolf"),
             state.ready
                 ? m(Ready)
                 : m(NameForm, { error: state.error, loading: state.submitting, onSubmit: this.onSubmit})
 
-        ])
+        ]))
     }
 }
 

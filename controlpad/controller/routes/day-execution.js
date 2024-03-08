@@ -9,19 +9,12 @@ const WaitingH1 = {
         })
     },
     view() {
-        return m('h1.f1.tc.absolute', 'Waiting for other players to pick')
+        return m('h1.f1.tc.absolute.ph5', 'Waiting for other players to pick')
     }
 }
 
 export default class DayExecution {
     newDead = false;
-
-    oninit() {
-        setTimeout(() => {
-            this.newDead = true;
-            m.redraw();
-        }, 1000)
-    }
 
     view() {
         return m(Layout, [

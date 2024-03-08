@@ -14,3 +14,16 @@ export function subAndRedraw(store, cb) {
         m.redraw();
     })
 }
+
+/**
+ * Capitalized the first letter of each word
+ * @param {string} string
+ * @return {string}
+ */
+export function capitalize(string) {
+    if (!string || string.length === 0) return '';
+    if (string.includes(' ')) {
+        return string.split(' ').map(capitalize).join(' ');
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}

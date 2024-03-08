@@ -5,6 +5,7 @@ import {dispatch} from "../stores/index.js";
 import {$aliveUsers} from "../stores/users.js";
 import {$day, pickUserAction} from "../stores/day.js";
 import {subAndRedraw} from "../util/utils.js";
+import Layout from "../components/layout.js";
 
 /**
  * @typdef {import('./users').User} User
@@ -53,13 +54,7 @@ export default class DayPick {
     }
 
     view(vnode) {
-        return m("div#menu.w-100.h-100.flex.flex-column.justify-center.content-center.items-center.border-box.ph5", {
-            style: `
-            background: #556270;  /* fallback for old browsers */
-            background: -webkit-linear-gradient(to bottom, #556270, #ff6b6b);  /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to bottom, #556270, #ff6b6b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            `
-        }, [
+        return m(Layout, [
             m('h1.f1.tc', 'A new day comes'),
             m('h3.f3.tc', this.pickedUser ? `You sure ${this.pickedUser.name} is a Killer?` : 'Pick a suspect'),
             this.pickedUser

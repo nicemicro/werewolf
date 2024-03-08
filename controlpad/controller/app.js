@@ -4,6 +4,7 @@ import Joining from "./routes/joining.js";
 import MainMenu from "./routes/main-menu.js";
 import DayPick from "./routes/day-pick.js";
 import DayExecution from "./routes/day-execution.js";
+import NightTime from "./routes/night-time.js";
 
 
 m.route(document.getElementById("werewolfapp"), "/", {
@@ -11,5 +12,6 @@ m.route(document.getElementById("werewolfapp"), "/", {
     '/menu': MainMenu,
     "/name-menu": NameMenu,
     '/day-pick': DayPick,
-    '/day-execution': DayExecution
+    '/day-execution': DayExecution,
+    '/night-time': NightTime,
 })
