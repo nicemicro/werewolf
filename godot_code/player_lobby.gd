@@ -7,7 +7,6 @@ signal backToMain
 signal startGame
 
 func newPlayerJoins(clientId: String, playerName: String):
-	print_debug(clientId, "  ", playerName)
 	var playerIconScene = preload("res://lobby/player_icon.tscn")
 	var playerIcon = playerIconScene.instantiate()
 	playerIcon.setName(playerName)
