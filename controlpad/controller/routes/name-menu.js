@@ -95,7 +95,6 @@ export default class NameMenu extends ConnectedComponent {
 
     view(vnode) {
         const state = $name.get();
-        console.log(state);
         return m(Layout, [
             m(DebugMenu),
             m('h1.f1', "Welcome to The Cult of the Wolf"),

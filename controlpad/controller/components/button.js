@@ -4,7 +4,6 @@ const m = window.m;
 
 /**
  * @typedef {HTMLButtonElement} ButtonProps
- * @property {string} [HTMLButtonElement]
  * @property {(MouseEvent) => void} [onclick]
  */
 

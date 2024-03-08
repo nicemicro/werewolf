@@ -18,6 +18,8 @@ export const ActionNames = {
     P_SUBMIT_NAME: 'SUBMIT_NAME',
     G_JOINED: "Joined",
     G_JOINED_FAILED: "JoinFailed",
+    // User Pick
+    P_PICK_USER: 'PICK_USER',
 
 
 }
