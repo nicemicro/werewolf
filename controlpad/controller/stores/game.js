@@ -6,10 +6,18 @@ export const startGameAction = () => Action.create(ActionNames.P_START_GAME)
 export const showRulesAction = () => Action.create(ActionNames.P_SHOW_RULES)
 export const showCreditsAction = () => Action.create(ActionNames.P_SHOW_CREDITS)
 
+/** @enum {string} */
+export const Role = {
+    KILLER: 'KILLER',
+    VILLAGER: 'VILLAGER',
+};
+
 /**
  * @typedef {Object} GameStore
  * @property {boolean} connected
  * @property {boolean} gameStarted
+ * @property {Role} role
+ * @property {Object | undefined} pickedUser
  */
 
 /**
@@ -18,6 +26,8 @@ export const showCreditsAction = () => Action.create(ActionNames.P_SHOW_CREDITS)
 export const $game = map({
     connected: false,
     gameStarted: false,
+    role: Role.VILLAGER,
+    pickedUser: undefined
 });
 
 /**
@@ -34,6 +44,7 @@ export function dispatch(action) {
         case ActionNames.P_START_GAME:
             channel.sendMessage(action.toString());
             break;
+
         case ActionNames.G_GAME_STARTED:
             $game.setKey('gameStarted', true);
     }
