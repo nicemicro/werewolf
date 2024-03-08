@@ -25,7 +25,7 @@ export const pickUserAction = user => Action.create(ActionNames.P_PICK_USER, use
 /**
  * @param {Action} action
  */
-export function dispatch(action) {
+export function reduce(action) {
     const {type, payload} = action;
     switch (type) {
         case ActionNames.P_PICK_USER:

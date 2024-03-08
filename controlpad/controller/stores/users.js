@@ -25,7 +25,7 @@ export const $aliveUsers = computed($users, (users) => users.filter(u => u.alive
 /**
  * @param {Action} action
  */
-export function dispatch(action) {
+export function reducer(action) {
     const {type, payload} = action;
     switch (type) {
     }

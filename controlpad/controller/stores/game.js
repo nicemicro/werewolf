@@ -12,12 +12,27 @@ export const Role = {
     VILLAGER: 'VILLAGER',
 };
 
+/** @enum {string} */
+export const Cycle = {
+    DAY: 'DAY',
+    NIGHT: 'NIGHT',
+};
+
+/** @enum {string} */
+export const Hour = {
+    WOLF: 'WOLF',
+    SHAMAN: 'SHAMAN',
+    SEER: 'SEER'
+};
+
 /**
  * @typedef {Object} GameStore
  * @property {boolean} connected
  * @property {boolean} gameStarted
  * @property {Role} role
  * @property {Object | undefined} pickedUser
+ * @property {Cycle} cycle
+ * @property {Hour | undefined} hour
  */
 
 /**
@@ -27,13 +42,15 @@ export const $game = map({
     connected: false,
     gameStarted: false,
     role: Role.VILLAGER,
-    pickedUser: undefined
+    pickedUser: undefined,
+    cycle: Cycle.DAY,
+    hour: undefined,
 });
 
 /**
  * @param {Action} action
  */
-export function dispatch(action) {
+export function reduce(action) {
     const {type, payload} = action;
     switch (type) {
         case ActionNames.P_CONNECTED:
@@ -44,7 +61,6 @@ export function dispatch(action) {
         case ActionNames.P_START_GAME:
             channel.sendMessage(action.toString());
             break;
-
         case ActionNames.G_GAME_STARTED:
             $game.setKey('gameStarted', true);
     }

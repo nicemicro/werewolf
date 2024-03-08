@@ -28,7 +28,7 @@ export const submitNameAction = name => Action.create(ActionNames.P_SUBMIT_NAME,
  * @param {Action} action
  * @returns {void}
  */
-export const dispatch = (action) => {
+export const reducer = (action) => {
     const {type, payload} = action;
     switch (type) {
         case ActionNames.G_JOINED:
