@@ -10,6 +10,7 @@ var clients: Array = []
 
 func _ready():
 	mainMenuWindow.connect("stateChanged", stateChanged)
+	randomize()
 
 func stateChanged(newState: String):
 	assert(gameState != "startGame")
@@ -28,6 +29,9 @@ func stateChanged(newState: String):
 			add_child(gameNode)
 			for clientId in clients:
 				sendMessage(clientId, "PLAY", {})
+			var roles: Dictionary = gameNode.assignRoles(players)
+			for clientId in roles:
+				sendMessage(clientId, "ASSIGN_ROLE", {"role": roles[clientId]})
 	gameState = newState
 
 func playerJoins(clientId: String, playerName: String):
@@ -67,7 +71,7 @@ func sendMessage(clientId: String, msgType: String, payload: Dictionary):
 		"payload": payload
 	}
 	controller.send_message(clientId, JSON.stringify(message))
-	print("send message ", JSON.stringify(message))
+	print("send message to <%s>: <%s>" % [clientId, JSON.stringify(message)])
 
 func handleMessage(clientId: String, message: Dictionary):
 	var command: String = message["type"]
