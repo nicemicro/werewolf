@@ -38,3 +38,46 @@ texture = SubResource("GradientTexture2D_pqrp6")
 [node name="NightBackground" type="TextureRect" parent="."]
 layout_mode = 2
 texture = SubResource("GradientTexture2D_7yx88")
+
+[node name="Container" type="CenterContainer" parent="NightBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GoToSleep" type="Label" parent="NightBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Sleep now"
+
+[node name="BothKillersWakeUp" type="Label" parent="NightBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Both werewolves wake up"
+
+[node name="Timers" type="Control" parent="."]
+layout_mode = 2
+
+[node name="FirstNightSleep" type="Timer" parent="Timers"]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="BothKillersWakeUp" type="Timer" parent="Timers"]
+wait_time = 10.0
+one_shot = true
+
+[node name="BothKillersSleep" type="Timer" parent="Timers"]
+wait_time = 5.0
+one_shot = true
+
+[node name="GoodMorning" type="Timer" parent="Timers"]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="timeout" from="Timers/FirstNightSleep" to="." method="_changeScreen"]
+[connection signal="timeout" from="Timers/BothKillersWakeUp" to="." method="_changeScreen"]
+[connection signal="timeout" from="Timers/BothKillersSleep" to="." method="_changeScreen"]
+[connection signal="timeout" from="Timers/GoodMorning" to="." method="_changeScreen"]
