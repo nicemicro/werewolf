@@ -97,7 +97,7 @@ export default class NameMenu extends ConnectedComponent {
         const state = $name.get();
         return m(Layout, [
             m(DebugMenu),
-            m('h1.f1', "Welcome to The Cult of the Wolf"),
+            m('h1.f1.tc', "Welcome to The Cult of the Wolf"),
             state.ready
                 ? m(Ready)
                 : m(NameForm, { error: state.error, loading: state.submitting, onSubmit: this.onSubmit})
