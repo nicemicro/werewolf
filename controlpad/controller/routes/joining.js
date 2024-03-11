@@ -1,21 +1,28 @@
-/** @typedef {import('nanostores').StoreValue} StoreValue */
+import * as nanostores from "nanostores";
 import ConnectedComponent from "../util/connected-component.js";
 import {$game} from "../stores/game.js";
 import Layout from "../components/layout.js";
+import m from 'mithril';
 
+/** @typedef {import('../stores/game').GameStore} NameStore */
+
+/**
+ * @extends {ConnectedComponent<typeof $game>}
+ */
 export default class Joining extends ConnectedComponent {
     store = $game;
 
     /**
-     * @param {StoreValue<typeof $game>}value
-     * @param newValue
+     * @param {NameStore} value
+     * @param {NameStore} oldValue
      */
-    onStoreChange(value, newValue) {
-        if (this.store.get().connected) {
+    onStoreChange(value, oldValue) {
+        if (value.connected) {
             m.route.set('/menu');
         }
     }
 
+    /** @param {m.Vnode} vnode */
     view(vnode) {
         return m(Layout, [
             m('h1.f1.tc', "Welcome to The Cult of the Wolf"),

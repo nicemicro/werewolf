@@ -1,21 +1,22 @@
-import {channel} from "../controlpad.js";
+import channel from "../util/channel.js";
 import {Action} from "../util/action.js";
-import {dispatch} from "../stores/index.js";
+import {dispatch} from "../stores/store.js";
+import m from 'mithril';
 
 /**
  * @template Attrs
  * @typedef {import('mithril').ClassComponent<Attrs>} ClassComponent
  */
 
-/** @typedef {import('mithril').Static} */
-const m = /** @type {Static} */ window.m;
-
 /**
- * @extends {ClassComponent}
+ * @extends {m.ClassComponent}
  */
 export class DebugMenu {
+    type = '';
+    payload = '';
+
     sendMessage() {
-        channel.sendMessage(this.actionFromInput().toString());
+        channel.sendMessage(this.actionFromInput());
     }
 
     receiveMessage() {
@@ -23,7 +24,7 @@ export class DebugMenu {
     }
 
     actionFromInput() {
-        return Action.create(this.type, JSON.parse(this.payload))
+        return Action.create(/** @type {import('../util/action').ActionNames} */ this.type, JSON.parse(this.payload))
     }
 
     clearInput() {
@@ -31,34 +32,31 @@ export class DebugMenu {
         this.payload = '';
     }
 
+    /**
+     * @param {m.Vnode} vnode
+     */
     view(vnode) {
         return m('div.absolute.bottom-0.bg-white-90.w-100.pa3', [
             m('input.db.pa1', {
                 value: this.type,
                 placeholder: 'Message Type',
+                /** @param {Event & { target: HTMLInputElement}} e */
                 oninput: (e) => this.type = e.target.value
             }),
             m('textarea.db.pa1', {
                 value: this.payload,
                 placeholder: 'Json Payload',
-                oninput: e => {
-                    this.payload = e.target.value
-                }
+                /** @param {Event & { target: HTMLTextAreaElement}} e */
+                oninput: e => { this.payload = e.target.value }
             }),
             m('button.pa1', {
-                onclick: () => {
-                    this.sendMessage()
-                }
+                onclick: () => this.sendMessage()
             }, 'Send Message'),
             m('button.pa1', {
-                onclick: () => {
-                    this.receiveMessage()
-                }
+                onclick: () => this.receiveMessage()
             }, 'Simulate Receive message'),
             m('button.pa1', {
-                onclick: () => {
-                    this.clearInput()
-                }
+                onclick: () => this.clearInput()
             }, 'Clear Input'),
         ])
     }

@@ -1,12 +1,11 @@
 import {$game} from "../stores/game.js";
 import {capitalize, subAndRedraw} from "../util/utils.js";
+import m from 'mithril';
 
-/** @typedef {import('nanostores').Store} Store */
-const m = /** @type {import('mithril').Static} */ window.m;
-
+/** @type {m.Component<{ role: string }>} */
 const RoleAvatar = {
     view(vnode) {
-        const role = /** @type {import('../stores/game').Role} */ vnode.attrs.role.toLowerCase();
+        const role = vnode.attrs.role.toLowerCase();
 
         return m('div.tc', [
             m('img.br-100 h3 w3 dib', {
@@ -19,8 +18,7 @@ const RoleAvatar = {
 }
 
 /**
- * @template Attrs
- * @typedef {import('mithril').ClassComponent<Attrs>} ClassComponent
+ * @implements {m.ClassComponent<{}>}
  */
 export default class Layout {
     /**
@@ -30,7 +28,7 @@ export default class Layout {
     _unsubFn = [];
 
     /** @type {import('../stores/game').GameStore} */
-    gameState
+    gameState = $game.get();
 
     oninit() {
         this._unsubFn = [
@@ -42,6 +40,7 @@ export default class Layout {
         this._unsubFn.forEach(f => f());
     }
 
+    /** @param {m.Vnode} vnode */
     view(vnode) {
         const classNames = ['w-100', 'h-100', 'flex', 'flex-column', 'justify-center', 'content-center', 'items-center', 'border-box']
         classNames.push(this.gameState.cycle.toLowerCase() + '-gradient');

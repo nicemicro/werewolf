@@ -1,5 +1,6 @@
+import m from 'mithril'
 /**
- * @type {import('mithril').Component<{ name: string }>}
+ * @type {m.Component<{ name: string }>}
  */
 const GraveSvg = {
     view(vnode) {

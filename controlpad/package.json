@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "@types/mithril": "^2.2.6",
+    "mithril": "^2.2.2",
     "nanostores": "^0.10.0"
   }
 }

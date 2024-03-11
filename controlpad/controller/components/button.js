@@ -1,16 +1,17 @@
 
-/** @type {import('@types/mithril').Static} */
-const m = window.m;
+import m from 'mithril';
 
 /**
- * @typedef {HTMLButtonElement} ButtonProps
- * @property {(MouseEvent) => void} [onclick]
+ * @typedef ButtonProps
+ * @property {(e: MouseEvent) => void} [onclick]
+ * @property {HTMLButtonElement['type']} [type='button']
+ * @property {boolean} [disabled=false]
+ * @property {string} [className]
  */
 
 
-/** @implements {Component<ButtonProps>} */
+/** @type {m.Component<ButtonProps>} */
 const Button = {
-    /** @param {import('mithril').Vnode<ButtonProps>} vnode */
     view(vnode) {
         const { type, disabled, className, ...rest} = vnode.attrs;
         return  m(`button[type=${type ?? 'button'}`, {

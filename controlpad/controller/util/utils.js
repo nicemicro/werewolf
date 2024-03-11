@@ -1,11 +1,15 @@
+import m from 'mithril';
 
-/** @typedef {import('nanostores').Store} Store */
+/**
+ * @template T
+ * @typedef {import('nanostores').Store<T>} Store
+ */
 
 /**
  * Subscribes to the store and call {m.redraw} on every change
  * @template T
  * @param {Store<T>} store
- * @param {(val: import('nanostores').ReadonlyIfObject<T>) => void} cb
+ * @param {(val: T) => void} cb
  * @return {() => void}
  */
 export function subAndRedraw(store, cb) {

@@ -1,4 +1,4 @@
-import {atom, computed} from 'https://unpkg.com/nanostores';
+import * as nanostores from "nanostores";
 import {cond} from "../util/cond.js";
 
 /**
@@ -10,7 +10,7 @@ export class User {
      * Name submitted by the user
      * @type {string}
      */
-    name
+    name = '';
     /**
      * If the player is alive
      * @type {boolean}
@@ -19,9 +19,9 @@ export class User {
 }
 
 /**
- * @type {import('nanostores').Atom<Array<User>>}
+ * @type {nanostores.Atom<Array<User>>}
  */
-export const $users = atom([
+export const $users = nanostores.atom([
     {name: 'Nicky', alive: true },
     {name: 'Airam', alive: true },
     {name: 'Safwaan', alive: true},
@@ -29,11 +29,11 @@ export const $users = atom([
 ]);
 
 /**
- * @type {import('nanostores').ReadableAtom<Array<User>>}
+ * @type {nanostores.ReadableAtom<Array<User>>}
  */
-export const $aliveUsers = computed($users, (users) => users.filter(u => u.alive));
+export const $aliveUsers = nanostores.computed($users, (users) => users.filter(u => u.alive));
 
 /**
- * @param {Action} action
+ * @param {import('../util/action').Action} action
  */
 export const reducer = cond([])

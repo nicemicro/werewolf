@@ -1,4 +1,5 @@
 import Layout from "../components/layout.js";
+import m from 'mithril';
 
 export default class NightTime {
     newDead = false;

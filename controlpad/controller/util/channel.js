@@ -26,7 +26,7 @@ const channel = {
     /**
      * Add a listeners to the 'connected message
      * @param {() => void} cb - The function to call
-     * @return {function(): boolean} A function to deregister the callback
+     * @return {() => void} A function to deregister the callback
      */
     addConnectedHandler(cb)  {
         if (connectedListeners.has(cb)) {
@@ -39,13 +39,12 @@ const channel = {
     /**
      * Add a listeners to messages from the server
      * @param {(action: Action) => void} cb - The function to call
-     * @return {function(): boolean} A function to deregister the callback
+     * @return {() => void} A function to deregister the callback
      */
     addOnMessageHandler(cb)  {
         if (msgListeners.has(cb)) {
             console.warn('Listener already registered');
-            return () => {
-            };
+            return () => {};
         }
         msgListeners.add(cb);
         return () => msgListeners.delete(cb);
@@ -55,13 +54,13 @@ const channel = {
 
 // Listen to connected events
 document.addEventListener(CONNECTED_EVENT_NAME,
-    /** @param {CustomEvent<string>} event - event from websocket */
-    (event) => {
+    () => {
         connectedListeners.forEach(cb => cb());
     }
 )
 
 // List to message events
+// @ts-ignore
 document.addEventListener(MESSAGE_EVENT_NAME,
     /** @param {CustomEvent<string>} event - event from websocket */
     (event) => {

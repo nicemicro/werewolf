@@ -5,13 +5,17 @@ import MainMenu from "./routes/main-menu.js";
 import DayPick from "./routes/day-pick.js";
 import DayExecution from "./routes/day-execution.js";
 import NightTime from "./routes/night-time.js";
+import m from 'mithril';
 
+const node = document.getElementById("werewolfapp");
 
-m.route(document.getElementById("werewolfapp"), "/", {
-    '/': Joining,
-    '/menu': MainMenu,
-    "/name-menu": NameMenu,
-    '/day-pick': DayPick,
-    '/day-execution': DayExecution,
-    '/night-time': NightTime,
-})
+if (node) {
+    m.route(node, "/", {
+        '/': Joining,
+        '/menu': MainMenu,
+        "/name-menu": NameMenu,
+        '/day-pick': DayPick,
+        '/day-execution': DayExecution,
+       '/night-time': NightTime,
+    })
+}

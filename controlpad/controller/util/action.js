@@ -25,7 +25,7 @@ export const ActionNames = {
 }
 
 /**
- * @template {{[x: string]: any}} T
+ * @template { {[x: string]: any} } [T={}]
  */
 export class Action {
     /** @type {ActionNames} */
@@ -44,17 +44,18 @@ export class Action {
     }
 
     /**
+     * @template {object} T
      * Helper for easier chaining
      * @param {ActionNames} type
-     * @param {T} [payload = {}]
+     * @param {T} payload
      */
     static create(type, payload) {
-        return new Action(type, payload ?? {})
+        return new Action(type, payload)
     }
 
     /**
      * @param {Action['type']} type
-     * @param {T} [payload = {}]
+     * @param {T} payload
      */
     constructor(type, payload) {
         this.type = type;

@@ -1,11 +1,11 @@
-import {map} from 'https://unpkg.com/nanostores';
+import * as nanostores from 'nanostores'
 import {Action, ActionNames} from "../util/action.js";
 import channel from "../util/channel.js";
 import {cond} from "../util/cond.js";
 
-export const startGameAction = () => Action.create(ActionNames.P_START_GAME)
-export const showRulesAction = () => Action.create(ActionNames.P_SHOW_RULES)
-export const showCreditsAction = () => Action.create(ActionNames.P_SHOW_CREDITS)
+export const startGameAction = () => Action.create(ActionNames.P_START_GAME, {})
+export const showRulesAction = () => Action.create(ActionNames.P_SHOW_RULES, {})
+export const showCreditsAction = () => Action.create(ActionNames.P_SHOW_CREDITS, {})
 
 /** @enum {string} */
 export const Role = {
@@ -45,9 +45,9 @@ export const GameState = {
  */
 
 /**
- * @type {import('nanostores').MapStore<GameStore>}
+ * @type {nanostores.MapStore<GameStore>}
  */
-export const $game = map({
+export const $game = nanostores.map({
     connected: false,
     gameStarted: false,
     role: Role.VILLAGER,

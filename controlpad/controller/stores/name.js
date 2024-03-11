@@ -1,4 +1,4 @@
-import {map} from 'https://unpkg.com/nanostores';
+import * as nanostores from 'nanostores'
 import channel from "../util/channel.js";
 import {Action, ActionNames} from "../util/action.js";
 import {cond} from "../util/cond.js";
@@ -13,9 +13,9 @@ import {cond} from "../util/cond.js";
  */
 
 /**
- * @type {import('nanostores').MapStore<NameStore>}
+ * @type {nanostores.MapStore<NameStore>}
  */
-export const $name = map({
+export const $name = nanostores.map({
     name: undefined,
     error:  undefined,
     submitting: false,
@@ -23,6 +23,7 @@ export const $name = map({
     submittedName: undefined
 });
 
+/** @param {string} name */
 export const submitNameAction = name => Action.create(ActionNames.P_SUBMIT_NAME, {name});
 
 /**

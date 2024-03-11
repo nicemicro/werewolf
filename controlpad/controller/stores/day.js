@@ -1,4 +1,4 @@
-import {map} from 'https://unpkg.com/nanostores';
+import * as nanostores from 'nanostores';
 import {Action, ActionNames} from "../util/action.js";
 import channel from "../util/channel.js";
 import {cond} from "../util/cond.js";
@@ -11,9 +11,9 @@ import {User} from './users.js';
  */
 
 /**
- * @type {import('nanostores').MapStore<DayStore>}
+ * @type {nanostores.MapStore<DayStore>}
  */
-export const $day = map({
+export const $day = nanostores.map({
     pickedUser: undefined
 });
 

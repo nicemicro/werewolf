@@ -1,7 +1,9 @@
 import Layout from "../components/layout.js";
 import GraveSvg from "../components/grave-svg.js";
+import m from 'mithril';
 
 const WaitingH1 = {
+    /** @param {m.VnodeDOM} vnode */
     onbeforeremove: function (vnode) {
         vnode.dom.classList.add("anim__fade-out")
         return new Promise(function (resolve) {

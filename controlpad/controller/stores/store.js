@@ -5,8 +5,6 @@ import {reducer as nameReducer} from './name.js';
 import {reducer as userReducer } from "./users.js";
 import {reduce as dayReducer} from "./day.js";
 
-
-
 /**
  * @param {Action} action
  * @returns {void}
@@ -19,8 +17,8 @@ export const dispatch = (action) => {
 }
 
 channel.addConnectedHandler(() => {
-    dispatch(Action.create(ActionNames.P_CONNECTED));
-    channel.sendMessage(Action.create(ActionNames.P_SYNC));
+    dispatch(Action.create(ActionNames.P_CONNECTED, {}));
+    channel.sendMessage(Action.create(ActionNames.P_SYNC, {}));
 });
 
 channel.addOnMessageHandler(dispatch);

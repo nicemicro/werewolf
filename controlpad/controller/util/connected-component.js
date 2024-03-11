@@ -1,5 +1,5 @@
-/** @type {import('mithril').Static} */
-const m = window.m;
+import m from 'mithril';
+import * as nanostores from 'nanostores';
 
 /**
  * Mithril Component for automatically subscribe to a store
@@ -15,20 +15,26 @@ const m = window.m;
  *     }
  * }
  *
- * @template S
- * @extends {import('mithril').ClassComponent}
+ * @abstract
+ * @template {nanostores.Store} S
+ * @extends {m.ClassComponent}
  */
 export default class ConnectedComponent {
     /**
      * Store to register on init and to unsubscribe on remove
+     * @abstract
      * @type {S}
      */
+    // @ts-ignore
     store
     /**
      * If the component should call redraw on store update
      * @type {boolean}
      */
     redrawOnChange = true;
+
+    /** @type {() => void} */
+    _unsubStore = () => {};
 
 
     oninit() {
