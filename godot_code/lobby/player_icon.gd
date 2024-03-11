@@ -1,7 +1,7 @@
 extends MarginContainer
 
 var playerName: String = ""
-@onready var nameLabel: Label = $Name
+@onready var nameLabel: Label = $Container/Name
 
 func _ready():
 	nameLabel.text = playerName
