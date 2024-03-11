@@ -29,7 +29,7 @@ export const submitNameAction = name => Action.create(ActionNames.P_SUBMIT_NAME,
  * @param {Action} action
  * @returns {void}
  */
-export const reduce = cond([
+export const reducer = cond([
     [[ActionNames.G_JOINED, ActionNames.G_JOINED_FAILED], handleNamingResult],
     [ActionNames.P_SUBMIT_NAME, handleSubmitName],
     [ActionNames.G_STATE_SYNC, handleStateSync]
