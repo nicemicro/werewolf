@@ -1,4 +1,4 @@
-import {send_controlpad_message} from "../controlpad.js";
+import {CONNECTED_EVENT_NAME, MESSAGE_EVENT_NAME, send_controlpad_message} from "../controlpad.js";
 import {Action} from "./action.js";
 
 /**
@@ -54,7 +54,7 @@ const channel = {
 }
 
 // Listen to connected events
-document.addEventListener('controlpad-connected',
+document.addEventListener(CONNECTED_EVENT_NAME,
     /** @param {CustomEvent<string>} event - event from websocket */
     (event) => {
         connectedListeners.forEach(cb => cb());
@@ -62,7 +62,7 @@ document.addEventListener('controlpad-connected',
 )
 
 // List to message events
-document.addEventListener('controlpad-message',
+document.addEventListener(MESSAGE_EVENT_NAME,
     /** @param {CustomEvent<string>} event - event from websocket */
     (event) => {
         const action = Action.fromString(event.detail)

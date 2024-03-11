@@ -6,14 +6,31 @@
 const url_arg_str = window.location.search;
 const url_params = new URLSearchParams(url_arg_str);
 
+export const CONNECTED_EVENT_NAME = "controlpad-connected"
+export const DISCONNECTED_EVENT_NAME = "controlpad-disconnected"
+export const MESSAGE_EVENT_NAME = "controlpad-message"
+
 // WebSocket class to handle communication with the controlpad server
 class GameWebSocket {
+
     /**
-     * Create a new WebSocket object
-     * @param {string} ip - The IP address of the controlpad server
-     * @param {number} subid - The subid of the controlpad server
-     * @param {number} port - The port number of the controlpad server
+     * @type {string}
+     * The IP address of the controlpad server
      */
+    ip
+
+    /**
+     * @type {number}
+     * The subid of the controlpad server
+     */
+    subid
+
+    /**
+     * @type {number}
+     * The port number of the controlpad server
+     */
+    port
+
     constructor(port = 50079) {
         this.ip = window.location.href.split('/')[2].split(':')[0];
         this.subid = url_params.get('subid');
@@ -42,15 +59,19 @@ class GameWebSocket {
 
     // event handler for the WebSocket onopen event   
     onopen = async (_event) => {
-        var controlpad_msg_event = new CustomEvent("controlpad-connected");
-        document.dispatchEvent(controlpad_msg_event);
         console.log("opened websocket on " + this.ip + ":" + this.port);
         this.sendInitialMessages();
+        setTimeout(() => {
+            var controlpad_msg_event = new CustomEvent(CONNECTED_EVENT_NAME);
+            document.dispatchEvent(controlpad_msg_event);
+        })
     }
 
     // event handler for the WebSocket onclose event
     onclose = () => {
         console.log("closing websocket on " + this.ip + ":" + this.port);
+        var controlpad_msg_event = new CustomEvent(DISCONNECTED_EVENT_NAME);
+        document.dispatchEvent(controlpad_msg_event);
     }
 
     // event handler for the Websocket onmessage event
@@ -71,7 +92,7 @@ class GameWebSocket {
             }
         }
         else {
-            var controlpad_msg_event = new CustomEvent("controlpad-message", {
+            var controlpad_msg_event = new CustomEvent(MESSAGE_EVENT_NAME, {
                 detail: event.data,
             });
             document.dispatchEvent(controlpad_msg_event);
