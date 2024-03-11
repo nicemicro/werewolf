@@ -37,7 +37,8 @@ export const reducer = cond([
 
 /** @param {Action<{ status: string, name: string | undefined }>} action */
 function handleNamingResult(action) {
-    const {type, payload} = action;
+    const type = action.type;
+    const payload = action.payload;
     const failed = type === ActionNames.G_JOINED_FAILED;
     const state = $name.get()
     $name.setKey('submitting', false)
@@ -56,7 +57,7 @@ function handleNamingResult(action) {
 
 /** @param {Action<{ name: string}>} action */
 function handleSubmitName(action) {
-    const {payload} = action;
+    const payload = action.payload;
     $name.setKey('submitting', true);
     $name.setKey('submittedName', payload.name)
     channel.sendMessage(Action.create(ActionNames.P_SUBMIT_NAME, {name: payload.name}).toString());
@@ -64,7 +65,7 @@ function handleSubmitName(action) {
 
 /** @param {Action<{ name: string | undefined }>} action */
 function handleStateSync(action) {
-    const { payload } = action;
+    const payload = action.payload;
     if (payload.name) {
         $name.setKey('name', payload.name)
         $name.setKey('ready', true)

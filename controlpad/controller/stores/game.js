@@ -62,7 +62,10 @@ export const $game = map({
  */
 export const reduce = cond([
     [ActionNames.P_CONNECTED, () => $game.setKey('connected', true)],
-    [ActionNames.G_STATE_SYNC, ({payload}) => $game.setKey('gameState', payload.gameState)],
+    [
+        ActionNames.G_STATE_SYNC,
+        /** @param {Action<{ gameState: GameState}>} action */
+        ( action ) => $game.setKey('gameState', action.payload.gameState)],
     [
         [ActionNames.P_SHOW_RULES, ActionNames.P_SHOW_CREDITS, ActionNames.P_START_GAME],
         a => channel.sendMessage(a.toString()),

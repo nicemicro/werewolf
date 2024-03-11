@@ -1,5 +1,4 @@
 import {$name, submitNameAction} from "../stores/name.js";
-import {DebugMenu} from "../components/debug-menu.js";
 import ConnectedComponent from "../util/connected-component.js";
 import {dispatch} from "../stores/index.js";
 import Layout from "../components/layout.js";
@@ -16,7 +15,7 @@ const m = window.m;
  */
 
 /**
- * @implements {{import('@types/mithril').ClassComponent<NameFormProps>}
+ * @implements {import('@types/mithril').ClassComponent<NameFormProps>}
  */
 class NameForm {
     /** @type {string | undefined} Used to store the name before server validation */
@@ -74,7 +73,7 @@ class NameForm {
 
 const Ready = {
     view: (vnode) => {
-        return m('h2.f2', 'Waiting for other players')
+        return m('h2.f2.tc', 'Waiting for other players')
     }
 }
 

@@ -1,11 +1,22 @@
 import {atom, computed} from 'https://unpkg.com/nanostores';
+import {cond} from "../util/cond.js";
 
 /**
- * @typedef {Object} User
- * @property {string} name - User picked name
+ * @interface
  * @property {boolean} alive - If the user is still alive
  */
-
+export class User {
+    /**
+     * Name submitted by the user
+     * @type {string}
+     */
+    name
+    /**
+     * If the player is alive
+     * @type {boolean}
+     */
+    alive = true;
+}
 
 /**
  * @type {import('nanostores').Atom<Array<User>>}
@@ -25,8 +36,4 @@ export const $aliveUsers = computed($users, (users) => users.filter(u => u.alive
 /**
  * @param {Action} action
  */
-export function reducer(action) {
-    const {type, payload} = action;
-    switch (type) {
-    }
-}
+export const reducer = cond([])

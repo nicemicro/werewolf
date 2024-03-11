@@ -45,20 +45,20 @@ export class Action {
 
     /**
      * Helper for easier chaining
-     * @param {Action['type']} type
-     * @param {T} payload
+     * @param {ActionNames} type
+     * @param {T} [payload = {}]
      */
-    static create(type, payload = {}) {
-        return new Action(type, payload)
+    static create(type, payload) {
+        return new Action(type, payload ?? {})
     }
 
     /**
      * @param {Action['type']} type
-     * @param {T} payload
+     * @param {T} [payload = {}]
      */
     constructor(type, payload) {
         this.type = type;
-        this.payload = payload;
+        this.payload = payload ?? {};
     }
 
     /** Msg to String to send it to the server */
