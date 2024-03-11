@@ -1,6 +1,6 @@
 import {map} from 'https://unpkg.com/nanostores';
 import {Action, ActionNames} from "../util/action.js";
-import {channel} from "../controlpad.js";
+import channel from "../util/channel.js";
 import {cond} from "../util/cond.js";
 import {User} from './users.js';
 
@@ -33,7 +33,7 @@ export const reduce = cond([
         /** @param {Action<User>} action */
         (action) => {
             $day.setKey('pickedUser', action.payload);
-            channel.sendMessage(action.toString());
+            channel.sendMessage(action);
         }
     ]
 ])

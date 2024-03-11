@@ -1,6 +1,6 @@
 import {map} from 'https://unpkg.com/nanostores';
 import {Action, ActionNames} from "../util/action.js";
-import {channel} from "../controlpad.js";
+import channel from "../util/channel.js";
 import {cond} from "../util/cond.js";
 
 export const startGameAction = () => Action.create(ActionNames.P_START_GAME)
@@ -68,7 +68,7 @@ export const reduce = cond([
         ( action ) => $game.setKey('gameState', action.payload.gameState)],
     [
         [ActionNames.P_SHOW_RULES, ActionNames.P_SHOW_CREDITS, ActionNames.P_START_GAME],
-        a => channel.sendMessage(a.toString()),
+        a => channel.sendMessage(a),
     ],
     [ActionNames.G_GAME_STARTED, () => $game.setKey('gameStarted', true)],
 ])

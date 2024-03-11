@@ -1,5 +1,5 @@
 import {map} from 'https://unpkg.com/nanostores';
-import {channel} from "../controlpad.js";
+import channel from "../util/channel.js";
 import {Action, ActionNames} from "../util/action.js";
 import {cond} from "../util/cond.js";
 
@@ -60,7 +60,7 @@ function handleSubmitName(action) {
     const payload = action.payload;
     $name.setKey('submitting', true);
     $name.setKey('submittedName', payload.name)
-    channel.sendMessage(Action.create(ActionNames.P_SUBMIT_NAME, {name: payload.name}).toString());
+    channel.sendMessage(Action.create(ActionNames.P_SUBMIT_NAME, {name: payload.name}));
 }
 
 /** @param {Action<{ name: string | undefined }>} action */
