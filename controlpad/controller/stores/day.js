@@ -1,6 +1,7 @@
 import {map} from 'https://unpkg.com/nanostores';
 import {Action, ActionNames} from "../util/action.js";
 import {channel} from "../controlpad.js";
+import {cond} from "../util/cond.js";
 
 /** @typedef {import('./users').User} User */
 
@@ -24,13 +25,11 @@ export const pickUserAction = user => Action.create(ActionNames.P_PICK_USER, use
 
 /**
  * @param {Action} action
+ * @return {void}
  */
-export function reduce(action) {
-    const {type, payload} = action;
-    switch (type) {
-        case ActionNames.P_PICK_USER:
-            $day.setKey('pickedUser', /** @type {User} */ payload);
-            channel.sendMessage(action.toString());
-            break;
-    }
-}
+export const reduce = cond([
+    [ActionNames.P_PICK_USER, (action) => {
+        $day.setKey('pickedUser', /** @type {User} */ action.payload);
+        channel.sendMessage(action.toString());
+    }]
+])

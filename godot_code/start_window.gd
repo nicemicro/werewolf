@@ -9,15 +9,13 @@ signal stateChanged
 func _ready():
 	menuPlace.get_child(0).connect("startButtonPressed", openGameJoin)
 
-func newPlayerJoins(clientId: String, playerName: String):
-	lobbyNode.newPlayerJoins(clientId, playerName)
-
 func openGameJoin():
 	var lobbyScene = preload("res://player_lobby.tscn")
 	for child in menuPlace.get_children():
 		child.queue_free()
 	lobbyNode = lobbyScene.instantiate()
 	lobbyNode.connect("backToMain", openMainMenu)
+	lobbyNode.connect("startGame", startGame)
 	menuPlace.add_child(lobbyNode)
 	emit_signal("stateChanged", "joinGame")
 
@@ -30,6 +28,10 @@ func openMainMenu():
 	menuNode.connect("startButtonPressed", openGameJoin)
 	menuPlace.add_child(menuNode)
 	emit_signal("stateChanged", "mainMenu")
+
+func startGame():
+	emit_signal("stateChanged", "startGame")
+	queue_free()
 
 func _on_exit_button_pressed():
 	get_tree().quit()

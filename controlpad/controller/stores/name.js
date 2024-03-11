@@ -1,6 +1,7 @@
 import {map} from 'https://unpkg.com/nanostores';
 import {channel} from "../controlpad.js";
 import {Action, ActionNames} from "../util/action.js";
+import {cond} from "../util/cond.js";
 
 /**
  * @typedef NameStore
@@ -28,37 +29,44 @@ export const submitNameAction = name => Action.create(ActionNames.P_SUBMIT_NAME,
  * @param {Action} action
  * @returns {void}
  */
-export const reducer = (action) => {
-    const {type, payload} = action;
-    switch (type) {
-        case ActionNames.G_JOINED:
-        case ActionNames.G_JOINED_FAILED:
-            handleNamingResult(type, /** @type {Parameters<handleSubmitName>[0]} */ payload);
-            break;
-        case ActionNames.P_SUBMIT_NAME:
-            handleSubmitName(/** @type {{name: string}} */ payload);
-    }
-}
+export const reduce = cond([
+    [[ActionNames.G_JOINED, ActionNames.G_JOINED_FAILED], handleNamingResult],
+    [ActionNames.P_SUBMIT_NAME, handleSubmitName],
+    [ActionNames.G_STATE_SYNC, handleStateSync]
+])
 
-/**
- * @param {string} type
- * @param {{ status: string }} payload
- */
-function handleNamingResult(type, payload) {
+/** @param {Action<{ status: string, name: string | undefined }>} action */
+function handleNamingResult(action) {
+    const {type, payload} = action;
     const failed = type === ActionNames.G_JOINED_FAILED;
     const state = $name.get()
     $name.setKey('submitting', false)
     if (failed) {
+        if (payload.status === "alreadyJoined") {
+            $name.setKey('name', payload.name)
+            $name.setKey('ready', true)
+            return;
+        }
         $name.setKey('error', payload.status)
-    } else {
-        $name.setKey('name', state.submittedName)
-        $name.setKey('ready', true)
+        return;
     }
+    $name.setKey('name', state.submittedName)
+    $name.setKey('ready', true)
 }
 
-/** @param {{ name: string }} payload */
-function handleSubmitName({ name }) {
+/** @param {Action<{ name: string}>} action */
+function handleSubmitName(action) {
+    const {payload} = action;
     $name.setKey('submitting', true);
-    $name.setKey('submittedName', name)
-    channel.sendMessage(Action.create(ActionNames.P_SUBMIT_NAME, {name}).toString());
+    $name.setKey('submittedName', payload.name)
+    channel.sendMessage(Action.create(ActionNames.P_SUBMIT_NAME, {name: payload.name}).toString());
+}
+
+/** @param {Action<{ name: string | undefined }>} action */
+function handleStateSync(action) {
+    const { payload } = action;
+    if (payload.name) {
+        $name.setKey('name', payload.name)
+        $name.setKey('ready', true)
+    }
 }
