@@ -18,6 +18,10 @@ export const ActionNames = {
   P_SUBMIT_NAME: "SUBMIT_NAME",
   G_JOINED: "JOINED",
   G_JOINED_FAILED: "JOIN_FAILED",
+  // Ready to play
+  G_EVERYONE_READY: "EVERYONE_READY",
+  P_PLAY: 'PLAY',
+  G_ASSIGN_ROLE: "ASSIGN_ROLE",
   // User Pick
   P_PICK_USER: "PICK_USER",
 };

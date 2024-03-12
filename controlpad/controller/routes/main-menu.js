@@ -1,34 +1,18 @@
-import ConnectedComponent from "../util/connected-component.js";
 import { dispatch } from "../stores/store.js";
 import Layout from "../components/layout.js";
 import Button from "../components/button.js";
 import {
-  $game,
   showCreditsAction,
   showRulesAction,
-  startGameAction,
+  startGameAction
 } from "../stores/game.js";
 import m from "mithril";
 
-/** @typedef {import('../stores/game').GameStore} GameStore */
-
 /**
- * @extends {ConnectedComponent<typeof $game>}
+ * @extends {m.ClassComponent}
  */
-export default class MainMenu extends ConnectedComponent {
-  store = $game;
+export default class MainMenu {
 
-  /**
-   * @param {GameStore} value
-   * @param  {GameStore} oldValue
-   * @return {void}
-   */
-  // eslint-disable-next-line no-unused-vars
-  onStoreChange(value, oldValue) {
-    if (value.gameStarted) {
-      m.route.set("/name-menu");
-    }
-  }
 
   onStart() {
     dispatch(startGameAction());

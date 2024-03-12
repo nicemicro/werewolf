@@ -10,7 +10,7 @@ const RoleAvatar = {
     return m("div.tc", [
       m("img.br-100 h3 w3 dib", {
         alt: role,
-        src: `/resources/roles/${role}.jpg`,
+        src: `/resources/roles/avatars/${role}.jpg`,
       }),
     ]);
   },
@@ -59,10 +59,11 @@ export default class Layout {
         this.gameState.gameStarted
           ? m("div.w-100.flex-none.flex.flex-row", [
               m("div.flex-auto"),
-              m(
-                "div.flex-none.pt3.pr3",
-                m(RoleAvatar, { role: this.gameState.role }),
-              ),
+              this.gameState.role
+                ? m(
+                  "div.flex-none.pt3.pr3",
+                  m(RoleAvatar, { role: this.gameState.role }),
+                ) : null,
             ])
           : null,
         m("div.flex-auto"),

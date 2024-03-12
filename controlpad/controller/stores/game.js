@@ -2,6 +2,7 @@ import * as nanostores from "nanostores";
 import { Action, ActionNames } from "../util/action.js";
 import channel from "../util/channel.js";
 import { cond } from "../util/cond.js";
+import m from 'mithril';
 
 export const startGameAction = () =>
   Action.create(ActionNames.P_START_GAME, {});
@@ -12,8 +13,11 @@ export const showCreditsAction = () =>
 
 /** @enum {string} */
 export const Role = {
-  KILLER: "KILLER",
+  CULTIST1: "CULTIST1",
+  CULTIST2: "CULTIST2",
   VILLAGER: "VILLAGER",
+  SEER: "SEER",
+  SHAMAN: "SHAMAN",
 };
 
 /** @enum {string} */
@@ -40,7 +44,8 @@ export const GameState = {
  * @typedef {Object} GameStore
  * @property {boolean} connected
  * @property {boolean} gameStarted
- * @property {Role} role
+ * @property {boolean} everyoneReady
+ * @property {Role | undefined} role
  * @property {Object | undefined} pickedUser
  * @property {GameState} gameState
  * @property {Cycle} cycle
@@ -53,7 +58,8 @@ export const GameState = {
 export const $game = nanostores.map({
   connected: false,
   gameStarted: false,
-  role: Role.VILLAGER,
+  everyoneReady: false,
+  role: undefined,
   pickedUser: undefined,
   cycle: Cycle.DAY,
   hour: undefined,
@@ -67,7 +73,7 @@ export const reduce = cond([
   [ActionNames.P_CONNECTED, () => $game.setKey("connected", true)],
   [
     ActionNames.G_STATE_SYNC,
-    /** @param {Action<{ gameState: GameState}>} action */
+    /** @param {Action<{ gameState: GameState }>} action */
     (action) => $game.setKey("gameState", action.payload.gameState),
   ],
   [
@@ -78,5 +84,27 @@ export const reduce = cond([
     ],
     (a) => channel.sendMessage(a),
   ],
-  [ActionNames.G_GAME_STARTED, () => $game.setKey("gameStarted", true)],
+  [ActionNames.G_GAME_STARTED, () => {
+    $game.setKey("gameStarted", true)
+    $game.setKey("gameState", GameState.JOIN_GAME)
+  }],
+  [ActionNames.G_EVERYONE_READY, () => $game.setKey('everyoneReady', true)],
+  [ActionNames.P_PLAY, a => channel.sendMessage(a)],
+  /** @param {Action<{ role: Role }>} action */
+  [ActionNames.G_ASSIGN_ROLE, a => $game.setKey("role", a.payload.role)]
 ]);
+
+$game.subscribe((val, oldValue) => {
+  if (val.gameState !== oldValue?.gameState) {
+    if (val.gameState === GameState.MAIN_MENU) {
+      m.route.set('/menu')
+    }
+    if (val.gameState === GameState.JOIN_GAME) {
+      m.route.set('/name-menu')
+    }
+    return;
+  }
+  if (val.everyoneReady === true && oldValue?.everyoneReady === false) {
+    m.route.set('/game-start');
+  }
+})
