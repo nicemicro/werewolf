@@ -1,4 +1,4 @@
-import m from 'mithril';
+import m from "mithril";
 
 /**
  * @template T
@@ -13,10 +13,10 @@ import m from 'mithril';
  * @return {() => void}
  */
 export function subAndRedraw(store, cb) {
-    return store.subscribe(val => {
-        cb(val)
-        m.redraw();
-    })
+  return store.subscribe((val) => {
+    cb(val);
+    m.redraw();
+  });
 }
 
 /**
@@ -25,9 +25,9 @@ export function subAndRedraw(store, cb) {
  * @return {string}
  */
 export function capitalize(string) {
-    if (!string || string.length === 0) return '';
-    if (string.includes(' ')) {
-        return string.split(' ').map(capitalize).join(' ');
-    }
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  if (!string || string.length === 0) return "";
+  if (string.includes(" ")) {
+    return string.split(" ").map(capitalize).join(" ");
+  }
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }

@@ -1,19 +1,17 @@
 import Layout from "../components/layout.js";
-import m from 'mithril';
+import m from "mithril";
 
 export default class NightTime {
-    newDead = false;
+  newDead = false;
 
-    oninit() {
-        setTimeout(() => {
-            this.newDead = true;
-            m.redraw();
-        }, 1000)
-    }
+  oninit() {
+    setTimeout(() => {
+      this.newDead = true;
+      m.redraw();
+    }, 1000);
+  }
 
-    view() {
-        return m(Layout, [
-            m('h1.f1.tc', 'The town sleeps'),
-        ])
-    }
+  view() {
+    return m(Layout, [m("h1.f1.tc", "The town sleeps")]);
+  }
 }
