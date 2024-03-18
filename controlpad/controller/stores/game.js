@@ -20,6 +20,19 @@ export const Role = {
   SHAMAN: "SHAMAN",
 };
 
+/**
+ * @type {Array<Role>}
+ * List of roles to keep the Godot Enum for Roles synced easily
+ */
+export const RoleList = [
+  Role.VILLAGER,
+  Role.CULTIST1,
+  Role.CULTIST2,
+  Role.VILLAGER,
+  Role.SEER,
+  Role.SHAMAN,
+]
+
 /** @enum {string} */
 export const Cycle = {
   DAY: "DAY",
@@ -44,7 +57,7 @@ export const GameState = {
  * @typedef {Object} GameStore
  * @property {boolean} connected
  * @property {boolean} gameStarted
- * @property {boolean} everyoneReady
+ * @property {boolean} canStart
  * @property {Role | undefined} role
  * @property {Object | undefined} pickedUser
  * @property {GameState} gameState
@@ -58,7 +71,7 @@ export const GameState = {
 export const $game = nanostores.map({
   connected: false,
   gameStarted: false,
-  everyoneReady: false,
+  canStart: false,
   role: undefined,
   pickedUser: undefined,
   cycle: Cycle.DAY,
@@ -88,10 +101,12 @@ export const reduce = cond([
     $game.setKey("gameStarted", true)
     $game.setKey("gameState", GameState.JOIN_GAME)
   }],
-  [ActionNames.G_EVERYONE_READY, () => $game.setKey('everyoneReady', true)],
-  [ActionNames.P_PLAY, a => channel.sendMessage(a)],
-  /** @param {Action<{ role: Role }>} action */
-  [ActionNames.G_ASSIGN_ROLE, a => $game.setKey("role", a.payload.role)]
+  [ActionNames.G_CAN_START, () => $game.setKey('canStart', true)],
+  [ActionNames.P_START_PLAY, a => channel.sendMessage(a)],
+  [ActionNames.G_PLAY, () => $game.setKey('gameState', GameState.START_GAME)],
+  [ActionNames.G_ASSIGN_ROLE,
+     /** @param {Action<{ role: number }>} a */
+    a => $game.setKey("role", RoleList[a.payload.role])]
 ]);
 
 $game.subscribe((val, oldValue) => {
@@ -104,7 +119,7 @@ $game.subscribe((val, oldValue) => {
     }
     return;
   }
-  if (val.everyoneReady === true && oldValue?.everyoneReady === false) {
+  if (val.canStart === true && oldValue?.canStart === false) {
     m.route.set('/game-start');
   }
 })
