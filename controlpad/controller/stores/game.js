@@ -106,7 +106,9 @@ export const reduce = cond([
   [ActionNames.G_PLAY, () => $game.setKey('gameState', GameState.START_GAME)],
   [ActionNames.G_ASSIGN_ROLE,
      /** @param {Action<{ role: number }>} a */
-    a => $game.setKey("role", RoleList[a.payload.role])]
+    a => $game.setKey("role", RoleList[a.payload.role])
+  ],
+  [ActionNames.G_SCREEN_SWITCH, handleScreenSwitch]
 ]);
 
 $game.subscribe((val, oldValue) => {
@@ -123,3 +125,30 @@ $game.subscribe((val, oldValue) => {
     m.route.set('/game-start');
   }
 })
+
+/** @typedef {'night' | 'morning' | 'look up'} ScreenKeys */
+
+/** @type {Record<ScreenKeys, [string, Cycle | undefined]>} */
+const TargetScreen = {
+  'night': ['/night-time', Cycle.NIGHT],
+  'look up': ['/night-pick', undefined], 
+  'morning': ['/day-execution', Cycle.DAY],
+}
+
+
+/**
+ * 
+ * @param {Action<{ switch_to: ScreenKeys }>} action 
+ */
+function handleScreenSwitch(action) {
+  const target = TargetScreen[action.payload.switch_to];
+  if (!target) return;
+
+  const [route, cycle] = target;
+  // Change cycle if there is a cycle
+  if (cycle) {
+    $game.setKey('cycle', cycle);
+  }
+  m.route.set(route);
+}
+

@@ -40,8 +40,10 @@ func changePhoneScreen(targets: Array, screenName: String):
 	if len(targets) == 0:
 		targets = players.keys()
 	var payload: Dictionary = {
-		"switch_to": screenName
+		"switch_to": screenName,
+		"players": players.values(),
 	}
+
 	for clientId in targets:
 		sendMessage(clientId, "SCREEN_SWITCH", payload)
 

@@ -6,23 +6,37 @@ import { $pick, pickUserAction } from "../stores/pick.js";
 import { subAndRedraw } from "../util/utils.js";
 import Layout from "../components/layout.js";
 import m from "mithril";
+import { $game, Role } from "../stores/game.js";
+
+/** @type {Record<Role, string>} */
+const RoleMsg = {
+  [Role.CULTIST1]: 'Pick a sacrifice to the Wolf.',
+  [Role.CULTIST2]:  'Pick a sacrifice to the Wolf.',
+  [Role.VILLAGER]: '', // This case is not possible
+  [Role.SEER]: 'Pick a person and the spirits will tell you if they worships the Wolf',
+  [Role.SHAMAN]: 'Pick a person so that nature heals their wounds',
+}
+
 
 /**
- * @typedef {import('../stores/users').User} User
+ * @typedef {import('../stores/users.js').User} User
  */
 
 /**
  * @implements {m.ClassComponent}
  */
-export default class DayPick {
+export default class NightPick {
   /** @type {User | undefined} */
   pickedUser;
 
   /** @type {Array<User>} */
   users = $aliveUsers.get();
 
+  /** @type {import('../stores/game.js').GameStore} */
+  gameState = $game.get();
+
   /** @type {import('../stores/pick.js').PickStore} */
-  pickState = $pick.get();
+  dayState = $pick.get();
 
   /** @type {Array<() => void>} */
   _unsub = [];
@@ -31,6 +45,7 @@ export default class DayPick {
     this._unsub = [
       subAndRedraw($aliveUsers, (val) => (this.users = val)),
       subAndRedraw($pick, this.onPickStoreChange.bind(this)),
+      subAndRedraw($game, g => (this.gameState = g)),
     ];
   }
 
@@ -40,8 +55,8 @@ export default class DayPick {
 
   /** @param {import('../stores/pick.js').PickStore} state */
   onPickStoreChange(state) {
-    this.pickState = state;
-    if (this.pickState.pickedUser) {
+    this.dayState = state;
+    if (this.dayState.pickedUser) {
       m.route.set("/day-execution");
     }
   }
@@ -49,7 +64,7 @@ export default class DayPick {
   /**
    *
    * @param {MouseEvent} e
-   * @param {import('../components/list').IListItem} item
+   * @param {import('../components/list.js').IListItem} item
    */
   itemClick(e, item) {
     this.pickedUser = /** @type {User} */ (/** @type {unknown} */ (item));
@@ -65,15 +80,15 @@ export default class DayPick {
   }
 
   view() {
-    /** @type {Array<import('../components/list').IListItem & User> } */
+    /** @type {Array<import('../components/list.js').IListItem & User> } */
     const items = this.users.map((i) => ({ ...i, text: i.name }));
     return m(Layout, [
-      m("h1.f1.tc", "A new day comes"),
+      m("h1.f1.tc", "Night Comes ..."),
       m(
         "h3.f3.tc",
         this.pickedUser
-          ? `You sure ${this.pickedUser.name} is a Killer?`
-          : "Pick a suspect",
+          ? `You sure you want to pick ${this.pickedUser.name}?`
+          : RoleMsg[/** @type {string} */ (this.gameState.role)],
       ),
       this.pickedUser
         ? m.fragment({}, [

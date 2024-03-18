@@ -1,5 +1,11 @@
 import * as nanostores from "nanostores";
 import { cond } from "../util/cond.js";
+import { ActionNames } from "../util/action.js";
+
+/** 
+ * @template {{ [x: string]: any }} T 
+ * @typedef {import('../util/action.js').Action<T>} Action
+ */
 
 /**
  * @interface
@@ -19,7 +25,7 @@ export class User {
 }
 
 /**
- * @type {nanostores.Atom<Array<User>>}
+ * @type {nanostores.WritableAtom<Array<User>>}
  */
 export const $users = nanostores.atom([
   { name: "Nicky", alive: true },
@@ -35,7 +41,14 @@ export const $aliveUsers = nanostores.computed($users, (users) =>
   users.filter((u) => u.alive),
 );
 
+
 /**
  * @param {import('../util/action').Action} action
  */
-export const reducer = cond([]);
+export const reducer = cond([
+  [
+    ActionNames.G_SCREEN_SWITCH,
+    /** @param {Action<{ players: string[] }>} action */
+    (action) => $users.set(action.payload.players.map(a => ({ name: a, alive: true})))
+  ]
+]);

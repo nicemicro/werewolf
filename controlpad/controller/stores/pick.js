@@ -6,14 +6,14 @@ import { cond } from "../util/cond.js";
 /** @typedef {import('./users.js').User} User */
 
 /**
- * @typedef {Object} DayStore
+ * @typedef {Object} PickStore
  * @property {User | undefined} pickedUser - The user picked for execution in the current day cycle
  */
 
 /**
- * @type {nanostores.MapStore<DayStore>}
+ * @type {nanostores.MapStore<PickStore>}
  */
-export const $day = nanostores.map({
+export const $pick = nanostores.map({
   pickedUser: undefined,
 });
 
@@ -33,8 +33,12 @@ export const reduce = cond([
     ActionNames.P_PICK_USER,
     /** @param {Action<User>} action */
     (action) => {
-      $day.setKey("pickedUser", action.payload);
+      $pick.setKey("pickedUser", action.payload);
       channel.sendMessage(action);
     },
+  ] , [
+    // Clear picks on new screen
+    ActionNames.G_SCREEN_SWITCH,
+    () => $pick.setKey('pickedUser', undefined)
   ],
 ]);

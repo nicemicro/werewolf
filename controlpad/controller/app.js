@@ -7,6 +7,7 @@ import DayExecution from "./routes/day-execution.js";
 import NightTime from "./routes/night-time.js";
 import m from "mithril";
 import GameStart from "./routes/game-start.js";
+import NightPick from "./routes/night-pick.js";
 
 const node = document.getElementById("werewolfapp");
 
@@ -18,6 +19,7 @@ if (node) {
     "/day-pick": DayPick,
     "/day-execution": DayExecution,
     "/night-time": NightTime,
+    '/night-pick': NightPick,
     '/game-start': GameStart
   });
 }

@@ -23,6 +23,8 @@ export const ActionNames = {
   P_START_PLAY: 'START_PLAY', // Action to start the game cycle
   G_PLAY: 'PLAY', // Action from godot indicating that the game cycle has started
   G_ASSIGN_ROLE: "ASSIGN_ROLE",
+  // Play sequence
+  G_SCREEN_SWITCH: 'SCREEN_SWITCH',
   // User Pick
   P_PICK_USER: "PICK_USER",
 };
