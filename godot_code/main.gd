@@ -13,11 +13,12 @@ func _ready():
 	randomize()
 
 func stateChanged(newState: String):
-	assert(gameState != "startGame")
+	assert(gameState != newState)
 	match newState:
 		"joinGame":
 			for clientId in clients:
 				sendMessage(clientId, "GAME_STARTED", {})
+			mainMenuWindow.lobbyNode.playerNumberChange(len(players), len(clients))
 		"mainMenu":
 			for clientId in clients:
 				sendMessage(clientId, "MAIN_MENU", {})
@@ -63,6 +64,7 @@ func playerJoins(clientId: String, playerName: String):
 	sendMessage(clientId, "JOINED", {"status": "success"})
 	players[clientId] = playerName
 	mainMenuWindow.lobbyNode.newPlayerJoins(clientId, playerName)
+	mainMenuWindow.lobbyNode.playerNumberChange(len(players), len(clients))
 	if len(players) > 5:
 		mainMenuWindow.lobbyNode.gameCanStart(true)
 

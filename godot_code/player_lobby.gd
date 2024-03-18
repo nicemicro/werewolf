@@ -2,6 +2,7 @@ extends VBoxContainer
 
 @onready var playerIconGrid: GridContainer = $PlayerIcons
 @onready var gameStartButton: Button = $HBoxContainer/StartButton
+@onready var playerNumberInfo: Label = $HBoxContainer2/Number
 
 signal backToMain
 signal startGame
@@ -14,6 +15,9 @@ func newPlayerJoins(clientId: String, playerName: String):
 
 func gameCanStart(canStart: bool):
 	gameStartButton.visible = canStart
+
+func playerNumberChange(inLobby: int, allPlayers: int):
+	playerNumberInfo.text = str(inLobby) + "/" + str(allPlayers)
 
 func _on_backButton_pressed():
 	emit_signal("backToMain")
