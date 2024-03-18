@@ -24,6 +24,25 @@ layout_mode = 2
 size_flags_vertical = 3
 columns = 6
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+
+[node name="Label" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+text = "Players available: "
+horizontal_alignment = 2
+
+[node name="Number" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+text = "0/0"
+horizontal_alignment = 2
+
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 
