@@ -47,7 +47,6 @@ export default class ConnectedComponent {
      * @return {void}
      */
     onStoreChange(value, oldValue) {
-        throw new Error('Not implemented');
     }
 
     onremove() {

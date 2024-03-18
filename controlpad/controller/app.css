@@ -45,10 +45,56 @@ table {
 /* CSS RESET END */
 
 #werewolfapp {
+    --transform-up: 20px;
     background: rgb(2,0,36);
     background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(32,19,65,1) 54%, rgba(65,39,96,1) 99%);
 }
 
 .border-box {
     box-sizing: border-box;
+}
+
+.anim__fade-out {
+    animation:fade-out 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fade-out {
+    from {opacity:1;}
+    to {opacity:0;}
+}
+
+.anim__transform-up {
+    animation: transform-up 2s ease forwards;
+}
+
+@keyframes transform-up {
+    0% {
+        transform: translateY(var(--transform-up-from));
+    }
+    100% {
+        transform: translateY(var(--transform-up-to));
+    }
+}
+.anim__crawl {
+    animation-name: crawl;
+    animation-iteration-count: 8;
+    animation-timing-function: cubic-bezier(0.1, 0.7, 1, 0.1);
+}
+
+@keyframes crawl {
+    0% { transform: translateX(0)  }
+    25% { transform: translateX(5px) }
+    50% { transform: translateX(-5px)   }
+    75% { transform: translateX(5px) }
+    100% {transform: translateX(0) }
+}
+
+.anim__up_and_crawl {
+    animation-composition: add;
+    animation-name: crawl, transform-up;
+    animation-duration: 500ms, 4s;
+    animation-iteration-count: 8, 1;
+    animation-timing-function: cubic-bezier(0.1, 0.7, 1, 0.1), linear;
+    animation-fill-mode: forwards;
 }

@@ -1,15 +1,32 @@
 import {map} from 'https://unpkg.com/nanostores';
 import {Action, ActionNames} from "../util/action.js";
 import {channel} from "../controlpad.js";
+import {cond} from "../util/cond.js";
 
 export const startGameAction = () => Action.create(ActionNames.P_START_GAME)
 export const showRulesAction = () => Action.create(ActionNames.P_SHOW_RULES)
 export const showCreditsAction = () => Action.create(ActionNames.P_SHOW_CREDITS)
 
+/** @enum {string} */
+export const Role = {
+    KILLER: 'KILLER',
+    VILLAGER: 'VILLAGER',
+};
+
+/** @enum {string} */
+export const GameState = {
+    JOIN_GAME: 'joinGame',
+    MAIN_MENU: 'mainMenu',
+    START_GAME: 'startGame',
+}
+
 /**
  * @typedef {Object} GameStore
  * @property {boolean} connected
  * @property {boolean} gameStarted
+ * @property {Role} role
+ * @property {Object | undefined} pickedUser
+ * @property {GameState} gameState
  */
 
 /**
@@ -18,23 +35,20 @@ export const showCreditsAction = () => Action.create(ActionNames.P_SHOW_CREDITS)
 export const $game = map({
     connected: false,
     gameStarted: false,
+    role: Role.VILLAGER,
+    pickedUser: undefined,
+    gameState: GameState.MAIN_MENU
 });
 
 /**
  * @param {Action} action
  */
-export function dispatch(action) {
-    const {type, payload} = action;
-    switch (type) {
-        case ActionNames.P_CONNECTED:
-            $game.setKey('connected', true);
-            break;
-        case ActionNames.P_SHOW_RULES:
-        case ActionNames.P_SHOW_CREDITS:
-        case ActionNames.P_START_GAME:
-            channel.sendMessage(action.toString());
-            break;
-        case ActionNames.G_GAME_STARTED:
-            $game.setKey('gameStarted', true);
-    }
-}
+export const dispatch = cond([
+    [ActionNames.P_CONNECTED, () => $game.setKey('connected', true)],
+    [ActionNames.G_STATE_SYNC, ({payload}) => $game.setKey('gameState', payload.gameState)],
+    [
+        [ActionNames.P_SHOW_RULES, ActionNames.P_SHOW_CREDITS, ActionNames.P_START_GAME],
+        a => channel.sendMessage(a.toString()),
+    ],
+    [ActionNames.G_GAME_STARTED, () => $game.setKey('gameStarted', true)],
+])

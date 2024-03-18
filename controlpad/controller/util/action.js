@@ -8,7 +8,7 @@ export const ActionNames = {
     P_CONNECTED: 'CONNECTED',
     P_SYNC: 'SYNC',
     // General Action
-    G_UPDATE_STATE: 'UPDATE_STATE',
+    G_STATE_SYNC: 'STATE_SYNC',
     // Main Menu Action
     P_SHOW_RULES: "SHOW_RULES",
     P_SHOW_CREDITS: 'SHOW_CREDITS',
@@ -16,14 +16,16 @@ export const ActionNames = {
     G_GAME_STARTED: 'GAME_STARTED',
     // Naming Action
     P_SUBMIT_NAME: 'SUBMIT_NAME',
-    G_JOINED: "Joined",
-    G_JOINED_FAILED: "JoinFailed",
+    G_JOINED: "JOINED",
+    G_JOINED_FAILED: "JOIN_FAILED",
+    // User Pick
+    P_PICK_USER: 'PICK_USER',
 
 
 }
 
 /**
- * @template {{[x: string]: any}} T
+ * @template T
  */
 export class Action {
     /** @type {ActionNames} */
