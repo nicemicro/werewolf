@@ -7,12 +7,14 @@ import { subAndRedraw } from "../util/utils.js";
 import Layout from "../components/layout.js";
 import m from "mithril";
 
+/** @typedef {import('../stores/users').User} User */
 /**
- * @typedef {import('../stores/users').User} User
+ * @template T
+ * @typedef {import('mithril').ClassComponent<T>} ClassComponent
  */
 
 /**
- * @implements {m.ClassComponent}
+ * @implements {ClassComponent<{}>}
  */
 export default class DayPick {
   /** @type {User | undefined} */
