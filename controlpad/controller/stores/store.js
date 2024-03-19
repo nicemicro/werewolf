@@ -3,7 +3,7 @@ import { Action, ActionNames } from "../util/action.js";
 import { reduce as gameReducer } from "./game.js";
 import { reducer as nameReducer } from "./name.js";
 import { reducer as userReducer } from "./users.js";
-import { reduce as dayReducer } from "./day.js";
+import { reduce as pickReducer } from "./pick.js";
 
 /**
  * @param {Action} action
@@ -13,7 +13,7 @@ export const dispatch = (action) => {
   gameReducer(action);
   nameReducer(action);
   userReducer(action);
-  dayReducer(action);
+  pickReducer(action);
 };
 
 channel.addConnectedHandler(() => {

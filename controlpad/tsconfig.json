@@ -7,10 +7,15 @@
     "strict": true,
     "allowJs": true,
     "checkJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true
   },
   "include": [
     "controller/**/*.js",
     "controller/**/*.d.ts"
+  ],
+  "exclude": [
+    "controller/controlpad.js",
+    "controller/required.js"
   ]
 }

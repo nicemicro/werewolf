@@ -19,9 +19,12 @@ export const ActionNames = {
   G_JOINED: "JOINED",
   G_JOINED_FAILED: "JOIN_FAILED",
   // Ready to play
-  G_EVERYONE_READY: "EVERYONE_READY",
-  P_PLAY: 'PLAY',
+  G_CAN_START: "CAN_START",
+  P_START_PLAY: 'START_PLAY', // Action to start the game cycle
+  G_PLAY: 'PLAY', // Action from godot indicating that the game cycle has started
   G_ASSIGN_ROLE: "ASSIGN_ROLE",
+  // Play sequence
+  G_SCREEN_SWITCH: 'SCREEN_SWITCH',
   // User Pick
   P_PICK_USER: "PICK_USER",
 };
