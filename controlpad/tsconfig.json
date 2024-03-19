@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "allowJs": true,
+    "checkJs": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": [
+    "controller/**/*.js",
+    "controller/**/*.d.ts"
+  ],
+  "exclude": [
+    "controller/controlpad.js",
+    "controller/required.js"
+  ]
+}

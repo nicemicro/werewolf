@@ -25,8 +25,26 @@
       }
     </script>
 
-    <script src="https://unpkg.com/mithril/mithril.js"></script>
-    <script src="https://unpkg.com/nanostores"></script>
+    <!--
+      JSPM Generator Import Map
+      Edit URL: https://generator.jspm.io/#U2VhYGBiDs0rySzJSU1hyM0sySjKzHEw0gNChrzEvPzikvyi1GIHAz1DAz0DABiBU6QuAA
+    -->
+    <script type="importmap">
+      {
+        "imports": {
+          "mithril": "https://ga.jspm.io/npm:mithril@2.2.2/index.js",
+          "nanostores": "https://ga.jspm.io/npm:nanostores@0.10.0/index.js"
+        },
+        "scopes": {
+          "https://ga.jspm.io/": {
+            "process": "https://ga.jspm.io/npm:@jspm/core@2.0.1/nodelibs/browser/process.js"
+          }
+        }
+      }
+    </script>
+
+    <!-- ES Module Shims: Import maps polyfill for older browsers without import maps support (eg Safari 16.3) -->
+    <script async src="https://ga.jspm.io/npm:es-module-shims@1.8.3/dist/es-module-shims.js" crossorigin="anonymous"></script>
 
     <script type="module" src="required.js"></script>
     <script type="module" src="app.js"></script>

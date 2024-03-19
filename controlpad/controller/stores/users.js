@@ -1,32 +1,54 @@
-import {atom, computed} from 'https://unpkg.com/nanostores';
+import * as nanostores from "nanostores";
+import { cond } from "../util/cond.js";
+import { ActionNames } from "../util/action.js";
+
+/** 
+ * @template {{ [x: string]: any }} T 
+ * @typedef {import('../util/action.js').Action<T>} Action
+ */
 
 /**
- * @typedef {Object} User
- * @property {string} name - User picked name
+ * @interface
  * @property {boolean} alive - If the user is still alive
  */
-
+export class User {
+  /**
+   * Name submitted by the user
+   * @type {string}
+   */
+  name = "";
+  /**
+   * If the player is alive
+   * @type {boolean}
+   */
+  alive = true;
+}
 
 /**
- * @type {import('nanostores').Atom<Array<User>>}
+ * @type {nanostores.WritableAtom<Array<User>>}
  */
-export const $users = atom([
-    {name: 'Nicky', alive: true },
-    {name: 'Airam', alive: true },
-    {name: 'Safwaan', alive: true},
-    {name: 'NiceMicro', alive: true}
+export const $users = nanostores.atom([
+  { name: "Nicky", alive: true },
+  { name: "Airam", alive: true },
+  { name: "Safwaan", alive: true },
+  { name: "NiceMicro", alive: true },
 ]);
 
 /**
- * @type {import('nanostores').ReadableAtom<Array<User>>}
+ * @type {nanostores.ReadableAtom<Array<User>>}
  */
-export const $aliveUsers = computed($users, (users) => users.filter(u => u.alive));
+export const $aliveUsers = nanostores.computed($users, (users) =>
+  users.filter((u) => u.alive),
+);
+
 
 /**
- * @param {Action} action
+ * @param {import('../util/action').Action} action
  */
-export function dispatch(action) {
-    const {type, payload} = action;
-    switch (type) {
-    }
-}
+export const reducer = cond([
+  [
+    ActionNames.G_SCREEN_SWITCH,
+    /** @param {Action<{ players: string[] }>} action */
+    (action) => $users.set(action.payload.players.map(a => ({ name: a, alive: true})))
+  ]
+]);

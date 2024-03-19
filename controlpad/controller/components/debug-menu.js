@@ -1,65 +1,77 @@
-import {channel} from "../controlpad.js";
-import {Action} from "../util/action.js";
-import {dispatch} from "../stores/index.js";
+import channel from "../util/channel.js";
+import { Action } from "../util/action.js";
+import { dispatch } from "../stores/store.js";
+import m from "mithril";
 
 /**
  * @template Attrs
  * @typedef {import('mithril').ClassComponent<Attrs>} ClassComponent
  */
 
-/** @typedef {import('mithril').Static} */
-const m = /** @type {Static} */ window.m;
-
 /**
- * @extends {ClassComponent}
+ * @extends {m.ClassComponent}
  */
 export class DebugMenu {
-    sendMessage() {
-        channel.sendMessage(this.actionFromInput().toString());
-    }
+  type = "";
+  payload = "";
 
-    receiveMessage() {
-        dispatch(this.actionFromInput());
-    }
+  sendMessage() {
+    channel.sendMessage(this.actionFromInput());
+  }
 
-    actionFromInput() {
-        return Action.create(this.type, JSON.parse(this.payload))
-    }
+  receiveMessage() {
+    dispatch(this.actionFromInput());
+  }
 
-    clearInput() {
-        this.type = '';
-        this.payload = '';
-    }
+  actionFromInput() {
+    return Action.create(
+      /** @type {import('../util/action').ActionNames} */ this.type,
+      JSON.parse(this.payload),
+    );
+  }
 
-    view(vnode) {
-        return m('div.absolute.bottom-0.bg-white-90.w-100.pa3', [
-            m('input.db.pa1', {
-                value: this.type,
-                placeholder: 'Message Type',
-                oninput: (e) => this.type = e.target.value
-            }),
-            m('textarea.db.pa1', {
-                value: this.payload,
-                placeholder: 'Json Payload',
-                oninput: e => {
-                    this.payload = e.target.value
-                }
-            }),
-            m('button.pa1', {
-                onclick: () => {
-                    this.sendMessage()
-                }
-            }, 'Send Message'),
-            m('button.pa1', {
-                onclick: () => {
-                    this.receiveMessage()
-                }
-            }, 'Simulate Receive message'),
-            m('button.pa1', {
-                onclick: () => {
-                    this.clearInput()
-                }
-            }, 'Clear Input'),
-        ])
-    }
+  clearInput() {
+    this.type = "";
+    this.payload = "";
+  }
+
+  view() {
+    return m("div.absolute.bottom-0.bg-white-90.w-100.pa3", [
+      m("input.db.pa1", {
+        value: this.type,
+        placeholder: "Message Type",
+        /** @param {Event & { target: HTMLInputElement}} e */
+        oninput: (e) => (this.type = e.target.value),
+      }),
+      m("textarea.db.pa1", {
+        value: this.payload,
+        placeholder: "Json Payload",
+        /** @param {Event & { target: HTMLTextAreaElement}} e */
+        oninput: (e) => {
+          this.payload = e.target.value;
+        },
+      }),
+      m(
+        "button.pa1",
+        {
+          onclick: () => this.sendMessage(),
+        },
+        "Send Message",
+      ),
+      m(
+        "button.pa1",
+        {
+          onclick: () => this.receiveMessage(),
+        },
+        "Simulate Receive message",
+      ),
+      m(
+        "button.pa1",
+        {
+          onclick: () => this.clearInput(),
+        },
+        "Clear Input",
+      ),
+    ]);
+  }
 }

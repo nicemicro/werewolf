@@ -1,48 +1,39 @@
-import ConnectedComponent from "../util/connected-component.js";
-import {dispatch} from "../stores/index.js";
+import { dispatch } from "../stores/store.js";
 import Layout from "../components/layout.js";
 import Button from "../components/button.js";
-import {$game, showCreditsAction, showRulesAction, startGameAction} from "../stores/game.js";
-
-/** @typedef {import('../stores/game.js').}  */
+import {
+  showCreditsAction,
+  showRulesAction,
+  startGameAction
+} from "../stores/game.js";
+import m from "mithril";
 
 /**
- * @extends ConnectedComponent<typeof $game>
+ * @extends {m.ClassComponent}
  */
-export default class MainMenu extends ConnectedComponent {
-    store = $game;
+export default class MainMenu {
 
-    /**
-     * @param {GameStore} value
-     * @param  {GameStore} oldValue
-     * @return {void}
-     */
-    onStoreChange(value, oldValue) {
-        if (value.gameStarted) {
-            m.route.set('/name-menu')
-        }
-    }
 
-    onStart() {
-        dispatch(startGameAction());
-    }
+  onStart() {
+    dispatch(startGameAction());
+  }
 
-    onShowRules() {
-        dispatch(showRulesAction());
-    }
+  onShowRules() {
+    dispatch(showRulesAction());
+  }
 
-    onShowCredits() {
-        dispatch(showCreditsAction());
-    }
+  onShowCredits() {
+    dispatch(showCreditsAction());
+  }
 
-    view(vnode) {
-        return m(Layout, [
-            m('h1.f1.tc', "Welcome to The Cult of the Wolf"),
-            m('div.tc', [
-                m(Button, { type: 'Button', onclick: this.onStart}, 'Start Game'),
-                m(Button, { type: 'Button', onclick: this.onShowRules}, 'Rules'),
-                m(Button, { type: 'Button', onclick: this.onShowCredits}, 'Credits'),
-            ])
-        ])
-    }
+  view() {
+    return m(Layout, [
+      m("h1.f1.tc", "Welcome to The Cult of the Wolf"),
+      m("div.tc", [
+        m(Button, { onclick: this.onStart }, "Start Game"),
+        m(Button, { onclick: this.onShowRules }, "Rules"),
+        m(Button, { onclick: this.onShowCredits }, "Credits"),
+      ]),
+    ]);
+  }
 }

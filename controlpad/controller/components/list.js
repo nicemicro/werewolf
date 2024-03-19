@@ -1,5 +1,4 @@
-/** @type {import('@types/mithril').Static} */
-const m = window.m;
+import m from "mithril";
 
 /**
  * @typedef {Object} IListItem
@@ -13,21 +12,24 @@ const m = window.m;
  * @property {Array<IListItem>} items
  */
 
-
-/** @implements {Component<ListProps>} */
+/** @type {m.Component<ListProps>} */
 const List = {
-    /** @param {import('mithril').Vnode<ListProps>} vnode */
-    view: (vnode) => {
-        const { items, onItemClick } = vnode.attrs;
-        return m('div.pa4.lh-copy', [
-            items.map(item =>
-                m('button', {
-                    class: `f3 fw6 db black link dim pv2 bg-transparent b--none outline-0 light-gray ${item.selected ? 'underline' : ''}`,
-                    onclick: (e) => onItemClick && onItemClick(e, item)
-                }, item.text)
-            )
-        ])
-    }
-}
+  view: (vnode) => {
+    const { items, onItemClick } = vnode.attrs;
+    return m("div.pa4.lh-copy", [
+      items.map((item) =>
+        m(
+          "button",
+          {
+            class: `f3 fw6 db black link dim pv2 bg-transparent b--none outline-0 light-gray ${item.selected ? "underline" : ""}`,
+            /** @param {MouseEvent} e */
+            onclick: (e) => onItemClick && onItemClick(e, item),
+          },
+          item.text,
+        ),
+      ),
+    ]);
+  },
+};
 
 export default List;

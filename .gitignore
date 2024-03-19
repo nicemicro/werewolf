@@ -5,3 +5,4 @@ controlpad/controlpad_server.exe
 controlpad/controlpad_server
 controlpad/node_modules
 .idea
+.vscode

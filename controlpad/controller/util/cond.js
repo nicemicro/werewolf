@@ -1,4 +1,6 @@
-import {Action} from "./action.js";
+/**
+ * @template { {[x: string]: any} } [T=any]
+ * @typedef {import('./action').Action<T>} Action */
 
 /**
  *
@@ -6,20 +8,19 @@ import {Action} from "./action.js";
  * @return {(action: Action) => void}
  */
 export function cond(condMap) {
-    return (/** @type {Action} */ action) => {
-        const tuple = condMap.find((param) => {
-            const names = param[0];
-            if (typeof names === 'function') {
-                return names(action);
-            }
-            if (Array.isArray(names)) {
-                return names.some(n => n === action.type)
-            }
-            return names === action.type
-        })
-        if (tuple) {
-            tuple[1](action)
-        }
+  return (/** @type {Action} */ action) => {
+    const tuple = condMap.find((param) => {
+      const names = param[0];
+      if (typeof names === "function") {
+        return names(action);
+      }
+      if (Array.isArray(names)) {
+        return names.some((n) => n === action.type);
+      }
+      return names === action.type;
+    });
+    if (tuple) {
+      tuple[1](action);
     }
-
+  };
 }
