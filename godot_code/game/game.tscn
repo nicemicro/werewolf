@@ -35,6 +35,28 @@ visible = false
 layout_mode = 2
 texture = SubResource("GradientTexture2D_pqrp6")
 
+[node name="Container" type="CenterContainer" parent="DayBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayersGrid" type="GridContainer" parent="DayBackground/Container"]
+visible = false
+layout_mode = 2
+columns = 6
+
+[node name="Label" type="Label" parent="DayBackground/Container/PlayersGrid"]
+layout_mode = 2
+text = "test"
+
+[node name="VoteOver" type="Label" parent="DayBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Voting time is over"
+
 [node name="NightBackground" type="TextureRect" parent="."]
 layout_mode = 2
 texture = SubResource("GradientTexture2D_7yx88")
@@ -77,7 +99,22 @@ one_shot = true
 wait_time = 5.0
 one_shot = true
 
+[node name="VoteStart" type="Timer" parent="Timers"]
+wait_time = 10.0
+one_shot = true
+
+[node name="VoteEnds" type="Timer" parent="Timers"]
+wait_time = 10.0
+one_shot = true
+
+[node name="GoodNight" type="Timer" parent="Timers"]
+wait_time = 10.0
+one_shot = true
+
 [connection signal="timeout" from="Timers/FirstNightSleep" to="." method="_changeScreen"]
 [connection signal="timeout" from="Timers/BothKillersWakeUp" to="." method="_changeScreen"]
 [connection signal="timeout" from="Timers/BothKillersSleep" to="." method="_changeScreen"]
 [connection signal="timeout" from="Timers/GoodMorning" to="." method="_changeScreen"]
+[connection signal="timeout" from="Timers/VoteStart" to="." method="_changeScreen"]
+[connection signal="timeout" from="Timers/VoteEnds" to="." method="_changeScreen"]
+[connection signal="timeout" from="Timers/GoodNight" to="." method="_changeScreen"]

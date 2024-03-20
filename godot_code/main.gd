@@ -36,12 +36,10 @@ func stateChanged(newState: String):
 				sendMessage(clientId, "ASSIGN_ROLE", {"role": roles[clientId]})
 	gameState = newState
 
-func changePhoneScreen(targets: Array, screenName: String):
+func changePhoneScreen(targets: Array, screenName: String, payload: Dictionary = {}):
 	if len(targets) == 0:
 		targets = players.keys()
-	var payload: Dictionary = {
-		"switch_to": screenName
-	}
+	payload["switch_to"] = screenName
 	for clientId in targets:
 		sendMessage(clientId, "SCREEN_SWITCH", payload)
 

@@ -4,11 +4,13 @@ signal changeScreen
 
 @onready var dayScreen = $DayBackground
 @onready var nightScreen = $NightBackground
+@onready var playerGrid = $DayBackground/Container/PlayersGrid
 @onready var firstNight: Dictionary = {
 	"timers": [
 		$Timers/BothKillersWakeUp,
 		$Timers/BothKillersSleep,
-		$Timers/GoodMorning
+		$Timers/GoodMorning,
+		$Timers/VoteStart
 	],
 	"screens": [
 		$NightBackground/Container/GoToSleep,
@@ -19,13 +21,26 @@ signal changeScreen
 		firstNightSets, killersSeeEachother, killersBackToSleep, morningComes
 	]
 }
+@onready var dayCycle: Dictionary = {
+	"timers": [
+		$Timers/VoteEnds,
+		$Timers/GoodNight
+	],
+	"screens": [
+		$DayBackground/Container/PlayersGrid,
+		$DayBackground/Container/VoteOver
+	],
+	"command": [
+		votingStarts, votingResults, null
+	]
+}
 
 var currentNum: int
 var currentSequence: Dictionary
 var players: Dictionary
 var playerRoles: Dictionary
 
-enum RoleList {
+enum RoleList { # DO NOT CHANGE THIS without also consulting the controller code for roles
 	VILLAGER,
 	CULTIST1,
 	CULTIST2,
@@ -44,6 +59,8 @@ func morningComes():
 	nightScreen.visible = false
 	dayScreen.visible = true
 	emit_signal("changeScreen", [], "morning")
+	currentSequence = dayCycle
+	currentNum = -1 #After this, curentNum will be incremented by one
 
 func getKillerId():
 	var sendTo: Array = []
@@ -54,6 +71,21 @@ func getKillerId():
 		):
 			sendTo.append(playerId)
 	return sendTo
+
+func votingStarts():
+	emit_signal("changeScreen", [], "start vote", {"players": players})
+	var playerIconScene: PackedScene = load("res://game/player_voted.tscn")
+	for child in playerGrid.get_children():
+		playerGrid.remove_child(child)
+		child.queue_free()
+	var newIcon: Control
+	for player in players:
+		newIcon = playerIconScene.instantiate()
+		newIcon.setName(players[player])
+		playerGrid.add_child(newIcon)
+
+func votingResults():
+	emit_signal("changeScreen", [], "end vote")
 
 func killersSeeEachother():
 	emit_signal("changeScreen", getKillerId(), "look up")
@@ -85,8 +117,8 @@ func _changeScreen():
 		currentSequence["screens"][currentNum].show()
 	if currentNum >= 1:
 		currentSequence["screens"][currentNum-1].hide()
-	if currentSequence["command"][currentNum] != null:
-		currentSequence["command"][currentNum].call()
 	if currentNum < len(currentSequence["timers"]):
 		currentSequence["timers"][currentNum].start()
+	if currentSequence["command"][currentNum] != null:
+		currentSequence["command"][currentNum].call()
 	currentNum += 1
