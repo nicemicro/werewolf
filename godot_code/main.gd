@@ -40,6 +40,7 @@ func changePhoneScreen(targets: Array, screenName: String, payload: Dictionary =
 	if len(targets) == 0:
 		targets = players.keys()
 	payload["switch_to"] = screenName
+	payload["players"] = players.values()
 	for clientId in targets:
 		sendMessage(clientId, "SCREEN_SWITCH", payload)
 
@@ -65,6 +66,9 @@ func playerJoins(clientId: String, playerName: String):
 	mainMenuWindow.lobbyNode.playerNumberChange(len(players), len(clients))
 	if len(players) > 5:
 		mainMenuWindow.lobbyNode.gameCanStart(true)
+		# Send can start to all players with names, this will be sent for every extra person that joins
+		for c in players.keys(): 
+			sendMessage(c, 'CAN_START', {})
 
 func syncState(clientId):
 	var payload: Dictionary = {}
@@ -95,6 +99,8 @@ func handleMessage(clientId: String, message: Dictionary):
 			if gameState != "mainMenu":
 				return
 			mainMenuWindow.openGameJoin()
+		"START_PLAY":
+			stateChanged("startGame")
 
 func _on_game_nite_controlpads_message_received(clientId, message):
 	print("received <%s> from <%s>" % [message, clientId])

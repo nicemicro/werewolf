@@ -46,6 +46,15 @@ table {
 
 #werewolfapp {
     --transform-up: 20px;
+}
+
+.day-gradient {
+    background: #556270;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #556270, #ff6b6b);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #556270, #ff6b6b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.night-gradient {
     background: rgb(2,0,36);
     background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(32,19,65,1) 54%, rgba(65,39,96,1) 99%);
 }

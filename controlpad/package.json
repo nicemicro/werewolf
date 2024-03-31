@@ -6,7 +6,20 @@
     "express": "^4.18.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/eslint-parser": "^7.23.10",
+    "@babel/preset-env": "^7.24.0",
     "@types/mithril": "^2.2.6",
-    "nanostores": "^0.10.0"
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "mithril": "^2.2.2",
+    "nanostores": "^0.10.0",
+    "typescript": "^5.4.2"
+  },
+  "scripts": {
+    "lint": "eslint controller/**/*.js",
+    "lint:fix": "eslint controller/**/*.js --fix",
+    "tsc:check": "tsc"
   }
 }
