@@ -9,16 +9,31 @@ signal changeScreen
 	"timers": [
 		$Timers/BothKillersWakeUp,
 		$Timers/BothKillersSleep,
+		$Timers/BothKillersWakeUp,
+		$Timers/BothKillersSleep,
+		$Timers/BothKillersWakeUp,
+		$Timers/BothKillersSleep,
 		$Timers/GoodMorning,
 		$Timers/VoteStart
 	],
 	"screens": [
 		$NightBackground/Container/GoToSleep,
 		$NightBackground/Container/BothKillersWakeUp,
+		$NightBackground/Container/GoToSleep,
+		$NightBackground/Container/Cultist1Votes,
+		$NightBackground/Container/GoToSleep,
+		$NightBackground/Container/Cultist2Votes,
 		$NightBackground/Container/GoToSleep
 	],
 	"command": [
-		firstNightSets, killersSeeEachother, killersBackToSleep, morningComes
+		firstNightSets,
+		killersSeeEachother,
+		killersBackToSleep,
+		killer1Select,
+		killersBackToSleep,
+		killer2Select,
+		killersBackToSleep,
+		morningComes
 	]
 }
 @onready var dayCycle: Dictionary = {
@@ -62,13 +77,10 @@ func morningComes():
 	currentSequence = dayCycle
 	currentNum = -1 #After this, curentNum will be incremented by one
 
-func getKillerId():
+func getRoleId(roles: Array):
 	var sendTo: Array = []
 	for playerId in playerRoles:
-		if (
-			playerRoles[playerId] == RoleList.CULTIST1 or
-			playerRoles[playerId] == RoleList.CULTIST2
-		):
+		if playerRoles[playerId] in roles:
 			sendTo.append(playerId)
 	return sendTo
 
@@ -87,11 +99,17 @@ func votingStarts():
 func votingResults():
 	emit_signal("changeScreen", [], "end vote")
 
+func killer1Select():
+	emit_signal("changeScreen", getRoleId([RoleList.CULTIST1]), "killvote")
+
+func killer2Select():
+	emit_signal("changeScreen", getRoleId([RoleList.CULTIST2]), "killvote")
+
 func killersSeeEachother():
-	emit_signal("changeScreen", getKillerId(), "look up")
+	emit_signal("changeScreen", getRoleId([RoleList.CULTIST1, RoleList.CULTIST2]), "look up")
 
 func killersBackToSleep():
-	emit_signal("changeScreen", getKillerId(), "night")
+	emit_signal("changeScreen", getRoleId([RoleList.CULTIST1, RoleList.CULTIST2]), "night")
 
 func assignRoles(newPlayers: Dictionary):
 	players = newPlayers

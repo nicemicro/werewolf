@@ -131,7 +131,7 @@ $game.subscribe((val, oldValue) => {
 /** @type {Record<ScreenKeys, [string, Cycle | undefined]>} */
 const TargetScreen = {
   'night': ['/night-time', Cycle.NIGHT],
-  'look up': ['/night-pick', undefined], 
+  'killvote': ['/night-pick', undefined],
   'morning': ['/day-execution', Cycle.DAY],
 }
 

@@ -79,6 +79,16 @@ visible = false
 layout_mode = 2
 text = "Both werewolves wake up"
 
+[node name="Cultist1Votes" type="Label" parent="NightBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Cultist 1 votes"
+
+[node name="Cultist2Votes" type="Label" parent="NightBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Cultist 2 votes"
+
 [node name="Timers" type="Control" parent="."]
 layout_mode = 2
 
