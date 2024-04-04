@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0hyvglejjak8"]
+
+[ext_resource type="Script" path="res://game/player_voted.gd" id="1_cekln"]
+
+[sub_resource type="Gradient" id="Gradient_u2ex6"]
+offsets = PackedFloat32Array(0.142857, 0.415584, 0.655844, 0.935065)
+colors = PackedColorArray(0, 0, 0, 1, 0.154446, 0.460213, 0.466502, 1, 0.286949, 0.299939, 0.746123, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_q2su6"]
+gradient = SubResource("Gradient_u2ex6")
+
+[sub_resource type="Gradient" id="Gradient_nbbhx"]
+colors = PackedColorArray(0.1824, 0.76, 0.192027, 1, 0.39825, 0.59, 0.3599, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_b3g3e"]
+gradient = SubResource("Gradient_nbbhx")
+
+[node name="PlayerIcon" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_cekln")
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Name" type="Label" parent="Container"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Name"
+horizontal_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="PlayerIcon" type="TextureRect" parent="Container"]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("GradientTexture1D_q2su6")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="VoteIcon" type="TextureRect" parent="MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("GradientTexture2D_b3g3e")
