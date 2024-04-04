@@ -8,6 +8,13 @@ import NightTime from "./routes/night-time.js";
 import m from "mithril";
 import GameStart from "./routes/game-start.js";
 import NightPick from "./routes/night-pick.js";
+import { $game } from "./stores/game.js";
+
+const search = window.location.search;
+const params = new URLSearchParams(search);
+let debug = (params.get('debug') ?? 'false') === 'true';
+
+$game.setKey('debug', debug)
 
 const node = document.getElementById("werewolfapp");
 

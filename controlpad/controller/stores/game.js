@@ -55,6 +55,7 @@ export const GameState = {
 
 /**
  * @typedef {Object} GameStore
+ * @property {boolean} debug
  * @property {boolean} connected
  * @property {boolean} gameStarted
  * @property {boolean} canStart
@@ -70,6 +71,7 @@ export const GameState = {
  */
 export const $game = nanostores.map({
   connected: false,
+  debug: false,
   gameStarted: false,
   canStart: false,
   role: undefined,
@@ -112,6 +114,7 @@ export const reduce = cond([
 ]);
 
 $game.subscribe((val, oldValue) => {
+  if (val.debug) return;
   if (val.gameState !== oldValue?.gameState) {
     if (val.gameState === GameState.MAIN_MENU) {
       m.route.set('/menu')
