@@ -128,7 +128,18 @@ func killer2Select():
 	emit_signal("changeScreen", getRoleId([RoleList.CULTIST2]), "killvote")
 
 func killersSeeEachother():
-	emit_signal("changeScreen", getRoleId([RoleList.CULTIST1, RoleList.CULTIST2]), "look up")
+	emit_signal(
+		"changeScreen",
+		getRoleId([RoleList.CULTIST1]),
+		"look up",
+		{"parter": players[getRoleId([RoleList.CULTIST2])[0]]}
+	)
+	emit_signal(
+		"changeScreen",
+		getRoleId([RoleList.CULTIST2]),
+		"look up",
+		{"parter": players[getRoleId([RoleList.CULTIST1])[0]]}
+	)
 
 func killersBackToSleep():
 	acceptVotes = []
