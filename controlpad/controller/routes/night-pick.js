@@ -26,6 +26,8 @@ const RoleMsg = {
  * @implements {m.ClassComponent}
  */
 export default class NightPick {
+  /** @type {boolean} */
+  waiting = false
   /** @type {User | undefined} */
   pickedUser;
 
@@ -57,7 +59,7 @@ export default class NightPick {
   onPickStoreChange(state) {
     this.dayState = state;
     if (this.dayState.pickedUser) {
-      m.route.set("/day-execution");
+      this.waiting = true;
     }
   }
 
@@ -84,6 +86,7 @@ export default class NightPick {
     const items = this.users.map((i) => ({ ...i, text: i.name }));
         return m(Layout, [
       m("h1.f1.tc", "Night Comes ..."),
+      !this.waiting ? [
       m(
         "h3.f3.tc",
         this.pickedUser
@@ -103,7 +106,8 @@ export default class NightPick {
             "items-center",].join(' '),
           onItemClick: (e, item) => this.itemClick(e, item),
           items,
-        }),
+        })
+      ] : null,
     ]);
   }
 }
