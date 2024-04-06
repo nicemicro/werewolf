@@ -9,6 +9,7 @@ import m from "mithril";
 import GameStart from "./routes/game-start.js";
 import NightPick from "./routes/night-pick.js";
 import { $game } from "./stores/game.js";
+import Dead from "./routes/dead.js";
 
 const search = window.location.search;
 const params = new URLSearchParams(search);
@@ -28,6 +29,7 @@ if (node) {
     "/day-execution": DayExecution,
     "/night-time": NightTime,
     '/night-pick': NightPick,
-    '/game-start': GameStart
+    '/game-start': GameStart,
+    '/dead': Dead,
   });
 }

@@ -59,6 +59,7 @@ export const GameState = {
  * @property {boolean} connected
  * @property {boolean} gameStarted
  * @property {boolean} canStart
+ * @property {boolean} dead
  * @property {Role | undefined} role
  * @property {Object | undefined} pickedUser
  * @property {GameState} gameState
@@ -74,6 +75,7 @@ export const $game = nanostores.map({
   debug: false,
   gameStarted: false,
   canStart: false,
+  dead: false,
   role: undefined,
   pickedUser: undefined,
   cycle: Cycle.DAY,
@@ -114,7 +116,7 @@ export const reduce = cond([
 ]);
 
 $game.subscribe((val, oldValue) => {
-  if (val.debug) return;
+  if (val.debug || val.dead) return;
   if (val.gameState !== oldValue?.gameState) {
     if (val.gameState === GameState.MAIN_MENU) {
       m.route.set('/menu')
@@ -129,15 +131,15 @@ $game.subscribe((val, oldValue) => {
   }
 })
 
-/** @typedef {'night' | 'morning' | 'killvote'} ScreenKeys */
+/** @typedef {'night' | 'morning' | 'killvote' | 'death'} ScreenKeys */
 
 /** @type {Record<ScreenKeys, [string, Cycle | undefined]>} */
 const TargetScreen = {
   'night': ['/night-time', Cycle.NIGHT],
   'killvote': ['/night-pick', undefined],
-  'morning': ['/day-execution', Cycle.DAY],
+  'morning': ['/day-pick', Cycle.DAY],
+  'death': ['/dead', Cycle.NIGHT],
 }
-
 
 /**
  * 
@@ -145,7 +147,12 @@ const TargetScreen = {
  */
 function handleScreenSwitch(action) {
   const target = TargetScreen[action.payload.switch_to];
+  if (action.payload.switch_to === 'death') {
+    $game.setKey('dead', true);
+  }
   if (!target) return;
+
+  
 
   const [route, cycle] = target;
   // Change cycle if there is a cycle
