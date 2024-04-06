@@ -56,6 +56,7 @@ export default class Layout {
         class: classNames.join(" "),
       },
       [
+        this.gameState.debug ? 'Debug Mode' : null,
         this.gameState.gameStarted
           ? m("div.w-100.flex-none.flex.flex-row", [
               m("div.flex-auto"),

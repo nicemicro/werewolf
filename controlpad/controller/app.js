@@ -12,6 +12,7 @@ import { $game } from "./stores/game.js";
 
 const search = window.location.search;
 const params = new URLSearchParams(search);
+
 let debug = (params.get('debug') ?? 'false') === 'true';
 
 $game.setKey('debug', debug)

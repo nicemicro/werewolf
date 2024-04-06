@@ -129,7 +129,7 @@ $game.subscribe((val, oldValue) => {
   }
 })
 
-/** @typedef {'night' | 'morning' | 'look up'} ScreenKeys */
+/** @typedef {'night' | 'morning' | 'killvote'} ScreenKeys */
 
 /** @type {Record<ScreenKeys, [string, Cycle | undefined]>} */
 const TargetScreen = {

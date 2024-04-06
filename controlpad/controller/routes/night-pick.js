@@ -11,7 +11,7 @@ import { $game, Role } from "../stores/game.js";
 /** @type {Record<Role, string>} */
 const RoleMsg = {
   [Role.CULTIST1]: 'Pick a sacrifice to the Wolf.',
-  [Role.CULTIST2]:  'Pick a sacrifice to the Wolf.',
+  [Role.CULTIST2]: 'Pick a sacrifice to the Wolf.',
   [Role.VILLAGER]: '', // This case is not possible
   [Role.SEER]: 'Pick a person and the spirits will tell you if they worships the Wolf',
   [Role.SHAMAN]: 'Pick a person so that nature heals their wounds',
@@ -82,7 +82,7 @@ export default class NightPick {
   view() {
     /** @type {Array<import('../components/list.js').IListItem & User> } */
     const items = this.users.map((i) => ({ ...i, text: i.name }));
-    return m(Layout, [
+        return m(Layout, [
       m("h1.f1.tc", "Night Comes ..."),
       m(
         "h3.f3.tc",
@@ -92,13 +92,18 @@ export default class NightPick {
       ),
       this.pickedUser
         ? m.fragment({}, [
-            m(Button, { onclick: () => this.confirmPick() }, "Yes!!"),
-            m(Button, { onclick: () => this.resetPick() }, "No"),
-          ])
+          m(Button, { onclick: () => this.confirmPick() }, "Yes!!"),
+          m(Button, { onclick: () => this.resetPick() }, "No"),
+        ])
         : m(List, {
-            onItemClick: (e, item) => this.itemClick(e, item),
-            items,
-          }),
+          className: ["flex",
+            "flex-column",
+            "justify-center",
+            "content-center",
+            "items-center",].join(' '),
+          onItemClick: (e, item) => this.itemClick(e, item),
+          items,
+        }),
     ]);
   }
 }
