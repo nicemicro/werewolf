@@ -42,12 +42,16 @@ export default class Layout {
     const classNames = [
       "h-100",
       "m-auto",
+      'ph1',
+      'ph3-ns',
+      "ph5-m",
       "flex",
       "flex-column",
       "justify-center",
       "content-center",
       "items-center",
       "border-box",
+      "lh-title",
     ];
     classNames.push(this.gameState.cycle.toLowerCase() + "-gradient");
     return m(
