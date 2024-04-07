@@ -84,7 +84,7 @@ export default class NightPick {
     const isCultist = role === Role.CULTIST1 || role === Role.CULTIST2;
     let users = this.users;
     if (isCultist) {
-      users.filter(u => u.name !== partner);
+      users = users.filter(u => u.name !== partner);
     }
 
     /** @type {Array<import('../components/list.js').IListItem & User> } */
