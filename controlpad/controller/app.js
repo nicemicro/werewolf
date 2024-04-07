@@ -11,6 +11,8 @@ import NightPick from "./routes/night-pick.js";
 import { $game } from "./stores/game.js";
 import Dead from "./routes/dead.js";
 import LookUp from "./routes/lookup.js";
+import NightKilling from "./routes/night-killing.js";
+import GameOver from "./routes/game-over.js";
 
 const search = window.location.search;
 const params = new URLSearchParams(search);
@@ -28,10 +30,12 @@ if (node) {
     "/name-menu": NameMenu,
     "/day-pick": DayPick,
     "/day-execution": DayExecution,
+    "/night-killing": NightKilling,
     "/night-time": NightTime,
     '/night-pick': NightPick,
     '/game-start': GameStart,
     '/dead': Dead,
     '/look-up': LookUp,
+    '/game-over': GameOver,
   });
 }
