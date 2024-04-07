@@ -3,8 +3,6 @@ import { Action, ActionNames } from "../util/action.js";
 import channel from "../util/channel.js";
 import { cond } from "../util/cond.js";
 import m from 'mithril';
-import { dispatch } from "./store.js";
-import { submitNameAction } from "./name.js";
 
 export const startGameAction = () =>
   Action.create(ActionNames.P_START_GAME, {});
@@ -124,27 +122,6 @@ export const reduce = cond([
   [ActionNames.G_SCREEN_SWITCH, handleScreenSwitch],
 ]);
 
-$game.subscribe((val, oldValue) => {
-  if (val.debug || val.dead) return;
-  if (val.gameState !== oldValue?.gameState) {
-    if (val.gameState === GameState.MAIN_MENU) {
-      m.route.set('/menu')
-    }
-    if (val.gameState === GameState.JOIN_GAME) {
-      const search = window.location.search;
-      const params = new URLSearchParams(search);
-      const name = params.get('debugName')
-      if (typeof name !== 'undefined' && name !== null) {
-          dispatch(submitNameAction(name));
-      }
-      m.route.set('/name-menu')
-    }
-    return;
-  }
-  if (val.canStart === true && oldValue?.canStart === false) {
-    m.route.set('/game-start');
-  }
-})
 
 /** @typedef {'night' | 'morning' | 'killvote' | 'death' | 'look up'} ScreenKeys */
 

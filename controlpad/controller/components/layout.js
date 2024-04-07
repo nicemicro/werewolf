@@ -40,8 +40,8 @@ export default class Layout {
   /** @param {m.Vnode} vnode */
   view(vnode) {
     const classNames = [
-      "w-100",
       "h-100",
+      "m-auto",
       "flex",
       "flex-column",
       "justify-center",

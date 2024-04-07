@@ -1,7 +1,6 @@
 import * as nanostores from "nanostores";
 import { cond } from "../util/cond.js";
 import { ActionNames } from "../util/action.js";
-import { $name } from "./name.js";
 
 /** 
  * @template {{ [x: string]: any }} T 
@@ -34,14 +33,6 @@ export const $users = nanostores.atom([
   { name: "Safwaan", alive: true },
   { name: "NiceMicro", alive: true },
 ]);
-
-/**
- * @type {nanostores.ReadableAtom<Array<User>>}
- */
-export const $aliveUsers = nanostores.computed([$users, $name], (users, name) =>
-  users.filter((u) => u.alive && u.name !== name.name),
-);
-
 
 /**
  * @param {import('../util/action').Action} action

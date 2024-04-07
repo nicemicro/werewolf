@@ -1,7 +1,7 @@
 import List from "../components/list.js";
 import Button from "../components/button.js";
 import { dispatch } from "../stores/store.js";
-import { $aliveUsers } from "../stores/users.js";
+import { $otherUsers } from "../stores/otherUsers.js";
 import { $pick, pickUserAction } from "../stores/pick.js";
 import { subAndRedraw } from "../util/utils.js";
 import Layout from "../components/layout.js";
@@ -31,7 +31,7 @@ export default class NightPick {
   pickedUser;
 
   /** @type {Array<User>} */
-  users = $aliveUsers.get();
+  users = $otherUsers.get();
 
   /** @type {import('../stores/game.js').GameStore} */
   gameState = $game.get();
@@ -44,7 +44,7 @@ export default class NightPick {
 
   oninit() {
     this._unsub = [
-      subAndRedraw($aliveUsers, (val) => (this.users = val)),
+      subAndRedraw($otherUsers, (val) => (this.users = val)),
       subAndRedraw($pick, this.onPickStoreChange.bind(this)),
       subAndRedraw($game, g => (this.gameState = g)),
     ];
