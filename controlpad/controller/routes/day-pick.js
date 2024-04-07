@@ -79,13 +79,18 @@ export default class DayPick {
       ),
       this.pickedUser
         ? m.fragment({}, [
-            m(Button, { onclick: () => this.confirmPick() }, "Yes!!"),
-            m(Button, { onclick: () => this.resetPick() }, "No"),
-          ])
+          m(Button, { onclick: () => this.confirmPick() }, "Yes!!"),
+          m(Button, { onclick: () => this.resetPick() }, "No"),
+        ])
         : m(List, {
-            onItemClick: (e, item) => this.itemClick(e, item),
-            items,
-          }),
+          className: ["flex",
+            "flex-column",
+            "justify-center",
+            "content-center",
+            "items-center",].join(' '),
+          onItemClick: (e, item) => this.itemClick(e, item),
+          items,
+        }),
     ]);
   }
 }

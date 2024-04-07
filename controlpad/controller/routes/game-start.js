@@ -40,6 +40,7 @@ export default class GameStart extends ConnectedComponent {
     channel.sendMessage(Action.create(ActionNames.P_START_PLAY, {}))
   }
   view() {
+    // TODO check if this should be the condition, or if GAME_STARTED
     const role = $game.get().role;
     return m(Layout, role
       ? m('div.pa4', [

@@ -77,6 +77,7 @@ func syncState(clientId):
 	if clientId in players:
 		payload["name"] = players[clientId]
 	payload["gameState"] = gameState
+	payload["canStart"] = len(players) > 5
 	sendMessage(clientId, "STATE_SYNC", payload)
 
 func sendMessage(clientId: String, msgType: String, payload: Dictionary):

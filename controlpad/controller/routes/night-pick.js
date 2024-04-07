@@ -17,7 +17,6 @@ const RoleMsg = {
   [Role.SHAMAN]: 'Pick a person so that nature heals their wounds',
 }
 
-
 /**
  * @typedef {import('../stores/users.js').User} User
  */
@@ -64,7 +63,6 @@ export default class NightPick {
   }
 
   /**
-   *
    * @param {MouseEvent} e
    * @param {import('../components/list.js').IListItem} item
    */
@@ -82,31 +80,38 @@ export default class NightPick {
   }
 
   view() {
+    const { role, partner } = this.gameState;
+    const isCultist = role === Role.CULTIST1 || role === Role.CULTIST2;
+    let users = this.users;
+    if (isCultist) {
+      users.filter(u => u.name !== partner);
+    }
+
     /** @type {Array<import('../components/list.js').IListItem & User> } */
-    const items = this.users.map((i) => ({ ...i, text: i.name }));
-        return m(Layout, [
+    const items = users.map((i) => ({ ...i, text: i.name }));
+    return m(Layout, [
       m("h1.f1.tc", "Night Comes ..."),
       !this.waiting ? [
-      m(
-        "h3.f3.tc",
+        m(
+          "h3.f3.tc",
+          this.pickedUser
+            ? `You sure you want to pick ${this.pickedUser.name}?`
+            : RoleMsg[/** @type {string} */ (this.gameState.role)],
+        ),
         this.pickedUser
-          ? `You sure you want to pick ${this.pickedUser.name}?`
-          : RoleMsg[/** @type {string} */ (this.gameState.role)],
-      ),
-      this.pickedUser
-        ? m.fragment({}, [
-          m(Button, { onclick: () => this.confirmPick() }, "Yes!!"),
-          m(Button, { onclick: () => this.resetPick() }, "No"),
-        ])
-        : m(List, {
-          className: ["flex",
-            "flex-column",
-            "justify-center",
-            "content-center",
-            "items-center",].join(' '),
-          onItemClick: (e, item) => this.itemClick(e, item),
-          items,
-        })
+          ? m.fragment({}, [
+            m(Button, { onclick: () => this.confirmPick() }, "Yes!!"),
+            m(Button, { onclick: () => this.resetPick() }, "No"),
+          ])
+          : m(List, {
+            className: ["flex",
+              "flex-column",
+              "justify-center",
+              "content-center",
+              "items-center",].join(' '),
+            onItemClick: (e, item) => this.itemClick(e, item),
+            items,
+          })
       ] : null,
     ]);
   }

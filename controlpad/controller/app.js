@@ -10,6 +10,7 @@ import GameStart from "./routes/game-start.js";
 import NightPick from "./routes/night-pick.js";
 import { $game } from "./stores/game.js";
 import Dead from "./routes/dead.js";
+import LookUp from "./routes/lookup.js";
 
 const search = window.location.search;
 const params = new URLSearchParams(search);
@@ -31,5 +32,6 @@ if (node) {
     '/night-pick': NightPick,
     '/game-start': GameStart,
     '/dead': Dead,
+    '/look-up': LookUp,
   });
 }
