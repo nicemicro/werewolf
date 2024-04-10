@@ -103,7 +103,7 @@ func handleMessage(clientId: String, message: Dictionary):
 		"START_PLAY":
 			stateChanged("startGame")
 		"PICK_USER":
-			gameNode.receiveVote(clientId, payload["name"])
+			gameNode.receiveMark(clientId, payload["name"])
 
 func _on_game_nite_controlpads_message_received(clientId, message):
 	print("received <%s> from <%s>" % [message, clientId])
