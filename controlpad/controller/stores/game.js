@@ -55,10 +55,13 @@ export const GameState = {
 
 /**
  * @typedef {Object} GameStore
+ * @property {boolean} debug
  * @property {boolean} connected
  * @property {boolean} gameStarted
  * @property {boolean} canStart
+ * @property {boolean} dead
  * @property {Role | undefined} role
+ * @property {string} partner Name of the other cultist in case you are one
  * @property {Object | undefined} pickedUser
  * @property {GameState} gameState
  * @property {Cycle} cycle
@@ -70,9 +73,12 @@ export const GameState = {
  */
 export const $game = nanostores.map({
   connected: false,
+  debug: false,
   gameStarted: false,
   canStart: false,
+  dead: false,
   role: undefined,
+  partner: undefined,
   pickedUser: undefined,
   cycle: Cycle.DAY,
   hour: undefined,
@@ -86,8 +92,13 @@ export const reduce = cond([
   [ActionNames.P_CONNECTED, () => $game.setKey("connected", true)],
   [
     ActionNames.G_STATE_SYNC,
-    /** @param {Action<{ gameState: GameState }>} action */
-    (action) => $game.setKey("gameState", action.payload.gameState),
+    /** @param {Action<{ gameState: GameState, name?:string, canStart?: boolean }>} action */
+    (action) => {
+      const { name, canStart = false, gameState} = action.payload
+      $game.setKey("gameState", gameState);
+      $game.setKey("canStart", canStart);
+
+    }
   ],
   [
     [
@@ -108,40 +119,37 @@ export const reduce = cond([
      /** @param {Action<{ role: number }>} a */
     a => $game.setKey("role", RoleList[a.payload.role])
   ],
-  [ActionNames.G_SCREEN_SWITCH, handleScreenSwitch]
+  [ActionNames.G_SCREEN_SWITCH, handleScreenSwitch],
 ]);
 
-$game.subscribe((val, oldValue) => {
-  if (val.gameState !== oldValue?.gameState) {
-    if (val.gameState === GameState.MAIN_MENU) {
-      m.route.set('/menu')
-    }
-    if (val.gameState === GameState.JOIN_GAME) {
-      m.route.set('/name-menu')
-    }
-    return;
-  }
-  if (val.canStart === true && oldValue?.canStart === false) {
-    m.route.set('/game-start');
-  }
-})
 
-/** @typedef {'night' | 'morning' | 'look up'} ScreenKeys */
+/** @typedef {'night' | 'morning' | 'killvote' | 'death' | 'look up'} ScreenKeys */
 
 /** @type {Record<ScreenKeys, [string, Cycle | undefined]>} */
 const TargetScreen = {
   'night': ['/night-time', Cycle.NIGHT],
-  'look up': ['/night-pick', undefined], 
-  'morning': ['/day-execution', Cycle.DAY],
+  'killvote': ['/night-pick', undefined],
+  'morning': ['/day-pick', Cycle.DAY],
+  'death': ['/dead', Cycle.NIGHT],
+  'look up': ['/look-up', Cycle.NIGHT],
 }
-
 
 /**
  * 
- * @param {Action<{ switch_to: ScreenKeys }>} action 
+ * @param {Action<{ switch_to: ScreenKeys, partner?: string }>} action 
  */
 function handleScreenSwitch(action) {
-  const target = TargetScreen[action.payload.switch_to];
+  const { switch_to, partner} = action.payload 
+  const target = TargetScreen[switch_to];
+  
+  if (switch_to === 'death') {
+    $game.setKey('dead', true);
+  }
+
+  if (typeof partner === 'string') {
+    $game.setKey('partner', partner);
+  }
+
   if (!target) return;
 
   const [route, cycle] = target;

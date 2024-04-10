@@ -40,14 +40,18 @@ export default class Layout {
   /** @param {m.Vnode} vnode */
   view(vnode) {
     const classNames = [
-      "w-100",
       "h-100",
+      "m-auto",
+      'ph1',
+      'ph3-ns',
+      "ph5-m",
       "flex",
       "flex-column",
       "justify-center",
       "content-center",
       "items-center",
       "border-box",
+      "lh-title",
     ];
     classNames.push(this.gameState.cycle.toLowerCase() + "-gradient");
     return m(
@@ -56,6 +60,7 @@ export default class Layout {
         class: classNames.join(" "),
       },
       [
+        this.gameState.debug ? 'Debug Mode' : null,
         this.gameState.gameStarted
           ? m("div.w-100.flex-none.flex.flex-row", [
               m("div.flex-auto"),

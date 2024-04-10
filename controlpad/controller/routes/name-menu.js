@@ -47,7 +47,7 @@ class NameForm {
    */
   view(vnode) {
     return m.fragment({}, [
-      vnode.attrs.error ? m("span", vnode.attrs.error) : [],
+      vnode.attrs.error ? m("div.tc", vnode.attrs.error) : [],
       m(
         "form.mt3",
         {

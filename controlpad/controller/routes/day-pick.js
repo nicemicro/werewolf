@@ -1,7 +1,7 @@
 import List from "../components/list.js";
 import Button from "../components/button.js";
 import { dispatch } from "../stores/store.js";
-import { $aliveUsers } from "../stores/users.js";
+import { $otherUsers } from "../stores/otherUsers.js";
 import { $pick, pickUserAction } from "../stores/pick.js";
 import { subAndRedraw } from "../util/utils.js";
 import Layout from "../components/layout.js";
@@ -21,7 +21,7 @@ export default class DayPick {
   pickedUser;
 
   /** @type {Array<User>} */
-  users = $aliveUsers.get();
+  users = $otherUsers.get();
 
   /** @type {import('../stores/pick.js').PickStore} */
   pickState = $pick.get();
@@ -31,7 +31,7 @@ export default class DayPick {
 
   oninit() {
     this._unsub = [
-      subAndRedraw($aliveUsers, (val) => (this.users = val)),
+      subAndRedraw($otherUsers, (val) => (this.users = val)),
       subAndRedraw($pick, this.onPickStoreChange.bind(this)),
     ];
   }
@@ -79,13 +79,18 @@ export default class DayPick {
       ),
       this.pickedUser
         ? m.fragment({}, [
-            m(Button, { onclick: () => this.confirmPick() }, "Yes!!"),
-            m(Button, { onclick: () => this.resetPick() }, "No"),
-          ])
+          m(Button, { onclick: () => this.confirmPick() }, "Yes!!"),
+          m(Button, { onclick: () => this.resetPick() }, "No"),
+        ])
         : m(List, {
-            onItemClick: (e, item) => this.itemClick(e, item),
-            items,
-          }),
+          className: ["flex",
+            "flex-column",
+            "justify-center",
+            "content-center",
+            "items-center",].join(' '),
+          onItemClick: (e, item) => this.itemClick(e, item),
+          items,
+        }),
     ]);
   }
 }

@@ -35,14 +35,6 @@ export const $users = nanostores.atom([
 ]);
 
 /**
- * @type {nanostores.ReadableAtom<Array<User>>}
- */
-export const $aliveUsers = nanostores.computed($users, (users) =>
-  users.filter((u) => u.alive),
-);
-
-
-/**
  * @param {import('../util/action').Action} action
  */
 export const reducer = cond([

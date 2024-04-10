@@ -36,14 +36,11 @@ func stateChanged(newState: String):
 				sendMessage(clientId, "ASSIGN_ROLE", {"role": roles[clientId]})
 	gameState = newState
 
-func changePhoneScreen(targets: Array, screenName: String):
+func changePhoneScreen(targets: Array, screenName: String, payload: Dictionary = {}):
 	if len(targets) == 0:
 		targets = players.keys()
-	var payload: Dictionary = {
-		"switch_to": screenName,
-		"players": players.values(),
-	}
-
+	payload["switch_to"] = screenName
+	payload["players"] = players.values()
 	for clientId in targets:
 		sendMessage(clientId, "SCREEN_SWITCH", payload)
 
@@ -80,6 +77,7 @@ func syncState(clientId):
 	if clientId in players:
 		payload["name"] = players[clientId]
 	payload["gameState"] = gameState
+	payload["canStart"] = len(players) > 5
 	sendMessage(clientId, "STATE_SYNC", payload)
 
 func sendMessage(clientId: String, msgType: String, payload: Dictionary):
@@ -104,6 +102,8 @@ func handleMessage(clientId: String, message: Dictionary):
 			mainMenuWindow.openGameJoin()
 		"START_PLAY":
 			stateChanged("startGame")
+		"PICK_USER":
+			gameNode.receiveVote(clientId, payload["name"])
 
 func _on_game_nite_controlpads_message_received(clientId, message):
 	print("received <%s> from <%s>" % [message, clientId])

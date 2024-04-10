@@ -11,11 +11,11 @@ const WaitingH1 = {
     });
   },
   view() {
-    return m("h1.f1.tc.absolute.ph5.w-100", "Waiting for other players to pick");
+    return m("h1.f1.tc.absolute.ph5.w-100", "Looking for who the cultist go this time ...");
   },
 };
 
-export default class DayExecution {
+export default class NightKilling {
   newDead = false;
 
   view() {

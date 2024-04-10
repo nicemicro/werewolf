@@ -10,13 +10,14 @@ import m from "mithril";
  * @typedef ListProps
  * @property {(e: MouseEvent, item: IListItem) => void} [onItemClick]
  * @property {Array<IListItem>} items
+ * @property {string} [className]
  */
 
 /** @type {m.Component<ListProps>} */
 const List = {
   view: (vnode) => {
-    const { items, onItemClick } = vnode.attrs;
-    return m("div.pa4.lh-copy", [
+    const { items, onItemClick, className = ''} = vnode.attrs;
+    return m(`div.pa4.lh-copy ${className}`, [
       items.map((item) =>
         m(
           "button",

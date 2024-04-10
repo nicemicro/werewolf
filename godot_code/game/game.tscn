@@ -35,6 +35,32 @@ visible = false
 layout_mode = 2
 texture = SubResource("GradientTexture2D_pqrp6")
 
+[node name="Container" type="CenterContainer" parent="DayBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnnounceDead" type="Label" parent="DayBackground/Container"]
+visible = false
+layout_mode = 2
+
+[node name="PlayersGrid" type="GridContainer" parent="DayBackground/Container"]
+visible = false
+layout_mode = 2
+columns = 6
+
+[node name="Label" type="Label" parent="DayBackground/Container/PlayersGrid"]
+layout_mode = 2
+text = "test"
+
+[node name="VoteOver" type="Label" parent="DayBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Voting time is over"
+
 [node name="NightBackground" type="TextureRect" parent="."]
 layout_mode = 2
 texture = SubResource("GradientTexture2D_7yx88")
@@ -57,6 +83,16 @@ visible = false
 layout_mode = 2
 text = "Both werewolves wake up"
 
+[node name="Cultist1Votes" type="Label" parent="NightBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Cultist 1 votes"
+
+[node name="Cultist2Votes" type="Label" parent="NightBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Cultist 2 votes"
+
 [node name="Timers" type="Control" parent="."]
 layout_mode = 2
 
@@ -65,19 +101,9 @@ wait_time = 10.0
 one_shot = true
 autostart = true
 
-[node name="BothKillersWakeUp" type="Timer" parent="Timers"]
+[node name="StepTimer" type="Timer" parent="Timers"]
 wait_time = 10.0
 one_shot = true
 
-[node name="BothKillersSleep" type="Timer" parent="Timers"]
-wait_time = 5.0
-one_shot = true
-
-[node name="GoodMorning" type="Timer" parent="Timers"]
-wait_time = 5.0
-one_shot = true
-
 [connection signal="timeout" from="Timers/FirstNightSleep" to="." method="_changeScreen"]
-[connection signal="timeout" from="Timers/BothKillersWakeUp" to="." method="_changeScreen"]
-[connection signal="timeout" from="Timers/BothKillersSleep" to="." method="_changeScreen"]
-[connection signal="timeout" from="Timers/GoodMorning" to="." method="_changeScreen"]
+[connection signal="timeout" from="Timers/StepTimer" to="." method="_changeScreen"]

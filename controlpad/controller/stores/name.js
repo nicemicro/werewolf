@@ -35,6 +35,14 @@ export const reducer = cond([
   [[ActionNames.G_JOINED, ActionNames.G_JOINED_FAILED], handleNamingResult],
   [ActionNames.P_SUBMIT_NAME, handleSubmitName],
   [ActionNames.G_STATE_SYNC, handleStateSync],
+  [
+    ActionNames.G_STATE_SYNC,
+    /** @param {Action<{ name?:string, canStart?: boolean }>} action */
+    (action) => {
+      const { name } = action.payload
+      $name.setKey("name", name);
+    }
+  ],
 ]);
 
 /** @param {Action<{ status: string, name: string | undefined }>} action */
