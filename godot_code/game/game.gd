@@ -1,15 +1,18 @@
 extends MarginContainer
 
 signal changeScreen
+signal endGame
 
 @onready var dayScreen = $DayBackground
 @onready var nightScreen = $NightBackground
 @onready var playerGrid = $DayBackground/Container/PlayersGrid
 @onready var timer: Timer = $Timers/StepTimer
 @onready var announceDead = $DayBackground/Container/AnnounceDead
+@onready var announceWinners = $GameEndBackg/Container/AnnounceWinners
+@onready var gameEndScreen = $GameEndBackg
 @onready var firstNight: Dictionary = {
 	"name": "firstNight",
-	"timers": [10, 5, 2, 10, 2, 10, 2, 2],
+	"timers": [10, 5, 2, 5, 2, 5, 2, 1],
 	"screens": [
 		$NightBackground/Container/GoToSleep,
 		$NightBackground/Container/BothKillersWakeUp,
@@ -32,7 +35,7 @@ signal changeScreen
 }
 @onready var dayCycle: Dictionary = {
 	"name": "day",
-	"timers": [10, 40, 5, 10],
+	"timers": [10, 25, 5, 10, 10],
 	"screens": [
 		$DayBackground/Container/AnnounceDead,
 		$DayBackground/Container/PlayersGrid,
@@ -42,6 +45,12 @@ signal changeScreen
 	"command": [
 		null, votingStarts, votingEnds, votingResults, nightComes
 	]
+}
+@onready var endSequence: Dictionary = {
+	"name": "end",
+	"timers": [10],
+	"screens": [],
+	"command": [close]
 }
 
 var currentNum: int
@@ -65,6 +74,10 @@ func _ready():
 	currentSequence = firstNight
 	acceptVotes = []
 	votes = {}
+
+func close():
+	emit_signal("endGame")
+	queue_free()
 
 func firstNightSets():
 	emit_signal("changeScreen", [], "night")
@@ -98,7 +111,29 @@ func morningComes():
 	votes = {}
 
 func nightComes():
-	pass
+	var winner: int = checkWinner()
+	if winner != 0:
+		gameEnd(winner)
+		return
+
+func gameEnd(winner: int):
+	assert (winner == -1 or winner == 1)
+	currentNum = -1
+	currentSequence = endSequence
+	acceptVotes = []
+	gameEndScreen.show()
+	if winner == -1:
+		announceWinners.text = "The cultists have taken over the village."
+	else:
+		announceWinners.text = "The villagers have removed all the cultists."
+
+func checkWinner() -> int:
+	var killerNum: int = len(getRoleId([RoleList.CULTIST1, RoleList.CULTIST2]))
+	if killerNum == 0:
+		return 1
+	if len(players) < killerNum:
+		return -1
+	return 0
 
 func getRoleId(roles: Array):
 	var sendTo: Array = []

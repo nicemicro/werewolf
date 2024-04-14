@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://convv7s27oigp"]
+[gd_scene load_steps=8 format=3 uid="uid://convv7s27oigp"]
 
 [ext_resource type="Script" path="res://game/game.gd" id="1_x0r5m"]
 
@@ -8,8 +8,8 @@ colors = PackedColorArray(0.815833, 0.89, 0.445, 1, 0.794026, 0.850442, 0.421403
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_pqrp6"]
 gradient = SubResource("Gradient_4xkow")
-fill_from = Vector2(0.559633, 0)
-fill_to = Vector2(1, 1)
+fill_from = Vector2(0.550459, 0.0412844)
+fill_to = Vector2(0.954128, 0.96789)
 
 [sub_resource type="Gradient" id="Gradient_f1yr2"]
 offsets = PackedFloat32Array(0, 0.538961, 0.597403, 0.824675, 0.87013, 1)
@@ -19,6 +19,14 @@ colors = PackedColorArray(0, 0, 0, 1, 0.0132029, 0.0767609, 0.00614087, 1, 0.017
 gradient = SubResource("Gradient_f1yr2")
 fill_from = Vector2(0.155963, 0)
 fill_to = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_dqhyj"]
+offsets = PackedFloat32Array(0, 0.88961, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.435065, 0.435065, 0.435065, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fvt4b"]
+gradient = SubResource("Gradient_dqhyj")
+fill_to = Vector2(0.931193, 1)
 
 [node name="Game" type="MarginContainer"]
 anchors_preset = 15
@@ -92,6 +100,23 @@ text = "Cultist 1 votes"
 visible = false
 layout_mode = 2
 text = "Cultist 2 votes"
+
+[node name="GameEndBackg" type="TextureRect" parent="."]
+visible = false
+layout_mode = 2
+texture = SubResource("GradientTexture2D_fvt4b")
+
+[node name="Container" type="CenterContainer" parent="GameEndBackg"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnnounceWinners" type="Label" parent="GameEndBackg/Container"]
+layout_mode = 2
+text = "the winner is:"
 
 [node name="Timers" type="Control" parent="."]
 layout_mode = 2
