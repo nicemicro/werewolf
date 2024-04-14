@@ -12,7 +12,7 @@ signal endGame
 @onready var gameEndScreen = $GameEndBackg
 @onready var firstNight: Dictionary = {
 	"name": "firstNight",
-	"timers": [10, 5, 2, 5, 2, 5, 2, 1],
+	"timers": [10, 5, 2, 10, 2, 10, 2, 1],
 	"screens": [
 		$NightBackground/Container/GoToSleep,
 		$NightBackground/Container/BothKillersWakeUp,
@@ -23,7 +23,7 @@ signal endGame
 		$NightBackground/Container/GoToSleep
 	],
 	"command": [
-		firstNightSets,
+		nightSets,
 		killersSeeEachother,
 		killersBackToSleep,
 		killer1Select,
@@ -35,7 +35,7 @@ signal endGame
 }
 @onready var dayCycle: Dictionary = {
 	"name": "day",
-	"timers": [10, 25, 5, 10, 10],
+	"timers": [10, 25, 5, 10, 1],
 	"screens": [
 		$DayBackground/Container/AnnounceDead,
 		$DayBackground/Container/PlayersGrid,
@@ -46,11 +46,30 @@ signal endGame
 		null, votingStarts, votingEnds, votingResults, nightComes
 	]
 }
+@onready var nightSequence: Dictionary = {
+	"name": "night",
+	"timers": [10, 10, 2, 10, 2, 1],
+	"screens": [
+		$NightBackground/Container/GoToSleep,
+		$NightBackground/Container/Cultist1Votes,
+		$NightBackground/Container/GoToSleep,
+		$NightBackground/Container/Cultist2Votes,
+		$NightBackground/Container/GoToSleep
+	],
+	"command": [
+		null,
+		killer1Select,
+		killersBackToSleep,
+		killer2Select,
+		killersBackToSleep,
+		morningComes
+	]
+}
 @onready var endSequence: Dictionary = {
 	"name": "end",
-	"timers": [10],
-	"screens": [],
-	"command": [close]
+	"timers": [10, 10],
+	"screens": [announceWinners],
+	"command": [null, close]
 }
 
 var currentNum: int
@@ -79,8 +98,8 @@ func close():
 	emit_signal("endGame")
 	queue_free()
 
-func firstNightSets():
-	emit_signal("changeScreen", [], "night")
+func nightSets():
+	emit_signal("changeScreen", players.keys(), "night")
 
 func morningComes():
 	print(votes)
@@ -101,11 +120,15 @@ func morningComes():
 		players.erase(voteTarget)
 		playerRoles.erase(voteTarget)
 		emit_signal("changeScreen", [voteTarget], "death")
+		var winner: int = checkWinner()
+		if winner != 0:
+			gameEnd(winner)
+			return
 	else:
 		announceDead.text = "No one is dead"
 	nightScreen.visible = false
 	dayScreen.visible = true
-	emit_signal("changeScreen", [], "morning")
+	emit_signal("changeScreen", players.keys(), "morning")
 	currentSequence = dayCycle
 	currentNum = -1 #After this, curentNum will be incremented by one
 	votes = {}
@@ -115,6 +138,13 @@ func nightComes():
 	if winner != 0:
 		gameEnd(winner)
 		return
+	currentNum = -1
+	currentSequence = nightSequence
+	acceptVotes = []
+	nightScreen.visible = true
+	dayScreen.visible = false
+	votes = {}
+	emit_signal("changeScreen", players.keys(), "night")
 
 func gameEnd(winner: int):
 	assert (winner == -1 or winner == 1)
@@ -131,7 +161,7 @@ func checkWinner() -> int:
 	var killerNum: int = len(getRoleId([RoleList.CULTIST1, RoleList.CULTIST2]))
 	if killerNum == 0:
 		return 1
-	if len(players) < killerNum:
+	if len(players) <= killerNum + 1:
 		return -1
 	return 0
 
@@ -143,7 +173,7 @@ func getRoleId(roles: Array):
 	return sendTo
 
 func votingStarts():
-	emit_signal("changeScreen", [], "start vote", {"players": players})
+	emit_signal("changeScreen", players.keys(), "start vote", {"players": players})
 	var playerIconScene: PackedScene = load("res://game/player_voted.tscn")
 	for child in playerGrid.get_children():
 		playerGrid.remove_child(child)
@@ -160,7 +190,7 @@ func votingStarts():
 	]
 
 func votingEnds():
-	emit_signal("changeScreen", [], "end vote")
+	emit_signal("changeScreen", players.keys(), "end vote")
 	acceptVotes = []
 
 func votingResults():
@@ -243,10 +273,10 @@ func newRole(roleToAdd: RoleList):
 	playerRoles[playerList[selected]] = roleToAdd
 
 func _changeScreen():
-	if currentNum < len(currentSequence["screens"]):
-		currentSequence["screens"][currentNum].show()
 	if currentNum >= 1:
 		currentSequence["screens"][currentNum-1].hide()
+	if currentNum < len(currentSequence["screens"]):
+		currentSequence["screens"][currentNum].show()
 	if currentNum < len(currentSequence["timers"]):
 		timer.start(currentSequence["timers"][currentNum])
 	if currentSequence["command"][currentNum] != null:

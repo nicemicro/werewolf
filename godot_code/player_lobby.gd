@@ -7,7 +7,7 @@ extends VBoxContainer
 signal backToMain
 signal startGame
 
-func newPlayerJoins(clientId: String, playerName: String):
+func newPlayerJoins(_clientId: String, playerName: String):
 	var playerIconScene = preload("res://lobby/player_icon.tscn")
 	var playerIcon = playerIconScene.instantiate()
 	playerIcon.setName(playerName)

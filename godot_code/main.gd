@@ -42,7 +42,7 @@ func backToLobby():
 
 func changePhoneScreen(targets: Array, screenName: String, payload: Dictionary = {}):
 	if len(targets) == 0:
-		targets = players.keys()
+		return
 	payload["switch_to"] = screenName
 	payload["players"] = players.values()
 	for clientId in targets:
