@@ -33,7 +33,7 @@ signal endGame
 		morningComes
 	]
 }
-@onready var dayCycle: Dictionary = {
+@onready var daySequence: Dictionary = {
 	"name": "day",
 	"timers": [10, 25, 5, 10, 1],
 	"screens": [
@@ -48,13 +48,17 @@ signal endGame
 }
 @onready var nightSequence: Dictionary = {
 	"name": "night",
-	"timers": [10, 10, 2, 10, 2, 1],
+	"timers": [10, 10, 2, 10, 2, 10, 2, 10, 2, 1],
 	"screens": [
 		$NightBackground/Container/GoToSleep,
 		$NightBackground/Container/Cultist1Votes,
 		$NightBackground/Container/GoToSleep,
 		$NightBackground/Container/Cultist2Votes,
-		$NightBackground/Container/GoToSleep
+		$NightBackground/Container/GoToSleep,
+		$NightBackground/Container/ShamanSaves,
+		$NightBackground/Container/GoToSleep,
+		$NightBackground/Container/SeerChecks,
+		$NightBackground/Container/GoToSleep,
 	],
 	"command": [
 		null,
@@ -62,6 +66,10 @@ signal endGame
 		killersBackToSleep,
 		killer2Select,
 		killersBackToSleep,
+		shamanSaves,
+		shamanBackToSleep,
+		seerChecks,
+		seerBackToSleep,
 		morningComes
 	]
 }
@@ -109,13 +117,18 @@ func morningComes():
 		if role == RoleList.CULTIST1 or role == RoleList.CULTIST2:
 			cultistNum += 1
 	var voteTarget: String = ""
-	for votedId in votes.values():
+	var saveTarget: String = ""
+	for voterId in votes:
+		var votedId = votes[voterId]
+		if playerRoles[voterId] == RoleList.SHAMAN:
+			saveTarget = votedId
+			continue
 		voteNum += 1
 		if voteTarget == "":
 			voteTarget = votedId
 		elif voteTarget != votedId:
 			voteTarget = ""
-	if voteNum == cultistNum and voteTarget != "":
+	if voteNum == cultistNum and voteTarget != "" and saveTarget != voteTarget:
 		announceDead.text = players[voteTarget] + " was killed at night"
 		players.erase(voteTarget)
 		playerRoles.erase(voteTarget)
@@ -129,7 +142,7 @@ func morningComes():
 	nightScreen.visible = false
 	dayScreen.visible = true
 	emit_signal("changeScreen", players.keys(), "morning")
-	currentSequence = dayCycle
+	currentSequence = daySequence
 	currentNum = -1 #After this, curentNum will be incremented by one
 	votes = {}
 
@@ -165,7 +178,7 @@ func checkWinner() -> int:
 		return -1
 	return 0
 
-func getRoleId(roles: Array):
+func getRoleId(roles: Array) -> Array:
 	var sendTo: Array = []
 	for playerId in playerRoles:
 		if playerRoles[playerId] in roles:
@@ -214,6 +227,31 @@ func votingResults():
 	else:
 		announceDead.text = "No one is dead"
 
+func seerChecks():
+	acceptVotes = [RoleList.SEER]
+	emit_signal("changeScreen", getRoleId([RoleList.SEER]), "killvote") # will have to be changed to a different vote screen eventually
+
+func seerGetsInfo(accused: String):
+	acceptVotes = []
+	if (
+		playerRoles[accused] == RoleList.CULTIST1 or
+		playerRoles[accused] == RoleList.CULTIST2
+	):
+		emit_signal("changeScreen", getRoleId([RoleList.SEER]), "foundcultist")
+	else:
+		emit_signal("changeScreen", getRoleId([RoleList.SEER]), "foundvillager")
+
+func seerBackToSleep():
+	emit_signal("changeScreen", getRoleId([RoleList.SEER]), "night")
+
+func shamanSaves():
+	acceptVotes = [RoleList.SHAMAN]
+	emit_signal("changeScreen", getRoleId([RoleList.SHAMAN]), "killvote") # will have to be changed to a different vote screen eventually
+
+func shamanBackToSleep():
+	acceptVotes = []
+	emit_signal("changeScreen", getRoleId([RoleList.SHAMAN]), "night")
+
 func killer1Select():
 	acceptVotes = [RoleList.CULTIST1]
 	emit_signal("changeScreen", getRoleId([RoleList.CULTIST1]), "killvote")
@@ -244,14 +282,16 @@ func receiveMark(markFrom, markForName):
 	if not playerRoles[markFrom] in acceptVotes:
 		print("vote is not accepted from ", players[markFrom])
 		return
-	if currentSequence["name"] == "night" and playerRoles[markFrom] == RoleList.SEER:
-		# This will deal with the seer's reply for whether the selecter player is a worshipper
-		return
+	var targetId: String
 	for playerId in players:
 		if players[playerId] == markForName:
-			votes[markFrom] = playerId
-			if currentSequence["name"] == "day":
-				voteIcons[markFrom].setVoted()
+			targetId = playerId
+	if currentSequence["name"] == "night" and playerRoles[markFrom] == RoleList.SEER:
+		seerGetsInfo(targetId)
+		return
+	votes[markFrom] = targetId
+	if currentSequence["name"] == "day":
+		voteIcons[markFrom].setVoted()
 
 func assignRoles(newPlayers: Dictionary):
 	players = newPlayers

@@ -101,6 +101,16 @@ visible = false
 layout_mode = 2
 text = "Cultist 2 votes"
 
+[node name="ShamanSaves" type="Label" parent="NightBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Shaman choses someone to save"
+
+[node name="SeerChecks" type="Label" parent="NightBackground/Container"]
+visible = false
+layout_mode = 2
+text = "Seer checks whether someone is a cultist or not"
+
 [node name="GameEndBackg" type="TextureRect" parent="."]
 visible = false
 layout_mode = 2
