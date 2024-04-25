@@ -28,6 +28,7 @@ func stateChanged(newState: String):
 			var newGameNode: Control = gameScene.instantiate()
 			gameNode = newGameNode
 			gameNode.connect("changeScreen", changePhoneScreen)
+			gameNode.connect("endGame", backToLobby)
 			add_child(gameNode)
 			for clientId in clients:
 				sendMessage(clientId, "PLAY", {})
@@ -36,9 +37,12 @@ func stateChanged(newState: String):
 				sendMessage(clientId, "ASSIGN_ROLE", {"role": roles[clientId]})
 	gameState = newState
 
+func backToLobby():
+	stateChanged("joinGame")
+
 func changePhoneScreen(targets: Array, screenName: String, payload: Dictionary = {}):
 	if len(targets) == 0:
-		targets = players.keys()
+		return
 	payload["switch_to"] = screenName
 	payload["players"] = players.values()
 	for clientId in targets:
