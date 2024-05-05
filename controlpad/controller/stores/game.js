@@ -87,7 +87,7 @@ export const $game = nanostores.map({
   cycle: Cycle.DAY,
   hour: undefined,
   gameState: GameState.MAIN_MENU,
-  result: undefined
+  result: undefined,
 });
 
 /**

@@ -13,6 +13,7 @@ import LookUp from "./routes/lookup.js";
 import NightKilling from "./routes/night-killing.js";
 import GameOver from "./routes/game-over.js";
 import DayTime from "./routes/day-time.js";
+import Result from "./routes/result.js";
 
 const node = document.getElementById("werewolfapp");
 
@@ -31,5 +32,6 @@ if (node) {
     '/dead': Dead,
     '/look-up': LookUp,
     '/game-over': GameOver,
+    '/result': Result
   });
 }
