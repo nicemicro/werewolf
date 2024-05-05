@@ -37,7 +37,7 @@ export default class NightPick {
   gameState = $game.get();
 
   /** @type {import('../stores/pick.js').PickStore} */
-  dayState = $pick.get();
+  pickState = $pick.get();
 
   /** @type {Array<() => void>} */
   _unsub = [];
@@ -56,8 +56,8 @@ export default class NightPick {
 
   /** @param {import('../stores/pick.js').PickStore} state */
   onPickStoreChange(state) {
-    this.dayState = state;
-    if (this.dayState.pickedUser) {
+    this.pickState = state;
+    if (this.pickState.pickedUser) {
       this.waiting = true;
     }
   }

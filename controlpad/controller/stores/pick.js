@@ -7,7 +7,8 @@ import { cond } from "../util/cond.js";
 
 /**
  * @typedef {Object} PickStore
- * @property {User | undefined} pickedUser - The user picked for execution in the current day cycle
+ * @property {User | undefined} pickedUser - The user picked for execution in the current cycle
+ * @property {User | undefined} lastPick - Used to store the last pick, doesn't reset
  */
 
 /**
@@ -15,6 +16,7 @@ import { cond } from "../util/cond.js";
  */
 export const $pick = nanostores.map({
   pickedUser: undefined,
+  lastPick: undefined,
 });
 
 /**
@@ -34,6 +36,7 @@ export const reduce = cond([
     /** @param {Action<User>} action */
     (action) => {
       $pick.setKey("pickedUser", action.payload);
+      $pick.setKey('lastPick', action.payload)
       channel.sendMessage(action);
     },
   ] , [

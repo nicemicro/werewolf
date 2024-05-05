@@ -3,6 +3,7 @@ import { Action, ActionNames } from "../util/action.js";
 import channel from "../util/channel.js";
 import { cond } from "../util/cond.js";
 import m from 'mithril';
+import { $pick } from "./pick.js";
 
 export const startGameAction = () =>
   Action.create(ActionNames.P_START_GAME, {});
@@ -66,23 +67,27 @@ export const GameState = {
  * @property {GameState} gameState
  * @property {Cycle} cycle
  * @property {Hour | undefined} hour
+ * @property {{ title: string, description: string } | undefined} result 
  */
+
+const search = window.location.search;
+const params = new URLSearchParams(search);
 
 /**
  * @type {nanostores.MapStore<GameStore>}
  */
 export const $game = nanostores.map({
   connected: false,
-  debug: false,
+  debug: (params.get('debug') ?? 'false') === 'true',
   gameStarted: false,
   canStart: false,
   dead: false,
-  role: undefined,
+  role: Role.CULTIST1,
   partner: undefined,
-  pickedUser: undefined,
   cycle: Cycle.DAY,
   hour: undefined,
   gameState: GameState.MAIN_MENU,
+  result: undefined
 });
 
 /**
@@ -123,15 +128,19 @@ export const reduce = cond([
 ]);
 
 
-/** @typedef {'night' | 'morning' | 'killvote' | 'death' | 'look up'} ScreenKeys */
+/** @typedef {'night' | 'morning' | 'killvote' | 'death' | 'look up' | 'start vote' | 'foundcultist' | 'foundvillager'} ScreenKeys */
 
 /** @type {Record<ScreenKeys, [string, Cycle | undefined]>} */
 const TargetScreen = {
   'night': ['/night-time', Cycle.NIGHT],
-  'killvote': ['/night-pick', undefined],
+  'killvote': ['/night-pick', Cycle.NIGHT],
   'morning': ['/day-pick', Cycle.DAY],
   'death': ['/dead', Cycle.NIGHT],
   'look up': ['/look-up', Cycle.NIGHT],
+  'start vote': ['/day-pick', Cycle.DAY], 
+  // Seer result
+  'foundvillager': ['/result', Cycle.NIGHT],
+  'foundcultist': ['/result', Cycle.NIGHT]
 }
 
 /**
@@ -146,6 +155,21 @@ function handleScreenSwitch(action) {
     $game.setKey('dead', true);
   }
 
+  if (switch_to === 'foundcultist') {
+    const { lastPick } = $pick.get();
+    $game.setKey('result', {
+      title: 'The spirits found a ravenous aura', 
+      description: `${lastPick?.name} is a cultist` 
+    })
+  }
+  if (switch_to === 'foundvillager') {
+    const { lastPick } = $pick.get();
+    $game.setKey('result', {
+      title: 'The spirits found a simple creature', 
+      description: `${lastPick?.name} is a villager` 
+    })
+  }
+ 
   if (typeof partner === 'string') {
     $game.setKey('partner', partner);
   }
