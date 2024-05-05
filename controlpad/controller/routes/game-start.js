@@ -22,7 +22,7 @@ const RoleMsg = {
   ],
   [Role.SEER]: [
     'a Seer',
-    "At night vision come to you. You can ask the visions if someones follows the Wolf, and the visions will tell you the truth."
+    "At night visions come to you. You can ask the visions if someones follows the Wolf, and the visions will tell you the truth."
   ],
   [Role.SHAMAN]: [
     'a Seer',

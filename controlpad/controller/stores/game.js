@@ -82,7 +82,7 @@ export const $game = nanostores.map({
   gameStarted: false,
   canStart: false,
   dead: false,
-  role: Role.CULTIST1,
+  role: undefined,
   partner: undefined,
   cycle: Cycle.DAY,
   hour: undefined,
@@ -158,14 +158,14 @@ function handleScreenSwitch(action) {
   if (switch_to === 'foundcultist') {
     const { lastPick } = $pick.get();
     $game.setKey('result', {
-      title: 'The spirits found a ravenous aura', 
+      title: 'The visions show a ravenous aura', 
       description: `${lastPick?.name} is a cultist` 
     })
   }
   if (switch_to === 'foundvillager') {
     const { lastPick } = $pick.get();
     $game.setKey('result', {
-      title: 'The spirits found a simple creature', 
+      title: 'The visions show a simple creature', 
       description: `${lastPick?.name} is a villager` 
     })
   }
