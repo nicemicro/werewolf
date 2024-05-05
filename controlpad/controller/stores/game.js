@@ -128,7 +128,7 @@ export const reduce = cond([
 ]);
 
 
-/** @typedef {'night' | 'morning' | 'killvote' | 'death' | 'look up' | 'start vote' | 'foundcultist' | 'foundvillager'} ScreenKeys */
+/** @typedef {'night' | 'morning' | 'killvote' | 'death' | 'look up' | 'start vote' | 'foundcultist' | 'foundvillager' | 'end vote'} ScreenKeys */
 
 /** @type {Record<ScreenKeys, [string, Cycle | undefined]>} */
 const TargetScreen = {
@@ -140,7 +140,8 @@ const TargetScreen = {
   'start vote': ['/day-pick', Cycle.DAY], 
   // Seer result
   'foundvillager': ['/result', Cycle.NIGHT],
-  'foundcultist': ['/result', Cycle.NIGHT]
+  'foundcultist': ['/result', Cycle.NIGHT],
+  'end vote': ['/result', Cycle.DAY],
 }
 
 /**
@@ -167,6 +168,13 @@ function handleScreenSwitch(action) {
     $game.setKey('result', {
       title: 'The visions show a simple creature', 
       description: `${lastPick?.name} is a villager` 
+    })
+  }
+
+    if (switch_to === 'end vote') {
+    $game.setKey('result', {
+      title: 'The town has voted', 
+      description: `Soon someone will be hanged` 
     })
   }
  
