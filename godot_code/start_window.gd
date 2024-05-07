@@ -2,6 +2,7 @@ extends VBoxContainer
 
 @onready var menuPlace: Control = $Columns/MenuCol
 var lobbyNode: VBoxContainer = null
+var debugMode: bool = false
 
 signal stateChanged
 
@@ -30,8 +31,14 @@ func openMainMenu():
 	emit_signal("stateChanged", "mainMenu")
 
 func startGame():
-	emit_signal("stateChanged", "startGame")
+	var kwargs: Dictionary = {}
+	if debugMode:
+		kwargs["debug"] = true
+	emit_signal("stateChanged", "startGame", kwargs)
 	queue_free()
 
 func _on_exit_button_pressed():
 	get_tree().quit()
+
+func _on_check_box_toggled(toggled_on: bool):
+	debugMode = toggled_on

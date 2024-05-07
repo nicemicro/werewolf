@@ -6,6 +6,7 @@ signal endGame
 @onready var dayScreen = $DayBackground
 @onready var nightScreen = $NightBackground
 @onready var playerGrid = $DayBackground/Container/PlayersGrid
+@onready var skipButton = $SkipButton
 @onready var timer: Timer = $Timers/StepTimer
 @onready var announceDead = $DayBackground/Container/AnnounceDead
 @onready var announceWinners = $GameEndBackg/Container/AnnounceWinners
@@ -87,6 +88,7 @@ var playerRoles: Dictionary
 var acceptVotes: Array
 var votes: Dictionary
 var voteIcons: Dictionary
+var debugMode: bool = false
 
 enum RoleList { # DO NOT CHANGE THIS without also consulting the controller code for roles
 	VILLAGER,
@@ -101,6 +103,9 @@ func _ready():
 	currentSequence = firstNight
 	acceptVotes = []
 	votes = {}
+	if debugMode:
+		skipButton.visible = true
+		timer.stop()
 
 func close():
 	emit_signal("endGame")
@@ -319,6 +324,16 @@ func _changeScreen():
 		currentSequence["screens"][currentNum].show()
 	if currentNum < len(currentSequence["timers"]):
 		timer.start(currentSequence["timers"][currentNum])
+	if currentSequence["command"][currentNum] != null:
+		currentSequence["command"][currentNum].call()
+	currentNum += 1
+
+
+func _on_skip_button_pressed():
+	if currentNum >= 1:
+		currentSequence["screens"][currentNum-1].hide()
+	if currentNum < len(currentSequence["screens"]):
+		currentSequence["screens"][currentNum].show()
 	if currentSequence["command"][currentNum] != null:
 		currentSequence["command"][currentNum].call()
 	currentNum += 1
