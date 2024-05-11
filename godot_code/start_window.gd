@@ -35,7 +35,7 @@ func startGame():
 	if debugMode:
 		kwargs["debug"] = true
 	emit_signal("stateChanged", "startGame", kwargs)
-	queue_free()
+	hide()
 
 func _on_exit_button_pressed():
 	get_tree().quit()

@@ -41,6 +41,7 @@ func stateChanged(newState: String, kwargs: Dictionary = {}):
 	gameState = newState
 
 func backToLobby():
+	mainMenuWindow.show()
 	stateChanged("joinGame")
 
 func changePhoneScreen(targets: Array, screenName: String, payload: Dictionary = {}):
