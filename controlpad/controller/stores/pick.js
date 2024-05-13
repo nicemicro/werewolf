@@ -45,5 +45,7 @@ export const reduce = cond([
     // Clear picks on new screen
     ActionNames.G_SCREEN_SWITCH,
     () => $pick.setKey('pickedUser', undefined)
-  ],
+  ], [
+    ActionNames.P_RESET, () => $pick.set(initialState)
+  ]
 ]);

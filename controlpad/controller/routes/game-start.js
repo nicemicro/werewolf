@@ -25,7 +25,7 @@ const RoleMsg = {
     "At night visions come to you. You can ask the visions if someones follows the Wolf, and the visions will tell you the truth."
   ],
   [Role.SHAMAN]: [
-    'a Seer',
+    'a Shaman',
     "At night spirits warn of someone in need. You can visit someone in the hopes of healing them after the cultist attack."
   ],
 }

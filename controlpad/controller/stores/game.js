@@ -4,6 +4,7 @@ import channel from "../util/channel.js";
 import { cond } from "../util/cond.js";
 import m from 'mithril';
 import { $pick } from "./pick.js";
+import { dispatch } from "./store.js";
 
 export const startGameAction = () =>
   Action.create(ActionNames.P_START_GAME, {});
@@ -11,6 +12,8 @@ export const showRulesAction = () =>
   Action.create(ActionNames.P_SHOW_RULES, {});
 export const showCreditsAction = () =>
   Action.create(ActionNames.P_SHOW_CREDITS, {});
+export const resetAction = () => 
+  Action.create(ActionNames.P_RESET, {});
 
 /** @enum {string} */
 export const Role = {
@@ -61,8 +64,7 @@ export const GameState = {
  * @property {boolean} canStart
  * @property {boolean} dead
  * @property {Role | undefined} role
- * @property {string} partner Name of the other cultist in case you are one
- * @property {Object | undefined} pickedUser
+ * @property {string | undefined} partner Name of the other cultist in case you are one
  * @property {GameState} gameState
  * @property {Cycle} cycle
  * @property {Hour | undefined} hour
@@ -115,6 +117,10 @@ export const reduce = cond([
     (a) => channel.sendMessage(a),
   ],
   [ActionNames.G_GAME_STARTED, () => {
+    if ($game.get().gameStarted) {
+      dispatch(resetAction());
+      return;
+    }
     $game.setKey("gameStarted", true)
     $game.setKey("gameState", GameState.JOIN_GAME)
   }],
@@ -126,6 +132,13 @@ export const reduce = cond([
     a => $game.setKey("role", RoleList[a.payload.role])
   ],
   [ActionNames.G_SCREEN_SWITCH, handleScreenSwitch],
+  [
+    ActionNames.P_RESET, () => $game.set({
+      ...initialState,
+      gameState: GameState.JOIN_GAME,
+      gameStarted: true, 
+    })
+  ]
 ]);
 
 
