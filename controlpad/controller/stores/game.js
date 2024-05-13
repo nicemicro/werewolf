@@ -29,7 +29,6 @@ export const RoleList = [
   Role.VILLAGER,
   Role.CULTIST1,
   Role.CULTIST2,
-  Role.VILLAGER,
   Role.SEER,
   Role.SHAMAN,
 ]
@@ -73,10 +72,7 @@ export const GameState = {
 const search = window.location.search;
 const params = new URLSearchParams(search);
 
-/**
- * @type {nanostores.MapStore<GameStore>}
- */
-export const $game = nanostores.map({
+const initialState = {
   connected: false,
   debug: (params.get('debug') ?? 'false') === 'true',
   gameStarted: false,
@@ -88,7 +84,12 @@ export const $game = nanostores.map({
   hour: undefined,
   gameState: GameState.MAIN_MENU,
   result: undefined,
-});
+};
+
+/**
+ * @type {nanostores.MapStore<GameStore>}
+ */
+export const $game = nanostores.map(initialState);
 
 /**
  * @param {Action} action
@@ -134,7 +135,7 @@ export const reduce = cond([
 const TargetScreen = {
   'night': ['/night-time', Cycle.NIGHT],
   'killvote': ['/night-pick', Cycle.NIGHT],
-  'morning': ['/day-pick', Cycle.DAY],
+  'morning': ['/day-time', Cycle.DAY],
   'death': ['/dead', Cycle.NIGHT],
   'look up': ['/look-up', Cycle.NIGHT],
   'start vote': ['/day-pick', Cycle.DAY], 

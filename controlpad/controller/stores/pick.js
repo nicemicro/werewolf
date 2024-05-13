@@ -11,13 +11,15 @@ import { cond } from "../util/cond.js";
  * @property {User | undefined} lastPick - Used to store the last pick, doesn't reset
  */
 
+const initialState = {
+  pickedUser: undefined,
+  lastPick: undefined,
+}
+
 /**
  * @type {nanostores.MapStore<PickStore>}
  */
-export const $pick = nanostores.map({
-  pickedUser: undefined,
-  lastPick: undefined,
-});
+export const $pick = nanostores.map(initialState);
 
 /**
  * @param {User} user - The user picked by the player

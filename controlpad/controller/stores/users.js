@@ -27,12 +27,7 @@ export class User {
 /**
  * @type {nanostores.WritableAtom<Array<User>>}
  */
-export const $users = nanostores.atom([
-  { name: "Nicky", alive: true },
-  { name: "Airam", alive: true },
-  { name: "Safwaan", alive: true },
-  { name: "NiceMicro", alive: true },
-]);
+export const $users = nanostores.atom([]);
 
 /**
  * @param {import('../util/action').Action} action
