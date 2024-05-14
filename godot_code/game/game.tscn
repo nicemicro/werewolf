@@ -131,14 +131,17 @@ text = "the winner is:"
 [node name="Timers" type="Control" parent="."]
 layout_mode = 2
 
-[node name="FirstNightSleep" type="Timer" parent="Timers"]
+[node name="StepTimer" type="Timer" parent="Timers"]
 wait_time = 10.0
 one_shot = true
 autostart = true
 
-[node name="StepTimer" type="Timer" parent="Timers"]
-wait_time = 10.0
-one_shot = true
+[node name="SkipButton" type="Button" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Next step ->"
 
-[connection signal="timeout" from="Timers/FirstNightSleep" to="." method="_changeScreen"]
 [connection signal="timeout" from="Timers/StepTimer" to="." method="_changeScreen"]
+[connection signal="pressed" from="SkipButton" to="." method="_on_skip_button_pressed"]

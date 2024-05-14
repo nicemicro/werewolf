@@ -6,6 +6,7 @@ signal endGame
 @onready var dayScreen = $DayBackground
 @onready var nightScreen = $NightBackground
 @onready var playerGrid = $DayBackground/Container/PlayersGrid
+@onready var skipButton = $SkipButton
 @onready var timer: Timer = $Timers/StepTimer
 @onready var announceDead = $DayBackground/Container/AnnounceDead
 @onready var announceWinners = $GameEndBackg/Container/AnnounceWinners
@@ -83,10 +84,12 @@ signal endGame
 var currentNum: int
 var currentSequence: Dictionary
 var players: Dictionary
+var deadPlayers: Dictionary
 var playerRoles: Dictionary
 var acceptVotes: Array
 var votes: Dictionary
 var voteIcons: Dictionary
+var debugMode: bool = false
 
 enum RoleList { # DO NOT CHANGE THIS without also consulting the controller code for roles
 	VILLAGER,
@@ -101,6 +104,9 @@ func _ready():
 	currentSequence = firstNight
 	acceptVotes = []
 	votes = {}
+	if debugMode:
+		skipButton.visible = true
+		timer.stop()
 
 func close():
 	emit_signal("endGame")
@@ -130,8 +136,7 @@ func morningComes():
 			voteTarget = ""
 	if voteNum == cultistNum and voteTarget != "" and saveTarget != voteTarget:
 		announceDead.text = players[voteTarget] + " was killed at night"
-		players.erase(voteTarget)
-		playerRoles.erase(voteTarget)
+		killPlayer(voteTarget)
 		emit_signal("changeScreen", [voteTarget], "death")
 		var winner: int = checkWinner()
 		if winner != 0:
@@ -170,6 +175,11 @@ func gameEnd(winner: int):
 	else:
 		announceWinners.text = "The villagers have removed all the cultists."
 
+func killPlayer(playerId: String):
+	deadPlayers[playerId] = players[playerId]
+	players.erase(playerId)
+	playerRoles.erase(playerId)
+
 func checkWinner() -> int:
 	var killerNum: int = len(getRoleId([RoleList.CULTIST1, RoleList.CULTIST2]))
 	if killerNum == 0:
@@ -188,6 +198,7 @@ func getRoleId(roles: Array) -> Array:
 func votingStarts():
 	emit_signal("changeScreen", players.keys(), "start vote", {"players": players})
 	var playerIconScene: PackedScene = load("res://game/player_voted.tscn")
+	var deadPlayerScene: PackedScene = load("res://game/tombstone.tscn")
 	for child in playerGrid.get_children():
 		playerGrid.remove_child(child)
 		child.queue_free()
@@ -197,6 +208,10 @@ func votingStarts():
 		newIcon = playerIconScene.instantiate()
 		newIcon.setName(players[player])
 		voteIcons[player] = newIcon
+		playerGrid.add_child(newIcon)
+	for player in deadPlayers:
+		newIcon = deadPlayerScene.instantiate()
+		newIcon.setName(deadPlayers[player])
 		playerGrid.add_child(newIcon)
 	acceptVotes = [
 		RoleList.CULTIST1, RoleList.CULTIST2, RoleList.SEER, RoleList.SHAMAN, RoleList.VILLAGER
@@ -221,8 +236,7 @@ func votingResults():
 			maxVotes = votedId
 	if maxVotes != "":
 		announceDead.text = players[maxVotes] + " was executed by the village"
-		players.erase(maxVotes)
-		playerRoles.erase(maxVotes)
+		killPlayer(maxVotes)
 		emit_signal("changeScreen", [maxVotes], "death")
 	else:
 		announceDead.text = "No one is dead"
@@ -319,6 +333,16 @@ func _changeScreen():
 		currentSequence["screens"][currentNum].show()
 	if currentNum < len(currentSequence["timers"]):
 		timer.start(currentSequence["timers"][currentNum])
+	if currentSequence["command"][currentNum] != null:
+		currentSequence["command"][currentNum].call()
+	currentNum += 1
+
+
+func _on_skip_button_pressed():
+	if currentNum >= 1:
+		currentSequence["screens"][currentNum-1].hide()
+	if currentNum < len(currentSequence["screens"]):
+		currentSequence["screens"][currentNum].show()
 	if currentSequence["command"][currentNum] != null:
 		currentSequence["command"][currentNum].call()
 	currentNum += 1

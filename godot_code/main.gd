@@ -12,7 +12,7 @@ func _ready():
 	mainMenuWindow.connect("stateChanged", stateChanged)
 	randomize()
 
-func stateChanged(newState: String):
+func stateChanged(newState: String, kwargs: Dictionary = {}):
 	assert(gameState != newState)
 	match newState:
 		"joinGame":
@@ -27,8 +27,11 @@ func stateChanged(newState: String):
 			var gameScene = preload("res://game/game.tscn")
 			var newGameNode: Control = gameScene.instantiate()
 			gameNode = newGameNode
-			gameNode.connect("changeScreen", changePhoneScreen)
-			gameNode.connect("endGame", backToLobby)
+			if "debug" in kwargs and kwargs["debug"]:
+				print_debug("debug on")
+				gameNode.debugMode = true
+			gameNode.changeScreen.connect(changePhoneScreen)
+			gameNode.endGame.connect(backToLobby)
 			add_child(gameNode)
 			for clientId in clients:
 				sendMessage(clientId, "PLAY", {})
@@ -38,6 +41,7 @@ func stateChanged(newState: String):
 	gameState = newState
 
 func backToLobby():
+	mainMenuWindow.show()
 	stateChanged("joinGame")
 
 func changePhoneScreen(targets: Array, screenName: String, payload: Dictionary = {}):

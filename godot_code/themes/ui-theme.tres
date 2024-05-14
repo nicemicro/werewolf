@@ -1,12 +1,26 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dl6cdaxq05lui"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dl6cdaxq05lui"]
 
 [ext_resource type="FontFile" uid="uid://co8crn73pvabe" path="res://themes/font-montserrat/Montserrat-Regular.ttf" id="1_sgaxw"]
 [ext_resource type="FontFile" uid="uid://b1i4vahw1un2n" path="res://themes/font-montserrat/Montserrat-SemiBold.ttf" id="2_2rlrj"]
 [ext_resource type="FontFile" uid="uid://b8kpwc2ae1wiw" path="res://themes/font-montserrat/Montserrat-Medium.ttf" id="3_bx86r"]
 
+[sub_resource type="Gradient" id="Gradient_o1y2g"]
+colors = PackedColorArray(0.537011, 0.537011, 0.537011, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q0y1s"]
+gradient = SubResource("Gradient_o1y2g")
+
+[sub_resource type="Gradient" id="Gradient_3kjx0"]
+colors = PackedColorArray(0.205117, 0.205117, 0.205117, 1, 0.218412, 0.253525, 0.250081, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lov6l"]
+gradient = SubResource("Gradient_3kjx0")
+
 [resource]
 Button/font_sizes/font_size = 50
 Button/fonts/font = ExtResource("2_2rlrj")
+CheckBox/icons/checked = SubResource("GradientTexture2D_q0y1s")
+CheckBox/icons/unchecked = SubResource("GradientTexture2D_lov6l")
 Fonts/fonts/large = ExtResource("1_sgaxw")
 Fonts/fonts/normal = ExtResource("2_2rlrj")
 Label/font_sizes/font_size = 50

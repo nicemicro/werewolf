@@ -29,9 +29,17 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Left" type="CenterContainer" parent="Columns"]
+[node name="Left" type="MarginContainer" parent="Columns"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="CheckBox" type="CheckBox" parent="Columns/Left"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+tooltip_text = "No timers, only clicking.
+(you MUST start the game with the UI in Godot for this setting to take effect)"
+text = "Debug"
 
 [node name="MenuCol" type="MarginContainer" parent="Columns"]
 layout_mode = 2
@@ -51,4 +59,5 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Exit"
 
+[connection signal="toggled" from="Columns/Left/CheckBox" to="." method="_on_check_box_toggled"]
 [connection signal="pressed" from="Columns/Right/ExitButton" to="." method="_on_exit_button_pressed"]
