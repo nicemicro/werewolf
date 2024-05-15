@@ -17,6 +17,7 @@ export default class Joining extends ConnectedComponent {
    */
   // eslint-disable-next-line no-unused-vars
   onStoreChange(value, oldValue) {
+    console.log(value.debug);
     if (value.connected && !value.debug) {
       m.route.set("/menu");
     }

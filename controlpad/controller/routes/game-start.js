@@ -2,7 +2,7 @@ import Layout from "../components/layout.js";
 import m from "mithril";
 import Button from "../components/button.js";
 import channel from "../util/channel.js";
-import {$game, Role} from '../stores/game.js';
+import { $game, Role } from '../stores/game.js';
 import { Action, ActionNames } from "../util/action.js";
 import ConnectedComponent from "../util/connected-component.js";
 
@@ -22,10 +22,10 @@ const RoleMsg = {
   ],
   [Role.SEER]: [
     'a Seer',
-    "At night vision come to you. You can ask the visions if someones follows the Wolf, and the visions will tell you the truth."
+    "At night visions come to you. You can ask the visions if someones follows the Wolf, and the visions will tell you the truth."
   ],
   [Role.SHAMAN]: [
-    'a Seer',
+    'a Shaman',
     "At night spirits warn of someone in need. You can visit someone in the hopes of healing them after the cultist attack."
   ],
 }
@@ -43,10 +43,16 @@ export default class GameStart extends ConnectedComponent {
     // TODO check if this should be the condition, or if GAME_STARTED
     const role = $game.get().role;
     return m(Layout, role
-      ? m('div.pa4', [
-        m('h3.f3.tc.mb3', `You are a ${RoleMsg[role][0]}`),
-        m('p.f4.tc.mb3', RoleMsg[role][1]),
-        m('img.mb3', { src: `/resources/roles/${role.toLowerCase()}.jpg`, alt: role})
+      ? m('div.pa4.max-height-100.h-100', [
+        m('div.flex.flex-column.flex-row-ns.max-height-100', [
+          m('div.flex-1', [
+            m('h2.f3.tc.mb3', `You are a ${RoleMsg[role][0]}`),
+            m('p.f4.tc.mb3', RoleMsg[role][1]),
+          ]),
+          m('div.pa2.max-height-100', [
+            m('img.mb2.flex-0.h-100.mr-auto.ml-auto.db', { src: `/resources/roles/${role.toLowerCase()}.jpg`, alt: role })
+          ])
+        ])
       ]) : [
         m("h1.f1.tc", "Welcome to The Cult of the Wolf"),
         m("h3.f3.tc", "Everyone is ready, hit play to start the first round"),

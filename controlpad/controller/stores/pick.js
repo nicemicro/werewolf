@@ -7,15 +7,19 @@ import { cond } from "../util/cond.js";
 
 /**
  * @typedef {Object} PickStore
- * @property {User | undefined} pickedUser - The user picked for execution in the current day cycle
+ * @property {User | undefined} pickedUser - The user picked for execution in the current cycle
+ * @property {User | undefined} lastPick - Used to store the last pick, doesn't reset
  */
+
+const initialState = {
+  pickedUser: undefined,
+  lastPick: undefined,
+}
 
 /**
  * @type {nanostores.MapStore<PickStore>}
  */
-export const $pick = nanostores.map({
-  pickedUser: undefined,
-});
+export const $pick = nanostores.map(initialState);
 
 /**
  * @param {User} user - The user picked by the player
@@ -34,11 +38,14 @@ export const reduce = cond([
     /** @param {Action<User>} action */
     (action) => {
       $pick.setKey("pickedUser", action.payload);
+      $pick.setKey('lastPick', action.payload)
       channel.sendMessage(action);
     },
   ] , [
     // Clear picks on new screen
     ActionNames.G_SCREEN_SWITCH,
     () => $pick.setKey('pickedUser', undefined)
-  ],
+  ], [
+    ActionNames.P_RESET, () => $pick.set(initialState)
+  ]
 ]);

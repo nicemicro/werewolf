@@ -26,6 +26,7 @@ channel.addConnectedHandler(() => {
 channel.addOnMessageHandler(dispatch);
 
 $game.subscribe((val, oldValue) => {
+  console.log(val.debug)
   if (val.debug || val.dead) return;
   if (val.gameState !== oldValue?.gameState) {
     if (val.gameState === GameState.MAIN_MENU) {

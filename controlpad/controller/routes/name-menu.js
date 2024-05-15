@@ -26,7 +26,10 @@ class NameForm {
       input.setCustomValidity(
         "The name must contain only letters and at least 3 characters",
       );
+    } else {
+      input.setCustomValidity("");
     }
+
     this.name = input.value;
   }
 

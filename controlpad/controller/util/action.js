@@ -27,6 +27,7 @@ export const ActionNames = {
   G_SCREEN_SWITCH: 'SCREEN_SWITCH',
   // User Pick
   P_PICK_USER: "PICK_USER",
+  P_RESET: 'RESET',
 };
 
 /**
