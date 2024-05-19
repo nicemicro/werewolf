@@ -196,7 +196,12 @@ func getRoleId(roles: Array) -> Array:
 	return sendTo
 
 func votingStarts():
-	emit_signal("changeScreen", players.keys(), "start vote", {"players": players})
+	emit_signal(
+		"changeScreen",
+		players.keys(),
+		"start vote",
+		{"players": players.values()}
+	)
 	var playerIconScene: PackedScene = load("res://game/player_voted.tscn")
 	var deadPlayerScene: PackedScene = load("res://game/tombstone.tscn")
 	for child in playerGrid.get_children():
@@ -243,7 +248,12 @@ func votingResults():
 
 func seerChecks():
 	acceptVotes = [RoleList.SEER]
-	emit_signal("changeScreen", getRoleId([RoleList.SEER]), "killvote") # will have to be changed to a different vote screen eventually
+	emit_signal(
+		"changeScreen",
+		getRoleId([RoleList.SEER]),
+		"killvote",
+		{"players": players.values()}
+	) # will have to be changed to a different vote screen eventually
 
 func seerGetsInfo(accused: String):
 	acceptVotes = []
@@ -260,7 +270,12 @@ func seerBackToSleep():
 
 func shamanSaves():
 	acceptVotes = [RoleList.SHAMAN]
-	emit_signal("changeScreen", getRoleId([RoleList.SHAMAN]), "killvote") # will have to be changed to a different vote screen eventually
+	emit_signal(
+		"changeScreen",
+		getRoleId([RoleList.SHAMAN]),
+		"killvote",
+		{"players": players.values()}
+	) # will have to be changed to a different vote screen eventually
 
 func shamanBackToSleep():
 	acceptVotes = []
@@ -268,11 +283,21 @@ func shamanBackToSleep():
 
 func killer1Select():
 	acceptVotes = [RoleList.CULTIST1]
-	emit_signal("changeScreen", getRoleId([RoleList.CULTIST1]), "killvote")
+	emit_signal(
+		"changeScreen",
+		getRoleId([RoleList.CULTIST1]),
+		"killvote",
+		{"players": players.values()}
+	)
 
 func killer2Select():
 	acceptVotes = [RoleList.CULTIST2]
-	emit_signal("changeScreen", getRoleId([RoleList.CULTIST2]), "killvote")
+	emit_signal(
+		"changeScreen",
+		getRoleId([RoleList.CULTIST2]),
+		"killvote",
+		{"players": players.values()}
+	)
 
 func killersSeeEachother():
 	emit_signal(
@@ -308,7 +333,7 @@ func receiveMark(markFrom, markForName):
 		voteIcons[markFrom].setVoted()
 
 func assignRoles(newPlayers: Dictionary):
-	players = newPlayers
+	players = newPlayers.duplicate()
 	for role in RoleList:
 		if RoleList[role] == RoleList.VILLAGER:
 			continue
