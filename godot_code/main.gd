@@ -16,6 +16,7 @@ func stateChanged(newState: String, kwargs: Dictionary = {}):
 	assert(gameState != newState)
 	match newState:
 		"joinGame":
+			mainMenuWindow.lobbyNode.removePlayerIcons()
 			for clientId in clients:
 				sendMessage(clientId, "GAME_STARTED", {})
 			mainMenuWindow.lobbyNode.playerNumberChange(len(players), len(clients))
@@ -41,6 +42,7 @@ func stateChanged(newState: String, kwargs: Dictionary = {}):
 	gameState = newState
 
 func backToLobby():
+	players = {}
 	mainMenuWindow.show()
 	stateChanged("joinGame")
 
@@ -48,7 +50,8 @@ func changePhoneScreen(targets: Array, screenName: String, payload: Dictionary =
 	if len(targets) == 0:
 		return
 	payload["switch_to"] = screenName
-	payload["players"] = players.values()
+	if "players" not in payload.keys():
+		payload["players"] = []
 	for clientId in targets:
 		sendMessage(clientId, "SCREEN_SWITCH", payload)
 

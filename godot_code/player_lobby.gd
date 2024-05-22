@@ -7,6 +7,10 @@ extends VBoxContainer
 signal backToMain
 signal startGame
 
+func removePlayerIcons():
+	for icon in playerIconGrid.get_children():
+		icon.queue_free()
+
 func newPlayerJoins(_clientId: String, playerName: String):
 	var playerIconScene = preload("res://lobby/player_icon.tscn")
 	var playerIcon = playerIconScene.instantiate()
