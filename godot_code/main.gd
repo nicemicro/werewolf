@@ -9,7 +9,7 @@ var players: Dictionary = {}
 var clients: Array = []
 
 func _ready():
-	mainMenuWindow.connect("stateChanged", stateChanged)
+	mainMenuWindow.stateChanged.connect(stateChanged)
 	randomize()
 
 func stateChanged(newState: String, kwargs: Dictionary = {}):

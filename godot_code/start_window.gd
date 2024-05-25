@@ -8,15 +8,16 @@ signal stateChanged
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	menuPlace.get_child(0).connect("startButtonPressed", openGameJoin)
+	menuPlace.get_child(0).startButtonPressed.connect(openGameJoin)
+	menuPlace.get_child(0).creditsPressed.connect(showCredits)
 
 func openGameJoin():
 	var lobbyScene = preload("res://player_lobby.tscn")
 	for child in menuPlace.get_children():
 		child.queue_free()
 	lobbyNode = lobbyScene.instantiate()
-	lobbyNode.connect("backToMain", openMainMenu)
-	lobbyNode.connect("startGame", startGame)
+	lobbyNode.backToMain.connect(openMainMenu)
+	lobbyNode.startGame.connect(startGame)
 	menuPlace.add_child(lobbyNode)
 	emit_signal("stateChanged", "joinGame")
 
@@ -26,7 +27,8 @@ func openMainMenu():
 		child.queue_free()
 	var menuNode: VBoxContainer = menuScene.instantiate()
 	lobbyNode = null
-	menuNode.connect("startButtonPressed", openGameJoin)
+	menuNode.startButtonPressed.connect(openGameJoin)
+	menuNode.creditsPressed.connect(showCredits)
 	menuPlace.add_child(menuNode)
 	emit_signal("stateChanged", "mainMenu")
 
@@ -36,6 +38,9 @@ func startGame():
 		kwargs["debug"] = true
 	emit_signal("stateChanged", "startGame", kwargs)
 	hide()
+
+func showCredits():
+	print_debug("credits")
 
 func _on_exit_button_pressed():
 	get_tree().quit()
