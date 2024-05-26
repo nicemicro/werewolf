@@ -20,6 +20,8 @@ func stateChanged(newState: String, kwargs: Dictionary = {}):
 			for clientId in clients:
 				sendMessage(clientId, "GAME_STARTED", {})
 			mainMenuWindow.lobbyNode.playerNumberChange(len(players), len(clients))
+		"credits":
+			print_debug("credits")
 		"mainMenu":
 			for clientId in clients:
 				sendMessage(clientId, "MAIN_MENU", {})

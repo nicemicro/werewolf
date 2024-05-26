@@ -40,7 +40,13 @@ func startGame():
 	hide()
 
 func showCredits():
-	print_debug("credits")
+	var creditsScene = preload("res://credits.tscn")
+	for child in menuPlace.get_children():
+		child.queue_free()
+	var creditsNode = creditsScene.instantiate()
+	creditsNode.backToMain.connect(openMainMenu)
+	menuPlace.add_child(creditsNode)
+	emit_signal("stateChanged", "credits")
 
 func _on_exit_button_pressed():
 	get_tree().quit()
