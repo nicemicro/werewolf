@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c0vdqty745ldh"
+path="res://.godot/imported/Line 8.ogg-9b06aa88b5232b5e3fb81cb6b32d4d90.oggvorbisstr"
+
+[deps]
+
+source_file="res://game/narration/Line 8.ogg"
+dest_files=["res://.godot/imported/Line 8.ogg-9b06aa88b5232b5e3fb81cb6b32d4d90.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

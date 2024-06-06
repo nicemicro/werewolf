@@ -5,6 +5,8 @@ signal endGame
 
 @onready var dayScreen = $DayBackground
 @onready var nightScreen = $NightBackground
+@onready var mornignNarration = $Narration/MorningComes
+@onready var eveningNarration = $Narration/NightComes
 @onready var playerGrid = $DayBackground/Container/PlayersGrid
 @onready var skipButton = $SkipButton
 @onready var timer: Timer = $Timers/StepTimer
@@ -22,6 +24,15 @@ signal endGame
 		$NightBackground/Container/GoToSleep,
 		$NightBackground/Container/Cultist2Votes,
 		$NightBackground/Container/GoToSleep
+	],
+	"narration": [
+		$Narration/GoToSleep,
+		$Narration/KillersSeeEachother,
+		$Narration/GoBackToSleep,
+		$Narration/Cultist1,
+		$Narration/GoBackToSleep,
+		$Narration/Cultist2,
+		$Narration/GoBackToSleep
 	],
 	"command": [
 		nightSets,
@@ -43,6 +54,12 @@ signal endGame
 		$DayBackground/Container/VoteOver,
 		$DayBackground/Container/AnnounceDead
 	],
+	"narration": [
+		null,
+		$Narration/VotingStarts,
+		null,
+		null
+	],
 	"command": [
 		null, votingStarts, votingEnds, votingResults, nightComes
 	]
@@ -61,6 +78,17 @@ signal endGame
 		$NightBackground/Container/SeerChecks,
 		$NightBackground/Container/GoToSleep,
 	],
+		"narration": [
+		null,
+		$Narration/Cultist1,
+		$Narration/GoBackToSleep,
+		$Narration/Cultist2,
+		$Narration/GoBackToSleep,
+		$Narration/Shaman,
+		$Narration/GoBackToSleep,
+		$Narration/Seer,
+		$Narration/GoBackToSleep
+	],
 	"command": [
 		null,
 		killer1Select,
@@ -78,6 +106,7 @@ signal endGame
 	"name": "end",
 	"timers": [10, 10],
 	"screens": [announceWinners],
+	"narration": [],
 	"command": [null, close]
 }
 
@@ -146,6 +175,7 @@ func morningComes():
 		announceDead.text = "No one is dead"
 	nightScreen.visible = false
 	dayScreen.visible = true
+	mornignNarration.play()
 	emit_signal("changeScreen", players.keys(), "morning")
 	currentSequence = daySequence
 	currentNum = -1 #After this, curentNum will be incremented by one
@@ -161,6 +191,7 @@ func nightComes():
 	acceptVotes = []
 	nightScreen.visible = true
 	dayScreen.visible = false
+	eveningNarration.play()
 	votes = {}
 	emit_signal("changeScreen", players.keys(), "night")
 
@@ -356,6 +387,9 @@ func _changeScreen():
 		currentSequence["screens"][currentNum-1].hide()
 	if currentNum < len(currentSequence["screens"]):
 		currentSequence["screens"][currentNum].show()
+	if currentNum < len(currentSequence["narration"]):
+		if currentSequence["narration"][currentNum] != null:
+			currentSequence["narration"][currentNum].play()
 	if currentNum < len(currentSequence["timers"]):
 		timer.start(currentSequence["timers"][currentNum])
 	if currentSequence["command"][currentNum] != null:
@@ -368,6 +402,9 @@ func _on_skip_button_pressed():
 		currentSequence["screens"][currentNum-1].hide()
 	if currentNum < len(currentSequence["screens"]):
 		currentSequence["screens"][currentNum].show()
+	if currentNum < len(currentSequence["narration"]):
+		if currentSequence["narration"][currentNum] != null:
+			currentSequence["narration"][currentNum].play()
 	if currentSequence["command"][currentNum] != null:
 		currentSequence["command"][currentNum].call()
 	currentNum += 1
