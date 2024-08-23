@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b10xp87qdd3e3"
+path="res://.godot/imported/Line 6.ogg-1ace999bd92b90689920cb9eb4444ab8.oggvorbisstr"
+
+[deps]
+
+source_file="res://game/narration/Line 6.ogg"
+dest_files=["res://.godot/imported/Line 6.ogg-1ace999bd92b90689920cb9eb4444ab8.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
