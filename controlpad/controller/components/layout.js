@@ -47,7 +47,6 @@ export default class Layout {
     const cycle = vnode.attrs.cycleOverride
       ? vnode.attrs.cycleOverride.toLowerCase()
       : this.gameState.cycle.toLowerCase();
-    console.log(this.gameState.role);
     const classNames = [
       "h-100",
       "m-auto",
