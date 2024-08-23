@@ -12,7 +12,7 @@ export const showRulesAction = () =>
   Action.create(ActionNames.P_SHOW_RULES, {});
 export const showCreditsAction = () =>
   Action.create(ActionNames.P_SHOW_CREDITS, {});
-export const resetAction = () => 
+export const resetAction = () =>
   Action.create(ActionNames.P_RESET, {});
 
 /** @enum {string} */
@@ -102,7 +102,7 @@ export const reduce = cond([
     ActionNames.G_STATE_SYNC,
     /** @param {Action<{ gameState: GameState, name?:string, canStart?: boolean }>} action */
     (action) => {
-      const { name, canStart = false, gameState} = action.payload
+      const { canStart = false, gameState } = action.payload
       $game.setKey("gameState", gameState);
       $game.setKey("canStart", canStart);
 
@@ -128,15 +128,15 @@ export const reduce = cond([
   [ActionNames.P_START_PLAY, a => channel.sendMessage(a)],
   [ActionNames.G_PLAY, () => $game.setKey('gameState', GameState.START_GAME)],
   [ActionNames.G_ASSIGN_ROLE,
-     /** @param {Action<{ role: number }>} a */
-    a => $game.setKey("role", RoleList[a.payload.role])
+  /** @param {Action<{ role: number }>} a */
+  a => $game.setKey("role", RoleList[a.payload.role])
   ],
   [ActionNames.G_SCREEN_SWITCH, handleScreenSwitch],
   [
     ActionNames.P_RESET, () => $game.set({
       ...initialState,
       gameState: GameState.JOIN_GAME,
-      gameStarted: true, 
+      gameStarted: true,
     })
   ]
 ]);
@@ -151,7 +151,7 @@ const TargetScreen = {
   'morning': ['/day-time', Cycle.DAY],
   'death': ['/dead', Cycle.NIGHT],
   'look up': ['/look-up', Cycle.NIGHT],
-  'start vote': ['/day-pick', Cycle.DAY], 
+  'start vote': ['/day-pick', Cycle.DAY],
   // Seer result
   'foundvillager': ['/result', Cycle.NIGHT],
   'foundcultist': ['/result', Cycle.NIGHT],
@@ -163,9 +163,9 @@ const TargetScreen = {
  * @param {Action<{ switch_to: ScreenKeys, partner?: string }>} action 
  */
 function handleScreenSwitch(action) {
-  const { switch_to, partner} = action.payload 
+  const { switch_to, partner } = action.payload
   const target = TargetScreen[switch_to];
-  
+
   if (switch_to === 'death') {
     $game.setKey('dead', true);
   }
@@ -173,25 +173,25 @@ function handleScreenSwitch(action) {
   if (switch_to === 'foundcultist') {
     const { lastPick } = $pick.get();
     $game.setKey('result', {
-      title: 'The visions show a ravenous aura', 
-      description: `${lastPick?.name} is a cultist` 
+      title: 'The visions show a ravenous aura',
+      description: `${lastPick?.name} is a cultist`
     })
   }
   if (switch_to === 'foundvillager') {
     const { lastPick } = $pick.get();
     $game.setKey('result', {
-      title: 'The visions show a simple creature', 
-      description: `${lastPick?.name} is a villager` 
+      title: 'The visions show a simple creature',
+      description: `${lastPick?.name} is a villager`
     })
   }
 
-    if (switch_to === 'end vote') {
+  if (switch_to === 'end vote') {
     $game.setKey('result', {
-      title: 'The town has voted', 
-      description: `Soon someone will be hanged` 
+      title: 'The town has voted',
+      description: `Soon someone will be hanged`
     })
   }
- 
+
   if (typeof partner === 'string') {
     $game.setKey('partner', partner);
   }

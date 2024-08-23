@@ -26,7 +26,6 @@ channel.addConnectedHandler(() => {
 channel.addOnMessageHandler(dispatch);
 
 $game.subscribe((val, oldValue) => {
-  console.log(val.debug)
   if (val.debug || val.dead) return;
   if (val.gameState !== oldValue?.gameState) {
     if (val.gameState === GameState.MAIN_MENU) {
@@ -37,7 +36,7 @@ $game.subscribe((val, oldValue) => {
       const params = new URLSearchParams(search);
       const name = params.get('debugName')
       if (typeof name !== 'undefined' && name !== null) {
-          dispatch(submitNameAction(name));
+        dispatch(submitNameAction(name));
       }
       m.route.set('/name-menu')
     }

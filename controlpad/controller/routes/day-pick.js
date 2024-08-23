@@ -50,10 +50,10 @@ export default class DayPick {
 
   /**
    *
-   * @param {MouseEvent} e
+   * @param {MouseEvent} _e
    * @param {import('../components/list').IListItem} item
    */
-  itemClick(e, item) {
+  itemClick(_e, item) {
     this.pickedUser = /** @type {User} */ (/** @type {unknown} */ (item));
   }
 
@@ -71,6 +71,9 @@ export default class DayPick {
     const items = this.users.map((i) => ({ ...i, text: i.name }));
     return m(Layout, [
       m("h1.f1.tc", "A new day comes"),
+      m("div.w-100", [
+        m("img.h5.w5.center.db", { src: '/resources/gallow.png', alt: 'gallow' }),
+      ]),
       m(
         "h3.f3.tc",
         this.pickedUser
