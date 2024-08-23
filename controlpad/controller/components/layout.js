@@ -60,6 +60,7 @@ export default class Layout {
       "items-center",
       "border-box",
       "lh-title",
+      `cycle-${cycle}`,
       `${cycle}-bg`,
     ];
     return m(

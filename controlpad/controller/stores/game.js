@@ -82,7 +82,7 @@ const initialState = {
   dead: false,
   role: undefined,
   partner: undefined,
-  cycle: Cycle.DAY,
+  cycle: Cycle.NIGHT,
   hour: undefined,
   gameState: GameState.MAIN_MENU,
   result: undefined,

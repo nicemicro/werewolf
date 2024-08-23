@@ -145,14 +145,20 @@ table {
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.cycle-night .default-button {
+  background-color: #3b4392;
+}
+
+.cycle-day .default-button {
+  background-color: #74bdf8;
+}
+
 .night-gradient {
   background: rgb(2, 0, 36);
-  background: linear-gradient(
-    180deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(32, 19, 65, 1) 54%,
-    rgba(65, 39, 96, 1) 99%
-  );
+  background: linear-gradient(180deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(32, 19, 65, 1) 54%,
+      rgba(65, 39, 96, 1) 99%);
 }
 
 .day-bg {

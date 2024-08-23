@@ -16,7 +16,7 @@ const Button = {
       `button[type=${type ?? "button"}`,
       {
         disabled: disabled ?? false,
-        class: `db ml-auto mr-auto dim br3 ph3 pv2 mt3 white bg-purple b--none ${className ?? ""}`,
+        class: `default-button db ml-auto mr-auto dim br1 ph3 pv2 mt3 white b--none ${className ?? ""}`,
         ...rest,
       },
       vnode.children,
