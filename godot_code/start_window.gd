@@ -1,8 +1,11 @@
-extends VBoxContainer
+extends Control
 
-@onready var menuPlace: Control = $Columns/MenuCol
+@onready var menuPlace: Control = %MenuCol
+@onready var daySprite: TextureRect = $Background_day
 var lobbyNode: VBoxContainer = null
 var debugMode: bool = false
+var background_night = false
+const BACKGR_SPEED = 2
 
 signal stateChanged
 
@@ -10,6 +13,21 @@ signal stateChanged
 func _ready():
 	menuPlace.get_child(0).startButtonPressed.connect(openGameJoin)
 	menuPlace.get_child(0).creditsPressed.connect(showCredits)
+
+func _process(delta):
+	var speed = delta * BACKGR_SPEED
+	var accel = 0.51 - abs(0.5 - daySprite.modulate.a)
+	speed = speed * accel
+	if background_night:
+		daySprite.modulate.a = daySprite.modulate.a + speed
+		if daySprite.modulate.a >= 1:
+			daySprite.modulate.a = 1
+			background_night = false
+	else:
+		daySprite.modulate.a = daySprite.modulate.a - speed
+		if daySprite.modulate.a <= 0:
+			daySprite.modulate.a = 0
+			background_night = true
 
 func openGameJoin():
 	var lobbyScene = preload("res://player_lobby.tscn")

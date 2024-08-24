@@ -1,6 +1,6 @@
 extends Control
 
-@onready var mainMenuWindow: VBoxContainer = $MainWindow
+@onready var mainMenuWindow: Control = $MainWindow
 @onready var controller: Node = $GameNiteControlpads
 var gameNode: Node = null
 

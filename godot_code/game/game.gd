@@ -10,7 +10,9 @@ signal endGame
 @onready var playerGrid = $DayBackground/Container/PlayersGrid
 @onready var skipButton = $SkipButton
 @onready var timer: Timer = $Timers/StepTimer
-@onready var announceDead = $DayBackground/Container/AnnounceDead
+@onready var announceDead = $DayBackground/Container/AnnounceDead/Name
+@onready var tombStone = $DayBackground/Container/AnnounceDead/Tombstone
+@onready var gallow = $DayBackground/Container/AnnounceDead/Gallow
 @onready var announceWinners = $GameEndBackg/Container/AnnounceWinners
 @onready var gameEndScreen = $GameEndBackg
 @onready var firstNight: Dictionary = {
@@ -163,8 +165,10 @@ func morningComes():
 			voteTarget = votedId
 		elif voteTarget != votedId:
 			voteTarget = ""
+	gallow.visible = false
 	if voteNum == cultistNum and voteTarget != "" and saveTarget != voteTarget:
 		announceDead.text = players[voteTarget] + " was killed at night"
+		tombStone.visible = true
 		killPlayer(voteTarget)
 		emit_signal("changeScreen", [voteTarget], "death")
 		var winner: int = checkWinner()
@@ -173,6 +177,7 @@ func morningComes():
 			return
 	else:
 		announceDead.text = "No one is dead"
+		tombStone.visible = false
 	nightScreen.visible = false
 	dayScreen.visible = true
 	mornignNarration.play()
@@ -270,12 +275,15 @@ func votingResults():
 		if voteNums[votedId] > maxVoteNum:
 			maxVoteNum = voteNums[votedId]
 			maxVotes = votedId
+	tombStone.visible = false
 	if maxVotes != "":
 		announceDead.text = players[maxVotes] + " was executed by the village"
+		gallow.visible = true
 		killPlayer(maxVotes)
 		emit_signal("changeScreen", [maxVotes], "death")
 	else:
 		announceDead.text = "No one is dead"
+		gallow.visible = false
 
 func seerChecks():
 	acceptVotes = [RoleList.SEER]
