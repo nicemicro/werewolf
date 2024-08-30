@@ -31,9 +31,14 @@ text = "[b]Programming team[/b]
 
 [b]Artistic work[/b]
 [i]Graphics, art[/i]	Airam Zajor
+		J Wang
 [i]Sound supervisor[/i]	Simon Daoud
 [i]Sound design[/i]	Simon Daoud
-[i]Voice acting[/i]	Brandon Tenorio"
+[i]Voice acting[/i]	Brandon Tenorio
+
+Art licenses:
+Graphical assets are licensed under Creative Commons CC BY-NC-ND
+Voice acting copyright (C) Brandon Tenorio, licensed to Werewolf"
 fit_content = true
 tab_size = 18
 
