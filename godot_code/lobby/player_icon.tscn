@@ -9,7 +9,7 @@ colors = PackedColorArray(0, 0, 0, 1, 0.154446, 0.460213, 0.466502, 1, 0.286949,
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_q2su6"]
 gradient = SubResource("Gradient_u2ex6")
 
-[node name="PlayerIcon" type="MarginContainer"]
+[node name="PlayerIcon" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

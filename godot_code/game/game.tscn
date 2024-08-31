@@ -1,5 +1,6 @@
-[gd_scene load_steps=18 format=3 uid="uid://convv7s27oigp"]
+[gd_scene load_steps=19 format=3 uid="uid://convv7s27oigp"]
 
+[ext_resource type="Theme" uid="uid://dl6cdaxq05lui" path="res://themes/ui-theme.tres" id="1_rlwmk"]
 [ext_resource type="Script" path="res://game/game.gd" id="1_x0r5m"]
 [ext_resource type="Texture2D" uid="uid://bvst2tj5wngur" path="res://game/images/desktop_daytime.jpg" id="2_ch6x5"]
 [ext_resource type="AudioStream" uid="uid://b8w0pe41fpwrg" path="res://game/narration/Line 1.ogg" id="2_ybxpp"]
@@ -32,13 +33,14 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("1_rlwmk")
 script = ExtResource("1_x0r5m")
 
 [node name="DayBackground" type="TextureRect" parent="."]
 visible = false
 layout_mode = 2
 texture = ExtResource("2_ch6x5")
-expand_mode = 2
+expand_mode = 3
 
 [node name="Container" type="CenterContainer" parent="DayBackground"]
 layout_mode = 1
@@ -52,8 +54,13 @@ grow_vertical = 2
 visible = false
 layout_mode = 2
 
-[node name="Name" type="Label" parent="DayBackground/Container/AnnounceDead"]
+[node name="Name" type="PanelContainer" parent="DayBackground/Container/AnnounceDead"]
+custom_minimum_size = Vector2(1400, 100)
 layout_mode = 2
+
+[node name="Text" type="Label" parent="DayBackground/Container/AnnounceDead/Name"]
+layout_mode = 2
+horizontal_alignment = 1
 
 [node name="Gallow" type="TextureRect" parent="DayBackground/Container/AnnounceDead"]
 custom_minimum_size = Vector2(0, 800)
@@ -61,6 +68,7 @@ layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("4_l4xvu")
 expand_mode = 3
+stretch_mode = 5
 
 [node name="Tombstone" type="TextureRect" parent="DayBackground/Container/AnnounceDead"]
 custom_minimum_size = Vector2(400, 416)
@@ -68,6 +76,7 @@ layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("3_ycdm1")
 expand_mode = 3
+stretch_mode = 5
 
 [node name="PlayersGrid" type="GridContainer" parent="DayBackground/Container"]
 visible = false
@@ -78,8 +87,8 @@ columns = 6
 layout_mode = 2
 text = "test"
 
-[node name="VoteOver" type="VBoxContainer" parent="DayBackground/Container"]
-visible = false
+[node name="VoteOver" type="PanelContainer" parent="DayBackground/Container"]
+custom_minimum_size = Vector2(700, 100)
 layout_mode = 2
 
 [node name="Text" type="Label" parent="DayBackground/Container/VoteOver"]
@@ -100,35 +109,66 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GoToSleep" type="Label" parent="NightBackground/Container"]
+[node name="GoToSleep" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="NightBackground/Container/GoToSleep"]
 layout_mode = 2
 text = "Sleep now"
+horizontal_alignment = 1
 
-[node name="BothKillersWakeUp" type="Label" parent="NightBackground/Container"]
+[node name="BothKillersWakeUp" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(800, 100)
 layout_mode = 2
-text = "Both werewolves wake up"
 
-[node name="Cultist1Votes" type="Label" parent="NightBackground/Container"]
-visible = false
+[node name="Text" type="Label" parent="NightBackground/Container/BothKillersWakeUp"]
 layout_mode = 2
-text = "Cultist 1 votes"
+text = "Both cultists wake up"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Cultist2Votes" type="Label" parent="NightBackground/Container"]
+[node name="Cultist1Votes" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(700, 100)
 layout_mode = 2
-text = "Cultist 2 votes"
 
-[node name="ShamanSaves" type="Label" parent="NightBackground/Container"]
+[node name="Text" type="Label" parent="NightBackground/Container/Cultist1Votes"]
+layout_mode = 2
+text = "Wolfman Cultist votes"
+horizontal_alignment = 1
+
+[node name="Cultist2Votes" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(700, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="NightBackground/Container/Cultist2Votes"]
+layout_mode = 2
+text = "Harpee Cultist votes"
+horizontal_alignment = 1
+
+[node name="ShamanSaves" type="PanelContainer" parent="NightBackground/Container"]
+visible = false
+custom_minimum_size = Vector2(1000, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="NightBackground/Container/ShamanSaves"]
 layout_mode = 2
 text = "Shaman choses someone to save"
+horizontal_alignment = 1
 
-[node name="SeerChecks" type="Label" parent="NightBackground/Container"]
+[node name="SeerChecks" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(1400, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="NightBackground/Container/SeerChecks"]
 layout_mode = 2
 text = "Seer checks whether someone is a cultist or not"
+horizontal_alignment = 1
 
 [node name="GameEndBackg" type="TextureRect" parent="."]
 visible = false

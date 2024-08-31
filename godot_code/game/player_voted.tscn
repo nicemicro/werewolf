@@ -15,7 +15,7 @@ colors = PackedColorArray(0.1824, 0.76, 0.192027, 1, 0.39825, 0.59, 0.3599, 1)
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_b3g3e"]
 gradient = SubResource("Gradient_nbbhx")
 
-[node name="PlayerIcon" type="MarginContainer"]
+[node name="PlayerIcon" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

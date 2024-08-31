@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://game/tombstone.gd" id="1_22qi3"]
 [ext_resource type="Texture2D" uid="uid://wjx3yli5jvpw" path="res://game/images/grave.png" id="2_infbo"]
 
-[node name="Tombstone" type="MarginContainer"]
+[node name="Tombstone" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
