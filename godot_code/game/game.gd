@@ -10,7 +10,9 @@ signal endGame
 @onready var playerGrid = $DayBackground/Container/PlayersGrid
 @onready var skipButton = $SkipButton
 @onready var timer: Timer = $Timers/StepTimer
-@onready var announceDead = $DayBackground/Container/AnnounceDead
+@onready var announceDead = $DayBackground/Container/AnnounceDead/Name/Text
+@onready var tombStone = $DayBackground/Container/AnnounceDead/Tombstone
+@onready var gallow = $DayBackground/Container/AnnounceDead/Gallow
 @onready var announceWinners = $GameEndBackg/Container/AnnounceWinners
 @onready var gameEndScreen = $GameEndBackg
 @onready var firstNight: Dictionary = {
@@ -118,6 +120,9 @@ var playerRoles: Dictionary
 var acceptVotes: Array
 var votes: Dictionary
 var voteIcons: Dictionary
+var dawn: bool = false
+var dusk: bool = false
+const BACKGR_SPEED = 1.5
 var debugMode: bool = false
 
 enum RoleList { # DO NOT CHANGE THIS without also consulting the controller code for roles
@@ -133,9 +138,36 @@ func _ready():
 	currentSequence = firstNight
 	acceptVotes = []
 	votes = {}
+	nightScreen.visible = true
+	dayScreen.visible = false
+	gameEndScreen.visible = false
+	for rootNode in [nightScreen, dayScreen, gameEndScreen]:
+		for child1 in rootNode.get_children():
+			child1.visible = true
+			for child2 in child1.get_children():
+				child2.visible = false
 	if debugMode:
 		skipButton.visible = true
 		timer.stop()
+
+func _process(delta):
+	var speed = delta * BACKGR_SPEED
+	if not (dawn or dusk):
+		return
+	var accel = 0.51 - abs(0.5 - nightScreen.modulate.a)
+	speed = speed * accel
+	if dusk:
+		nightScreen.modulate.a = nightScreen.modulate.a + speed
+		if nightScreen.modulate.a >= 1:
+			nightScreen.modulate.a = 1
+			dayScreen.visible = false
+			dusk = false
+	else:
+		nightScreen.modulate.a = nightScreen.modulate.a - speed
+		if nightScreen.modulate.a <= 0:
+			nightScreen.modulate.a = 0
+			dawn = false
+			nightScreen.visible = false
 
 func close():
 	emit_signal("endGame")
@@ -163,8 +195,10 @@ func morningComes():
 			voteTarget = votedId
 		elif voteTarget != votedId:
 			voteTarget = ""
+	gallow.visible = false
 	if voteNum == cultistNum and voteTarget != "" and saveTarget != voteTarget:
 		announceDead.text = players[voteTarget] + " was killed at night"
+		tombStone.visible = true
 		killPlayer(voteTarget)
 		emit_signal("changeScreen", [voteTarget], "death")
 		var winner: int = checkWinner()
@@ -173,8 +207,9 @@ func morningComes():
 			return
 	else:
 		announceDead.text = "No one is dead"
-	nightScreen.visible = false
+		tombStone.visible = false
 	dayScreen.visible = true
+	dawn = true
 	mornignNarration.play()
 	emit_signal("changeScreen", players.keys(), "morning")
 	currentSequence = daySequence
@@ -190,7 +225,7 @@ func nightComes():
 	currentSequence = nightSequence
 	acceptVotes = []
 	nightScreen.visible = true
-	dayScreen.visible = false
+	dusk = true
 	eveningNarration.play()
 	votes = {}
 	emit_signal("changeScreen", players.keys(), "night")
@@ -270,12 +305,15 @@ func votingResults():
 		if voteNums[votedId] > maxVoteNum:
 			maxVoteNum = voteNums[votedId]
 			maxVotes = votedId
+	tombStone.visible = false
 	if maxVotes != "":
 		announceDead.text = players[maxVotes] + " was executed by the village"
+		gallow.visible = true
 		killPlayer(maxVotes)
 		emit_signal("changeScreen", [maxVotes], "death")
 	else:
 		announceDead.text = "No one is dead"
+		gallow.visible = false
 
 func seerChecks():
 	acceptVotes = [RoleList.SEER]

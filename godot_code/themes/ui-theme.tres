@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dl6cdaxq05lui"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://dl6cdaxq05lui"]
 
 [ext_resource type="FontFile" uid="uid://co8crn73pvabe" path="res://themes/font-montserrat/Montserrat-Regular.ttf" id="1_sgaxw"]
 [ext_resource type="FontFile" uid="uid://b1i4vahw1un2n" path="res://themes/font-montserrat/Montserrat-SemiBold.ttf" id="2_2rlrj"]
@@ -16,6 +16,16 @@ colors = PackedColorArray(0.205117, 0.205117, 0.205117, 1, 0.218412, 0.253525, 0
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_lov6l"]
 gradient = SubResource("Gradient_3kjx0")
 
+[sub_resource type="Gradient" id="Gradient_6us3m"]
+offsets = PackedFloat32Array(0, 0.0963855, 0.927711, 1)
+colors = PackedColorArray(0.18, 0.18, 0.18, 0, 0.18, 0.18, 0.18, 0.737255, 0.180392, 0.180392, 0.180392, 0.737255, 0.18, 0.18, 0.18, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1r545"]
+gradient = SubResource("Gradient_6us3m")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xd3uj"]
+texture = SubResource("GradientTexture1D_1r545")
+
 [resource]
 Button/font_sizes/font_size = 50
 Button/fonts/font = ExtResource("2_2rlrj")
@@ -25,3 +35,4 @@ Fonts/fonts/large = ExtResource("1_sgaxw")
 Fonts/fonts/normal = ExtResource("2_2rlrj")
 Label/font_sizes/font_size = 50
 Label/fonts/font = ExtResource("3_bx86r")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_xd3uj")

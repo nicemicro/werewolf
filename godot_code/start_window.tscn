@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://kup5icjhl6r1"]
+[gd_scene load_steps=7 format=3 uid="uid://kup5icjhl6r1"]
 
 [ext_resource type="PackedScene" uid="uid://edfgma4sdk2e" path="res://main_menu.tscn" id="1_fkueo"]
 [ext_resource type="Script" path="res://start_window.gd" id="1_friqu"]
+[ext_resource type="Texture2D" uid="uid://b5lildhf7a3hv" path="res://game/images/desktop_nighttime.jpg" id="2_1h67o"]
+[ext_resource type="Texture2D" uid="uid://bvst2tj5wngur" path="res://game/images/desktop_daytime.jpg" id="3_n2h86"]
 
 [sub_resource type="SystemFont" id="SystemFont_0s535"]
 subpixel_positioning = 0
@@ -10,30 +12,62 @@ msdf_size = 120
 [sub_resource type="Theme" id="Theme_3b4iw"]
 Label/fonts/font = SubResource("SystemFont_0s535")
 
-[node name="MainWindow" type="VBoxContainer"]
+[node name="MainWindow" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-alignment = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_friqu")
 
-[node name="Label" type="Label" parent="."]
+[node name="Background_night" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+texture = ExtResource("2_1h67o")
+expand_mode = 3
+
+[node name="Background_day" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+texture = ExtResource("3_n2h86")
+expand_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme = SubResource("Theme_3b4iw")
 text = "Werewolf for the GameNite (space for the the title art)"
 horizontal_alignment = 1
 
-[node name="Columns" type="HBoxContainer" parent="."]
+[node name="Columns" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Left" type="MarginContainer" parent="Columns"]
+[node name="Left" type="MarginContainer" parent="VBoxContainer/Columns"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CheckBox" type="CheckBox" parent="Columns/Left"]
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/Columns/Left"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -41,23 +75,24 @@ tooltip_text = "No timers, only clicking.
 (you MUST start the game with the UI in Godot for this setting to take effect)"
 text = "Debug"
 
-[node name="MenuCol" type="MarginContainer" parent="Columns"]
+[node name="MenuCol" type="MarginContainer" parent="VBoxContainer/Columns"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="MenuItems" parent="Columns/MenuCol" instance=ExtResource("1_fkueo")]
+[node name="MenuItems" parent="VBoxContainer/Columns/MenuCol" instance=ExtResource("1_fkueo")]
 layout_mode = 2
 
-[node name="Right" type="MarginContainer" parent="Columns"]
+[node name="Right" type="MarginContainer" parent="VBoxContainer/Columns"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ExitButton" type="Button" parent="Columns/Right"]
+[node name="ExitButton" type="Button" parent="VBoxContainer/Columns/Right"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Exit"
 
-[connection signal="toggled" from="Columns/Left/CheckBox" to="." method="_on_check_box_toggled"]
-[connection signal="pressed" from="Columns/Right/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="toggled" from="VBoxContainer/Columns/Left/CheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="pressed" from="VBoxContainer/Columns/Right/ExitButton" to="." method="_on_exit_button_pressed"]

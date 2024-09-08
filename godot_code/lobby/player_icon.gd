@@ -1,4 +1,4 @@
-extends MarginContainer
+extends PanelContainer
 
 var playerName: String = ""
 @onready var nameLabel: Label = $Container/Name

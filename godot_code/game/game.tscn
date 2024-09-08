@@ -1,8 +1,13 @@
-[gd_scene load_steps=18 format=3 uid="uid://convv7s27oigp"]
+[gd_scene load_steps=19 format=3 uid="uid://convv7s27oigp"]
 
+[ext_resource type="Theme" uid="uid://dl6cdaxq05lui" path="res://themes/ui-theme.tres" id="1_rlwmk"]
 [ext_resource type="Script" path="res://game/game.gd" id="1_x0r5m"]
+[ext_resource type="Texture2D" uid="uid://bvst2tj5wngur" path="res://game/images/desktop_daytime.jpg" id="2_ch6x5"]
 [ext_resource type="AudioStream" uid="uid://b8w0pe41fpwrg" path="res://game/narration/Line 1.ogg" id="2_ybxpp"]
 [ext_resource type="AudioStream" uid="uid://w7vvmv21p1tq" path="res://game/narration/Line 2.ogg" id="3_4l85n"]
+[ext_resource type="Texture2D" uid="uid://b5lildhf7a3hv" path="res://game/images/desktop_nighttime.jpg" id="3_vvb1n"]
+[ext_resource type="Texture2D" uid="uid://wjx3yli5jvpw" path="res://game/images/grave.png" id="3_ycdm1"]
+[ext_resource type="Texture2D" uid="uid://car3g1pcaaho" path="res://game/images/gallow.png" id="4_l4xvu"]
 [ext_resource type="AudioStream" uid="uid://ded2883uobslq" path="res://game/narration/Line 3.ogg" id="4_oxatg"]
 [ext_resource type="AudioStream" uid="uid://dvuttta8i7uou" path="res://game/narration/Line 4.ogg" id="5_jfv2a"]
 [ext_resource type="AudioStream" uid="uid://cranqp14runce" path="res://game/narration/Line 5.ogg" id="6_3syr7"]
@@ -11,24 +16,6 @@
 [ext_resource type="AudioStream" uid="uid://c0vdqty745ldh" path="res://game/narration/Line 8.ogg" id="9_15qhg"]
 [ext_resource type="AudioStream" uid="uid://d12owo6knn3ci" path="res://game/narration/Line 9.ogg" id="10_y3msi"]
 [ext_resource type="AudioStream" uid="uid://bndketiyr0q6o" path="res://game/narration/Line 10.ogg" id="11_r1asp"]
-
-[sub_resource type="Gradient" id="Gradient_4xkow"]
-offsets = PackedFloat32Array(0, 0.123377, 0.168831, 0.532468, 0.603896, 0.766234, 1)
-colors = PackedColorArray(0.815833, 0.89, 0.445, 1, 0.794026, 0.850442, 0.421403, 1, 0.317591, 0.813099, 0.79641, 1, 0.278248, 0.760463, 0.677691, 1, 0.128254, 0.559789, 0.225072, 1, 0.0536667, 0.46, 0, 1, 0.48, 0.2808, 0.0816, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_pqrp6"]
-gradient = SubResource("Gradient_4xkow")
-fill_from = Vector2(0.550459, 0.0412844)
-fill_to = Vector2(0.954128, 0.96789)
-
-[sub_resource type="Gradient" id="Gradient_f1yr2"]
-offsets = PackedFloat32Array(0, 0.538961, 0.597403, 0.824675, 0.87013, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.0132029, 0.0767609, 0.00614087, 1, 0.0172, 0.1, 0.008, 1, 0.03268, 0.19, 0.0152, 1, 0.167106, 0.174603, 0.0850423, 1, 0.18, 0.16677, 0.0918, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_7yx88"]
-gradient = SubResource("Gradient_f1yr2")
-fill_from = Vector2(0.155963, 0)
-fill_to = Vector2(1, 1)
 
 [sub_resource type="Gradient" id="Gradient_dqhyj"]
 offsets = PackedFloat32Array(0, 0.88961, 1)
@@ -46,12 +33,14 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("1_rlwmk")
 script = ExtResource("1_x0r5m")
 
 [node name="DayBackground" type="TextureRect" parent="."]
 visible = false
 layout_mode = 2
-texture = SubResource("GradientTexture2D_pqrp6")
+texture = ExtResource("2_ch6x5")
+expand_mode = 3
 
 [node name="Container" type="CenterContainer" parent="DayBackground"]
 layout_mode = 1
@@ -61,9 +50,33 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AnnounceDead" type="Label" parent="DayBackground/Container"]
+[node name="AnnounceDead" type="VBoxContainer" parent="DayBackground/Container"]
 visible = false
 layout_mode = 2
+
+[node name="Name" type="PanelContainer" parent="DayBackground/Container/AnnounceDead"]
+custom_minimum_size = Vector2(1400, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="DayBackground/Container/AnnounceDead/Name"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="Gallow" type="TextureRect" parent="DayBackground/Container/AnnounceDead"]
+custom_minimum_size = Vector2(0, 800)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("4_l4xvu")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Tombstone" type="TextureRect" parent="DayBackground/Container/AnnounceDead"]
+custom_minimum_size = Vector2(400, 416)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("3_ycdm1")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="PlayersGrid" type="GridContainer" parent="DayBackground/Container"]
 visible = false
@@ -74,14 +87,19 @@ columns = 6
 layout_mode = 2
 text = "test"
 
-[node name="VoteOver" type="Label" parent="DayBackground/Container"]
-visible = false
+[node name="VoteOver" type="PanelContainer" parent="DayBackground/Container"]
+custom_minimum_size = Vector2(700, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="DayBackground/Container/VoteOver"]
 layout_mode = 2
 text = "Voting time is over"
+horizontal_alignment = 1
 
 [node name="NightBackground" type="TextureRect" parent="."]
 layout_mode = 2
-texture = SubResource("GradientTexture2D_7yx88")
+texture = ExtResource("3_vvb1n")
+expand_mode = 3
 
 [node name="Container" type="CenterContainer" parent="NightBackground"]
 layout_mode = 1
@@ -91,35 +109,66 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GoToSleep" type="Label" parent="NightBackground/Container"]
+[node name="GoToSleep" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="NightBackground/Container/GoToSleep"]
 layout_mode = 2
 text = "Sleep now"
+horizontal_alignment = 1
 
-[node name="BothKillersWakeUp" type="Label" parent="NightBackground/Container"]
+[node name="BothKillersWakeUp" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(800, 100)
 layout_mode = 2
-text = "Both werewolves wake up"
 
-[node name="Cultist1Votes" type="Label" parent="NightBackground/Container"]
-visible = false
+[node name="Text" type="Label" parent="NightBackground/Container/BothKillersWakeUp"]
 layout_mode = 2
-text = "Cultist 1 votes"
+text = "Both cultists wake up"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Cultist2Votes" type="Label" parent="NightBackground/Container"]
+[node name="Cultist1Votes" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(700, 100)
 layout_mode = 2
-text = "Cultist 2 votes"
 
-[node name="ShamanSaves" type="Label" parent="NightBackground/Container"]
+[node name="Text" type="Label" parent="NightBackground/Container/Cultist1Votes"]
+layout_mode = 2
+text = "Wolfman Cultist votes"
+horizontal_alignment = 1
+
+[node name="Cultist2Votes" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(700, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="NightBackground/Container/Cultist2Votes"]
+layout_mode = 2
+text = "Harpee Cultist votes"
+horizontal_alignment = 1
+
+[node name="ShamanSaves" type="PanelContainer" parent="NightBackground/Container"]
+visible = false
+custom_minimum_size = Vector2(1000, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="NightBackground/Container/ShamanSaves"]
 layout_mode = 2
 text = "Shaman choses someone to save"
+horizontal_alignment = 1
 
-[node name="SeerChecks" type="Label" parent="NightBackground/Container"]
+[node name="SeerChecks" type="PanelContainer" parent="NightBackground/Container"]
 visible = false
+custom_minimum_size = Vector2(1400, 100)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="NightBackground/Container/SeerChecks"]
 layout_mode = 2
 text = "Seer checks whether someone is a cultist or not"
+horizontal_alignment = 1
 
 [node name="GameEndBackg" type="TextureRect" parent="."]
 visible = false
