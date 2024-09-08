@@ -1,4 +1,4 @@
-import { $game } from "../stores/game.js";
+import { $game, Cycle } from "../stores/game.js";
 import { capitalize, subAndRedraw } from "../util/utils.js";
 import m from "mithril";
 
@@ -10,14 +10,19 @@ const RoleAvatar = {
     return m("div.tc", [
       m("img.br-100 h3 w3 dib", {
         alt: role,
-        src: `/resources/roles/avatars/${role}.jpg`,
+        src: `/resources/roles/avatars/${role}.png`,
       }),
     ]);
   },
 };
 
 /**
- * @implements {m.ClassComponent<{}>}
+ * @typedef LayoutProps
+ * @property {Cycle} [cycleOverride]
+ */
+
+/**
+ * @implements {m.ClassComponent<LayoutProps>}
  */
 export default class Layout {
   /**
@@ -37,8 +42,11 @@ export default class Layout {
     this._unsubFn.forEach((f) => f());
   }
 
-  /** @param {m.Vnode} vnode */
+  /** @param {m.Vnode<LayoutProps>} vnode */
   view(vnode) {
+    const cycle = vnode.attrs.cycleOverride
+      ? vnode.attrs.cycleOverride.toLowerCase()
+      : this.gameState.cycle.toLowerCase();
     const classNames = [
       "h-100",
       "m-auto",
@@ -52,8 +60,9 @@ export default class Layout {
       "items-center",
       "border-box",
       "lh-title",
+      `cycle-${cycle}`,
+      `${cycle}-bg`,
     ];
-    classNames.push(this.gameState.cycle.toLowerCase() + "-gradient");
     return m(
       "div",
       {
@@ -63,22 +72,22 @@ export default class Layout {
         this.gameState.debug ? 'Debug Mode' : null,
         this.gameState.gameStarted
           ? m("div.w-100.flex-none.flex.flex-row", [
-              m("div.flex-auto"),
-              this.gameState.role
-                ? m(
-                  "div.flex-none.pt3.pr3",
-                  m(RoleAvatar, { role: this.gameState.role }),
-                ) : null,
-            ])
+            m("div.flex-auto"),
+            this.gameState.role
+              ? m(
+                "div.flex-none.pt3.pr3",
+                m(RoleAvatar, { role: this.gameState.role }),
+              ) : null,
+          ])
           : null,
         m("div.flex-auto"),
         m("div.flex-auto.w-100", vnode.children),
         m("div.flex-auto"),
         this.gameState.gameStarted
           ? m(
-              "p.f3.flex-none.mb4",
-              `${capitalize(this.gameState.cycle.toLowerCase())} Time`,
-            )
+            "p.f3.flex-none.mb4",
+            `${capitalize(this.gameState.cycle.toLowerCase())} Time`,
+          )
           : null,
       ],
     );

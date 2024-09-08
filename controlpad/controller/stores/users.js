@@ -36,6 +36,6 @@ export const reducer = cond([
   [
     ActionNames.G_SCREEN_SWITCH,
     /** @param {Action<{ players: string[] }>} action */
-    (action) => $users.set(action.payload.players.map(a => ({ name: a, alive: true})))
+    (action) => $users.set(action.payload.players.map(a => ({ name: a, alive: true })))
   ]
 ]);

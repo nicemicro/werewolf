@@ -1,113 +1,260 @@
 /* CSS RESET */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-    display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
+
 body {
-    line-height: 1;
+  line-height: 1;
 }
-ol, ul {
-    list-style: none;
+
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-    quotes: none;
+
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-    content: '';
-    content: none;
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
 }
+
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
+
 /* CSS RESET END */
 
 #werewolfapp {
-    --transform-up: 20px;
+  --transform-up: 20px;
 }
 
 .day-gradient {
-    background: #556270;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, #556270, #ff6b6b);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #556270, #ff6b6b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #556270;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #556270, #ff6b6b);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #556270, #ff6b6b);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.cycle-night .default-button {
+  background-color: #3b4392;
+}
+
+.cycle-day .default-button {
+  background-color: #74bdf8;
 }
 
 .night-gradient {
-    background: rgb(2,0,36);
-    background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(32,19,65,1) 54%, rgba(65,39,96,1) 99%);
+  background: rgb(2, 0, 36);
+  background: linear-gradient(180deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(32, 19, 65, 1) 54%,
+      rgba(65, 39, 96, 1) 99%);
+}
+
+.day-bg {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/resources/backgrounds/day-bg.png");
+}
+
+.night-bg {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/resources/backgrounds/night-bg.png");
+}
+
+@media only screen and (min-width: 768px) {
+  .day-bg {
+    background-image: url("/resources/backgrounds/day-bg-wide.png");
+  }
+
+  .night-bg {
+    background-image: url("/resources/backgrounds/night-bg-wide.png");
+  }
 }
 
 .border-box {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .anim__fade-out {
-    animation:fade-out 0.5s;
-    animation-fill-mode: forwards;
+  animation: fade-out 0.5s;
+  animation-fill-mode: forwards;
 }
 
 @keyframes fade-out {
-    from {opacity:1;}
-    to {opacity:0;}
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 
 .anim__transform-up {
-    animation: transform-up 2s ease forwards;
+  animation: transform-up 2s ease forwards;
 }
 
 @keyframes transform-up {
-    0% {
-        transform: translateY(var(--transform-up-from));
-    }
-    100% {
-        transform: translateY(var(--transform-up-to));
-    }
+  0% {
+    transform: translateY(var(--transform-up-from));
+  }
+
+  100% {
+    transform: translateY(var(--transform-up-to));
+  }
 }
+
 .anim__crawl {
-    animation-name: crawl;
-    animation-iteration-count: 8;
-    animation-timing-function: cubic-bezier(0.1, 0.7, 1, 0.1);
+  animation-name: crawl;
+  animation-iteration-count: 8;
+  animation-timing-function: cubic-bezier(0.1, 0.7, 1, 0.1);
 }
 
 @keyframes crawl {
-    0% { transform: translateX(0)  }
-    25% { transform: translateX(5px) }
-    50% { transform: translateX(-5px)   }
-    75% { transform: translateX(5px) }
-    100% {transform: translateX(0) }
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(5px);
+  }
+
+  50% {
+    transform: translateX(-5px);
+  }
+
+  75% {
+    transform: translateX(5px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .anim__up_and_crawl {
-    animation-composition: add;
-    animation-name: crawl, transform-up;
-    animation-duration: 500ms, 4s;
-    animation-iteration-count: 8, 1;
-    animation-timing-function: cubic-bezier(0.1, 0.7, 1, 0.1), linear;
-    animation-fill-mode: forwards;
+  animation-composition: add;
+  animation-name: crawl, transform-up;
+  animation-duration: 500ms, 4s;
+  animation-iteration-count: 8, 1;
+  animation-timing-function: cubic-bezier(0.1, 0.7, 1, 0.1), linear;
+  animation-fill-mode: forwards;
 }
 
 .max-height-100 {
-    max-height: 100%;
+  max-height: 100%;
 }
